@@ -59,7 +59,7 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-non-null-assertion": "warn",
 
-      /** React Hooks 관련 (플러그인은 eslint-config-next가 제공) */
+      /** React Hooks 관련 (플러그인은 eslint-config-next가 제공함) */
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
 
