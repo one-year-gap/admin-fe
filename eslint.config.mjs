@@ -33,7 +33,7 @@ const eslintConfig = defineConfig([
             // 5. 프로젝트 내부 경로 (alias @/)
             ["^@/"],
             // 6. 상대 경로 (예: ../, ./)
-            ["^\\./", "^\\.\\./"],
+            ["^\\.\\./", "^\\./"],
           ],
         },
       ],
@@ -59,7 +59,7 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-non-null-assertion": "warn",
 
-      /** React Hooks 관련 */
+      /** React Hooks 관련 (플러그인은 eslint-config-next가 제공) */
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
 
