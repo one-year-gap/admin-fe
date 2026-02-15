@@ -1,0 +1,38 @@
+# build artifacts
+.next/
+out/
+dist/
+build/
+coverage/
+
+# dependencies
+node_modules/
+
+# lockfile
+pnpm-lock.yaml
+
+# caches / tooling
+.turbo/
+.vercel/
+*.tsbuildinfo
+.eslintcache
+
+# logs
+*.log
+pnpm-debug.log*
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# generated files
+*.min.js
+*.snap
+
+# 아직 포맷 원치 않는 파일
+**/*.html
+
+# misc
+.DS_Store
+.idea/
