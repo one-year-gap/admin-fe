@@ -2,7 +2,6 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import eslintConfigPrettier from "eslint-config-prettier";
-import reactHooks from "eslint-plugin-react-hooks";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
 
@@ -16,7 +15,6 @@ const eslintConfig = defineConfig([
     plugins: {
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
-      "react-hooks": reactHooks,
     },
     rules: {
       /** Import 관련 */
