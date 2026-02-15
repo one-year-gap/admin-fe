@@ -22,12 +22,17 @@ const eslintConfig = defineConfig([
         "error",
         {
           groups: [
+            // 1. Side effect imports (예: import "./style.css")
             ["^\\u0000"],
-            ["^react"],
-            ["^next"],
-            ["^@/"],
-            ["^@"],
+            // 2. React 및 Next.js 관련 핵심 라이브러리
+            ["^react", "^next"],
+            // 3. 외부 스코프 패키지 (예: @tanstack, @radix-ui)
+            ["^@(?!/)"],
+            // 4. 일반 외부 패키지 (예: axios, lucide-react)
             ["^[a-z]"],
+            // 5. 프로젝트 내부 경로 (alias @/)
+            ["^@/"],
+            // 6. 상대 경로 (예: ../, ./)
             ["^\\./", "^\\.\\./"],
           ],
         },
