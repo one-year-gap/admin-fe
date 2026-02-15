@@ -71,7 +71,7 @@ const eslintConfig = defineConfig([
       "no-debugger": "error",
       "no-var": "error",
       "prefer-const": "warn",
-      "no-duplicate-imports": "warn",
+      "no-duplicate-imports": "off",
     },
   },
 
