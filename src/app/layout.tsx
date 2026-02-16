@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import { TanstackProvider } from "@/lib/tanstack/provider";
 
 const pretendard = localFont({
-  src: "@/assets/fonts/PretendardVariable.woff2",
+  src: "../assets/fonts/PretendardVariable.woff2",
   weight: "100 900",
   variable: "--font-pretendard",
   display: "swap",
