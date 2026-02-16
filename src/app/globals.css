@@ -132,7 +132,7 @@
   /* Radius */
   --radius: 0.625rem;
 
-  /* Backgound */
+  /* Background */
   --background: #ffffff; /* Neutral White */
   --foreground: #333333; /* Neutral 900 */
   /* Primary (shadcn variant용) */
@@ -179,7 +179,7 @@
   --background: var(--neutral-900);
   --foreground: var(--neutral-0);
 
-  /* Primary*/
+  /* Primary */
   --primary: var(--primary-300);
   --primary-foreground: var(--neutral-900);
 
