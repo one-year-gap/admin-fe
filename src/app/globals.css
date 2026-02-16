@@ -7,7 +7,6 @@
 @theme inline {
   /*  Font */
   --font-sans: var(--font-pretendard);
-  --font-display: var(--font-mulmaru);
 
   /* Scale Primary */
   --color-primary-100: var(--primary-100);
@@ -221,6 +220,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
