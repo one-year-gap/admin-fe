@@ -1,7 +1,9 @@
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      admin-web
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <p className="text-3xl">test1</p>
+      <p className="text-2xl">test2</p>
+      <p className="text-xl">test3</p>
     </div>
   );
 }
