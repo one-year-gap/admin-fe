@@ -1,7 +1,7 @@
 import React from "react";
 
-const DummySideBar = () => {
+export function DummySidebar() {
   return <aside className="h-screen w-70 bg-gray-200" />;
-};
+}
 
-export default DummySideBar;
+export default DummySidebar;
