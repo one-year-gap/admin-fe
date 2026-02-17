@@ -133,15 +133,16 @@
   --radius: 0.625rem;
 
   /* Background */
-  --background: #ffffff; /* Neutral White */
-  --foreground: #333333; /* Neutral 900 */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-900);
+
   /* Primary (shadcn variant용) */
   --primary: var(--primary-500);
-  --primary-foreground: #ffffff;
+  --primary-foreground: var(--neutral-0);
 
   /* Secondary */
   --secondary: var(--secondary-500);
-  --secondary-foreground: #ffffff;
+  --secondary-foreground: var(--neutral-0);
 
   /* Card / Popover */
   --card: var(--neutral-0);
