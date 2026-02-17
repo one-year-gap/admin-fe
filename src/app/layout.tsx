@@ -1,4 +1,5 @@
 import "./globals.css";
+
 import { TanstackProvider } from "@/lib/tanstack/provider";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
