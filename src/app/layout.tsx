@@ -2,8 +2,6 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 
-import Header from "@/components/common/Header";
-import SideBar from "@/components/common/SideBar";
 import { TanstackProvider } from "@/lib/tanstack/provider";
 
 const pretendard = localFont({
@@ -16,7 +14,7 @@ const pretendard = localFont({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className={`${pretendard.variable}`}>
+      {/* <body className={`${pretendard.variable}`}>
         <TanstackProvider>
           <div className="flex min-h-screen">
             <SideBar />
@@ -26,6 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </TanstackProvider>
+      </body> */}
+      <body className={`${pretendard.variable}`}>
+        <TanstackProvider>{children}</TanstackProvider>
       </body>
     </html>
   );
