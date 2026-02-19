@@ -9,14 +9,14 @@ const geoUrl =
 
 export default function Map({ selectedRegion, onSelect }: MapProps) {
   return (
-    <div className="relative flex h-full w-1/2 items-center justify-center overflow-hidden">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
           scale: 7000, // 지도 크기
           center: [127.5, 36],
         }}
-        className="mt-[80px] h-full w-full">
+        className="h-full w-full">
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => {
