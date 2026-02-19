@@ -1,8 +1,5 @@
-"use client";
-
-import { useState } from "react";
-
-const TEST_API_URL = "https://admin.holliverse.site/api/v1/test";
+import Header from "@/components/common/Header";
+import SideBar from "@/components/common/SideBar";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -29,23 +26,12 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6">
-      <p className="text-3xl">test1</p>
-      <p className="text-2xl">test2</p>
-      <p className="text-xl">test3</p>
-      <p>Admin Page</p>
-
-      <button
-        type="button"
-        onClick={handleTestRequest}
-        disabled={loading}
-        className="rounded bg-black px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50">
-        {loading ? "요청 중..." : "GET /api/v1/test"}
-      </button>
-
-      {result && (
-        <pre className="max-w-3xl overflow-auto rounded bg-gray-100 p-4 text-sm">{result}</pre>
-      )}
+    <div className="flex min-h-screen">
+      <SideBar />
+      <div className="ml-[280px] flex flex-1 flex-col">
+        <Header pageName="고객 통합 관리" userName="관리자 님" />
+        <main className="flex h-full w-full overflow-hidden bg-neutral-200"></main>
+      </div>
     </div>
   );
 }
