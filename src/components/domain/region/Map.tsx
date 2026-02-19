@@ -1,12 +1,12 @@
-"use client";
-import { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-
+interface MapProps {
+  selectedRegion: string | null;
+  onSelect: (region: string | null) => void;
+}
 const geoUrl =
   "https://raw.githubusercontent.com/southkorea/southkorea-maps/master/kostat/2018/json/skorea-provinces-2018-topo.json";
 
-export default function Map() {
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+export default function Map({ selectedRegion, onSelect }: MapProps) {
   return (
     <div className="relative flex h-full w-1/2 items-center justify-center overflow-hidden">
       <ComposableMap
@@ -29,8 +29,8 @@ export default function Map() {
                   stroke="#FFF"
                   strokeWidth={0.5}
                   onClick={() => {
-                    console.log("선택된 지역:", regionName);
-                    setSelectedRegion(regionName);
+                    onSelect(regionName);
+                    console.log(regionName);
                   }}
                   // 선택 상태에 따른 클래스 분기 수정
                   className={`cursor-pointer transition-all duration-300 outline-none ${
