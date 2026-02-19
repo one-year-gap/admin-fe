@@ -1,3 +1,4 @@
+"use client";
 import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from "recharts";
 interface ChartProps {
   regionName: string | null;
@@ -30,7 +31,7 @@ const formatRegionName = (name: string): string => {
     충청남도: "충남",
     세종특별자치시: "세종",
     대전광역시: "대전",
-    충청북도: "축북",
+    충청북도: "충북",
     경상북도: "경북",
     대구광역시: "대구",
     울산광역시: "울산",
