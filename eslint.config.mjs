@@ -1,16 +1,16 @@
-import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import eslintConfigPrettier from "eslint-config-prettier";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
 
-const eslintConfig = defineConfig([
+const eslintConfig = [
   ...nextVitals,
   ...nextTs,
 
-  globalIgnores([".next/**", "out/**", "build/**", "dist/**", "coverage/**", "next-env.d.ts"]),
-
+  {
+    ignores: [".next/**", "out/**", "build/**", "dist/**", "coverage/**", "next-env.d.ts"],
+  },
   {
     plugins: {
       "simple-import-sort": simpleImportSort,
@@ -77,6 +77,6 @@ const eslintConfig = defineConfig([
 
   /** ESLint 포맷 룰 충돌 제거 (Prettier가 포맷 담당) */
   eslintConfigPrettier,
-]);
+];
 
 export default eslintConfig;
