@@ -49,7 +49,7 @@ export default function Chart({ regionName }: ChartProps) {
   const selectedData = data.find((item) => item.name === regionName);
   return (
     <div className="flex flex-col gap-10">
-      <div className="bg-neutral-0 mt-32 rounded-lg p-6 shadow-[0_0_10px_0_rgba(0,0,0,0.25)]">
+      <div className="bg-neutral-0 rounded-lg p-6 shadow-[0_0_10px_0_rgba(0,0,0,0.25)]">
         <div className="mb-4">
           <h3 className="text-sm text-neutral-900">전국 평균 ARPU 및 데이터 사용량 그래프</h3>
           <p className="text-xs text-neutral-500">National ARPU & Data Usage Comparison</p>
