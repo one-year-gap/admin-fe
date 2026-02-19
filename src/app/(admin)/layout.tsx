@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { DummyHeaderbar } from "@/components/common/DummyHeaderbar";
-import { DummySidebar } from "@/components/common/DummySidebar";
+import { DummySidebar } from "@/components/common/DummySideBar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
