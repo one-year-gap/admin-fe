@@ -20,7 +20,7 @@ export default function SideBar() {
   const router = useRouter();
 
   return (
-    <aside className="bg-primary-900 text-neutral-0 fixed top-0 left-0 flex h-full w-70 flex-col text-lg">
+    <aside className="bg-primary-900 text-neutral-0 flex h-full w-70 flex-shrink-0 flex-col text-lg">
       <div className="flex flex-col items-center px-12 py-9">
         <div className="flex items-center gap-[12px]">
           <Image alt="logo" src={logo} width={48} height={44} />

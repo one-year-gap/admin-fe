@@ -18,11 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <body className={`${pretendard.variable}`}>
         <TanstackProvider>
-          <div className="flex min-h-screen">
+          <div className="flex h-screen w-full overflow-hidden">
             <SideBar />
-            <div className="ml-70 flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col">
               <Header />
-              <main className="flex h-full w-full overflow-hidden bg-neutral-200">{children}</main>
+              <main className="overflow-aut flex-1 bg-neutral-200">{children}</main>
             </div>
           </div>
         </TanstackProvider>
