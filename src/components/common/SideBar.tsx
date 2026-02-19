@@ -25,23 +25,27 @@ export default function SideBar({ currentPage = "고객 관리" }: SideBarProps)
   };
 
   return (
-    <aside className="bg-primary-900 text-neutral-0 fixed top-0 left-0 flex h-full w-[280px] flex-col text-[20px]">
-      <div className="flex flex-col items-center px-[48px] py-[36px]">
+    <aside className="bg-primary-900 text-neutral-0 fixed top-0 left-0 flex h-full w-70 flex-col text-lg">
+      <div className="flex flex-col items-center px-12 py-9">
         <div className="flex items-center gap-[12px]">
           <Image alt="logo" src={logo} width={48} height={44} />
           <span className="font-bold">U+NIVERSE</span>
         </div>
-        <div className="bg-neutral-0 mt-[36px] h-[1px] w-full" />
+        <div className="bg-neutral-0 mt-9 h-[1px] w-full" />
       </div>
       {/* isActive는 현재 페이지인지 확인하는 변수입니다. */}
-      <nav className="flex flex-col gap-[36px] px-[48px] pt-[120px]">
+      <nav className="flex flex-col gap-9 px-12 pt-30">
         {MENU_ITEMS.map((item) => {
           const isActive = currentPage === item.id;
           const Icon = item.icon;
           return (
-            <button key={item.id} onClick={() => handleNavigation(item.href)} className="w-full">
+            <button
+              type="button"
+              key={item.id}
+              onClick={() => handleNavigation(item.href)}
+              className="w-full">
               <div
-                className={`flex items-center gap-[36px] rounded-[10px] p-[16px] transition-all ${
+                className={`flex items-center gap-9 rounded-lg p-4 transition-all ${
                   isActive ? "bg-secondary-500" : "hover:bg-secondary-700"
                 }`}>
                 <div className={`relative h-6 w-6 ${isActive ? "brightness-200" : "opacity-70"}`}>
