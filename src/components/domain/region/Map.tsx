@@ -1,3 +1,4 @@
+"use client";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 interface MapProps {
   selectedRegion: string | null;
@@ -30,7 +31,6 @@ export default function Map({ selectedRegion, onSelect }: MapProps) {
                   strokeWidth={0.5}
                   onClick={() => {
                     onSelect(regionName);
-                    console.log(regionName);
                   }}
                   // 선택 상태에 따른 클래스 분기 수정
                   className={`cursor-pointer transition-all duration-300 outline-none ${
