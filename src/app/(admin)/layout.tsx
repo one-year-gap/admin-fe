@@ -6,7 +6,7 @@ import SideBar from "@/components/common/SideBar";
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="bg-neutral-0 min-h-screen">
-      <div className="flex min-h-screen">
+      <div className="flex h-screen">
         {/* Sidebar column */}
         <div className="w-70 shrink-0">
           <SideBar />
