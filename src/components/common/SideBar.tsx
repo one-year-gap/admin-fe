@@ -20,8 +20,8 @@ export default function SideBar() {
   const router = useRouter();
 
   return (
-    <aside className="bg-primary-900 text-neutral-0 flex min-h-screen w-70 flex-col text-lg">
-      <div className="flex flex-col items-center px-12 py-9">
+    <aside className="bg-primary-900 text-neutral-0 flex min-h-screen w-70 shrink-0 flex-col text-lg">
+      <div className="flex flex-col items-center px-12 pt-9">
         <div className="flex items-center gap-3">
           <Image alt="logo" src={logo} width={48} height={44} />
           <span className="font-bold">U+NIVERSE</span>
@@ -30,7 +30,7 @@ export default function SideBar() {
       </div>
 
       {/* isActive는 현재 페이지인지 확인하는 변수입니다. */}
-      <nav className="flex flex-col gap-9 px-12">
+      <nav className="flex flex-1 flex-col justify-center gap-6 px-12">
         {MENU_ITEMS.map((item) => {
           const isActive = pathname.startsWith(item.href);
           const Icon = item.icon;
