@@ -2,8 +2,6 @@ import React from "react";
 
 import { Search } from "lucide-react";
 
-import { Input } from "../ui/input";
-
 export function SearchBar() {
   return (
     // <div>
@@ -15,7 +13,7 @@ export function SearchBar() {
           <Search className="text-primary-500 size-5" />
         </button>
 
-        <Input
+        <input
           placeholder="고객명, 연락처로 검색"
           className="placeholder:text-md focus-visible:border-primary-500 focus:border-primary-500 text-md h-auto w-full rounded-xl border border-neutral-300 py-4 pl-12 font-medium shadow-none transition-colors duration-1000 ease-out placeholder:font-normal placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
         />
