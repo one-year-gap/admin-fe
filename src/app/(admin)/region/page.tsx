@@ -7,9 +7,9 @@ import Map from "@/components/domain/region/Map";
 export default function Region() {
   const [clickedRegion, setClickedRegion] = useState<string | null>(null);
   return (
-    <>
+    <div className="flex h-full w-full gap-4 p-6">
       <Map selectedRegion={clickedRegion} onSelect={setClickedRegion} />
       <Chart regionName={clickedRegion} />
-    </>
+    </div>
   );
 }
