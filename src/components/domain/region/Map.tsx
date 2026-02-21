@@ -16,7 +16,7 @@ export default function Map({ selectedRegion, onSelect }: MapProps) {
           scale: 7000, // 지도 크기
           center: [127.5, 36],
         }}
-        className="mt-[80px] h-full w-full">
+        className="h-full w-full">
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => {
