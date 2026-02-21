@@ -1,8 +1,8 @@
-import { SearchBar } from "@/components/common/SearchBar";
 import { CustomersList } from "@/components/domain/customers/CustomersList ";
-import { CustomersToolBar } from "@/components/domain/customers/CustomersToolBar ";
-import { DataUsageChartCard } from "@/components/domain/customers/DataUsageChartCard ";
-import { GradeChartCard } from "@/components/domain/customers/GradeChartCard ";
+import { DataUsageChartCard } from "@/components/domain/customers/DataUsageChart";
+import { GradeChartCard } from "@/components/domain/customers/GradeChart";
+import { SearchBar } from "@/components/domain/customers/SearchBar";
+import { CustomersToolBar } from "@/components/domain/customers/ToolBar";
 
 export default function CustomersPage() {
   return (
