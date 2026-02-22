@@ -3,12 +3,21 @@
 import React from "react";
 
 import type { CustomerFilters } from "@/components/domain/customers/FilterBar";
-import FilterBar from "@/components/domain/customers/FilterBar";
+import { FilterBar } from "@/components/domain/customers/FilterBar";
 import { SearchBar } from "@/components/domain/customers/SearchBar";
 
 import { CustomersList } from "./CustomersList";
 import { DataUsageChart } from "./DataUsageChart";
 import { GradeChart } from "./GradeChart";
+import type { PlanFilterState } from "./PlanFilterItem";
+
+const INITIAL_PLAN: PlanFilterState = {
+  mobile5gLte: [],
+  tabletWatch: [],
+  addon: [],
+  iptv: [],
+  internet: [],
+};
 
 const INITIAL_FILTERS: CustomerFilters = {
   age: [],
@@ -18,15 +27,15 @@ const INITIAL_FILTERS: CustomerFilters = {
   character: [],
   churnRisk: [],
   csat: [],
-  plan: [],
+  plan: INITIAL_PLAN,
 };
 
-export default function CustomersClient() {
+export function CustomersClient() {
   // 입력 중 상태
   const [keyword, setKeyword] = React.useState("");
   const [filters, setFilters] = React.useState<CustomerFilters>(INITIAL_FILTERS);
 
-  // 버튼 눌렀을 때 “적용되는” 상태
+  // 버튼 눌렀을 때 적용되는 상태
   const [appliedKeyword, setAppliedKeyword] = React.useState("");
   const [appliedFilters, setAppliedFilters] = React.useState<CustomerFilters>(INITIAL_FILTERS);
 

@@ -20,10 +20,10 @@ type FilterItemProps = {
   onChange: (next: string[]) => void;
 
   triggerClassName?: string;
-  listHeightClassName?: string; // ex) "max-h-60"
+  listHeightClassName?: string;
 };
 
-export default function FilterItem({
+export function FilterItem({
   label,
   options,
   value,
@@ -97,7 +97,7 @@ export default function FilterItem({
         )}>
         {/* 카테고리 명 */}
         <div className="mb-1 flex items-center justify-between p-2">
-          <span className="text-sm font-medium text-neutral-900">{label}</span>
+          <span className="text-sm font-semibold text-neutral-900">{label}</span>
 
           {value.length > 0 ? (
             <button
@@ -115,7 +115,7 @@ export default function FilterItem({
         <div className={cn("overflow-auto pr-1", listHeightClassName)}>
           <ul className="space-y-1">
             {options.length === 0 ? (
-              <li className="px-2 py-3 text-sm text-neutral-500">항목이 없습니다</li>
+              <li className="p-2 text-sm text-neutral-500">항목이 없습니다</li>
             ) : (
               options.map((opt) => {
                 const checked = selectedSet.has(opt.value);
