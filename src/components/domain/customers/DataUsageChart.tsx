@@ -1,5 +1,13 @@
 import React from "react";
 
-export function DataUsageChartCard() {
-  return <div>DataUsageChartCard</div>;
+import type { CustomerFilters } from "./FilterBar";
+
+export function DataUsageChart({
+  keyword,
+  filters,
+}: {
+  keyword: string;
+  filters: CustomerFilters;
+}) {
+  return <div>DataUsageChart</div>;
 }

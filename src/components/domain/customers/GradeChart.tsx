@@ -1,5 +1,7 @@
 import React from "react";
 
-export function GradeChartCard() {
-  return <div>GradeChartCard</div>;
+import type { CustomerFilters } from "./FilterBar";
+
+export function GradeChart({ keyword, filters }: { keyword: string; filters: CustomerFilters }) {
+  return <div>GradeChart</div>;
 }
