@@ -2,8 +2,11 @@
 
 import React from "react";
 
-import { FilterItem } from "@/components/domain/customers/FilterItem";
-import { PlanFilterItem, type PlanFilterState } from "@/components/domain/customers/PlanFilterItem";
+import { FilterItem } from "@/components/domain/customers/filter/FilterItem";
+import {
+  PlanFilterItem,
+  type PlanFilterState,
+} from "@/components/domain/customers/filter/PlanFilterItem";
 import {
   AGE_OPTIONS,
   CHARACTER_OPTIONS,
