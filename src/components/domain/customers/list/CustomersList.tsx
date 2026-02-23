@@ -157,38 +157,52 @@ import type { CustomerFilters } from "../filter/FilterBar";
 import { columns, type CustomerRow } from "./columns";
 import { DataTable } from "./DataTable";
 
-const MOCK_CUSTOMERS: CustomerRow[] = [
-  {
-    id: "01",
-    grade: "VIP",
-    gender: "여",
-    name: "이*빈",
-    birth: "2001.01.12",
+// const MOCK_CUSTOMERS: CustomerRow[] = [
+//   {
+//     id: "01",
+//     grade: "VIP",
+//     gender: "여",
+//     name: "이*빈",
+//     birth: "2001.01.12",
+//     phone: "010-****-1234",
+//     email: "1234@gmail.com",
+//     planText: "5G 프리미엄",
+//   },
+//   {
+//     id: "02",
+//     grade: "우수",
+//     gender: "남",
+//     name: "박*형",
+//     birth: "1998.02.04",
+//     phone: "010-****-5678",
+//     email: "5678@gmail.com",
+//     planText: "5G 스탠다드",
+//   },
+//   {
+//     id: "03",
+//     grade: "VVIP",
+//     gender: "여",
+//     name: "김*지",
+//     birth: "1995.11.23",
+//     phone: "010-****-9012",
+//     email: "9012@gmail.com",
+//     planText: "LTE 베이직",
+//   },
+// ];
+
+const MOCK_CUSTOMERS: CustomerRow[] = Array.from({ length: 137 }, (_, i) => {
+  const n = i + 1;
+  return {
+    id: String(n).padStart(4, "0"),
+    grade: n % 3 === 0 ? "VVIP" : n % 3 === 1 ? "VIP" : "우수",
+    gender: n % 2 === 0 ? "남" : "여",
+    name: `고객${n}`,
+    birth: "1999.01.01",
     phone: "010-****-1234",
-    email: "1234@gmail.com",
-    planText: "5G 프리미엄",
-  },
-  {
-    id: "02",
-    grade: "우수",
-    gender: "남",
-    name: "박*형",
-    birth: "1998.02.04",
-    phone: "010-****-5678",
-    email: "5678@gmail.com",
-    planText: "5G 스탠다드",
-  },
-  {
-    id: "03",
-    grade: "VVIP",
-    gender: "여",
-    name: "김*지",
-    birth: "1995.11.23",
-    phone: "010-****-9012",
-    email: "9012@gmail.com",
-    planText: "LTE 베이직",
-  },
-];
+    email: `${n}@gmail.com`,
+    planText: n % 2 === 0 ? "5G 프리미엄" : "LTE 베이직",
+  };
+});
 
 export function CustomersList({ keyword, filters }: { keyword: string; filters: CustomerFilters }) {
   // 형태 확정 단계: 아직 필터링 로직은 미적용
@@ -202,6 +216,11 @@ export function CustomersList({ keyword, filters }: { keyword: string; filters: 
   // columns는 파일 상수지만, 안정적으로 memo 해두면 불필요 리렌더 줄어듦
   const memoColumns = React.useMemo(() => columns, []);
 
+  const tableKey = React.useMemo(() => {
+    // filters는 객체니까 stringify로 안정적인 key 생성
+    return `${keyword}::${JSON.stringify(filters)}`;
+  }, [keyword, filters]);
+
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300">
       {/* 상단 요약(전체 건수) */}
@@ -209,7 +228,13 @@ export function CustomersList({ keyword, filters }: { keyword: string; filters: 
         <span className="text-lg font-medium text-neutral-900">전체 {data.length}건</span>
       </div>
 
-      <DataTable data={data} columns={memoColumns} pageSize={10} />
+      {/* <DataTable data={data} columns={memoColumns} pageSize={10} /> */}
+      <DataTable
+        key={tableKey} // applied 바뀌면 DataTable 상태(페이지/선택) 리셋됨
+        data={data}
+        columns={memoColumns}
+        pageSize={10}
+      />
     </div>
   );
 }
