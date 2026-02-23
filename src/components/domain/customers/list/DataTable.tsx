@@ -27,6 +27,7 @@ type DataTableProps<TData> = {
   data: TData[];
   columns: ColumnDef<TData, any>[];
   pageSize?: number;
+  onRowClick?: (row: TData) => void;
 
   /** 서버 페이지네이션으로 확장할 때 바깥으로 뺄 수 있게 열어둠 */
   onRowSelectionChange?: (next: RowSelectionState) => void;
@@ -63,6 +64,7 @@ export function DataTable<TData>({
   data,
   columns,
   pageSize = 10,
+  onRowClick,
   onRowSelectionChange,
 }: DataTableProps<TData>) {
   // TanStack이 권장하는 선택 상태 구조 (selectedIds 대체)
@@ -90,7 +92,6 @@ export function DataTable<TData>({
 
     enableRowSelection: true,
 
-    // 기본 row model + pagination model
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
@@ -128,6 +129,11 @@ export function DataTable<TData>({
               <TableRow
                 key={row.id}
                 className="cursor-pointer hover:bg-neutral-100"
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.closest('input[type="checkbox"],button,a')) return;
+                  onRowClick?.(row.original);
+                }}
                 data-state={row.getIsSelected() ? "selected" : undefined}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="text-md px-4 py-3 text-neutral-900">
@@ -148,7 +154,7 @@ export function DataTable<TData>({
           </span>
         </div>
 
-        <div className="flex flex-2 items-center justify-center gap-4">
+        <div className="flex flex-[2] items-center justify-center gap-4">
           {/* 이전 */}
           <button
             type="button"
