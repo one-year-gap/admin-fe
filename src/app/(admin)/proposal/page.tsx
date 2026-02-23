@@ -1,9 +1,18 @@
 "use client";
 import { useState } from "react";
 
-import { Download,Lock } from "lucide-react";
+import { Download, Lock } from "lucide-react";
 
-const data = [
+const proposalData = [
+  {
+    title: "이탈 위험군 대상 선제적 리텐션 프로모션 제안",
+    category: "마케팅 전략",
+    content:
+      "최근 30일간 이탈 위험 고객이 12% 증가함에 따라, 약정 만료 예정 고객 중 갱신 의사가 불투명한 45%를 대상으로 전용 할인 쿠폰 및 멤버십 업그레이드 혜택을 제공하여 재계약률을 높이는 방안을 제안합니다.",
+  },
+];
+
+const reportData = [
   {
     report_id: "rep-20260213-001",
     metadata: {
@@ -41,7 +50,8 @@ const data = [
 
 export default function Proposal() {
   const [isGenerated, setIsGenerated] = useState(false);
-  const report = data[0];
+  const report = reportData[0];
+  const propos = proposalData[0];
   return (
     <div className="p-8 text-lg text-neutral-900">
       <div>
@@ -111,8 +121,8 @@ export default function Proposal() {
 
                 <div className="space-y-6 bg-neutral-100 text-neutral-900">
                   <div className="m-5 flex gap-5 pt-5">
-                    {report?.summary_stats.map((stat, index) => (
-                      <div key={index} className="bg-neutral-0 mt-5 flex-1 rounded-xl p-5">
+                    {report?.summary_stats?.map((stat) => (
+                      <div key={stat.label} className="bg-neutral-0 mt-5 flex-1 rounded-xl p-5">
                         <div className="flex flex-col gap-2">
                           <p className="text-xs text-neutral-500">{stat.label}</p>
                           <p className="text-xl font-bold">{stat.value}</p>
@@ -134,7 +144,7 @@ export default function Proposal() {
                   <div className="m-5 h-[1px] bg-neutral-300" />
                   <div className="m-5 flex gap-5 pb-6">
                     <div className="space-y-12">
-                      {report.sections.map((section) => (
+                      {report.sections?.map((section) => (
                         <div key={section.order} className="flex gap-5">
                           <div className="flex-shrink-0">
                             <div className="bg-secondary-500 flex h-7 w-7 items-center justify-center rounded text-sm font-bold text-white">
@@ -182,19 +192,19 @@ export default function Proposal() {
                 <div className="pb-2 font-semibold">제목</div>
                 <input
                   className="w-full border border-gray-200 p-4 outline-none"
-                  placeholder="제안 내용을 입력해주세요..."></input>
+                  placeholder={propos.title}></input>
               </div>
               <div className="text-md">
                 <div className="pb-2 font-semibold">카테고리</div>
                 <input
                   className="w-full border border-gray-200 p-4 outline-none"
-                  placeholder="제안 내용을 입력해주세요..."></input>
+                  placeholder={propos.category}></input>
               </div>
               <div className="text-md">
                 <div className="pb-2 font-semibold">제안 내용</div>
                 <textarea
                   className="h-70 w-full resize-none border border-gray-200 p-4 outline-none"
-                  placeholder="제안 내용을 입력해주세요..."></textarea>
+                  placeholder={propos.content}></textarea>
               </div>
 
               <button className="bg-secondary-500 mt-4 py-3 text-white">제출하기</button>
