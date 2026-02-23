@@ -2,14 +2,14 @@
 
 import React from "react";
 
-import type { CustomerFilters } from "@/components/domain/customers/FilterBar";
-import { FilterBar } from "@/components/domain/customers/FilterBar";
-import { SearchBar } from "@/components/domain/customers/SearchBar";
+import { DataUsageChart } from "@/components/domain/customers/chart/DataUsageChart";
+import { GradeChart } from "@/components/domain/customers/chart/GradeChart";
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
+import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
+import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
+import { SearchBar } from "@/components/domain/customers/filter/SearchBar";
 
-import { CustomersList } from "./CustomersList";
-import { DataUsageChart } from "./DataUsageChart";
-import { GradeChart } from "./GradeChart";
-import type { PlanFilterState } from "./PlanFilterItem";
+import { CustomersList } from "./list/CustomersList";
 
 const INITIAL_PLAN: PlanFilterState = {
   mobile5gLte: [],

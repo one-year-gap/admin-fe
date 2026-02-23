@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { CustomerFilters } from "./FilterBar";
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
 
 export function DataUsageChart({
   keyword,
