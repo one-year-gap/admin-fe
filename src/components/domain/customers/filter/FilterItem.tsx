@@ -58,7 +58,7 @@ export function FilterItem({
         <button
           type="button"
           className={cn(
-            "bg-neutral-0 text-md flex h-auto max-w-50 min-w-30 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
+            "bg-neutral-0 text-md flex h-auto w-30 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
             open && "bg-primary-500 border-primary-500",
             value.length > 0 && "border-primary-500 bg-primary-500",
             triggerClassName,
@@ -66,7 +66,7 @@ export function FilterItem({
           <div className="flex items-center gap-2 overflow-hidden">
             <span
               className={cn(
-                "truncate text-neutral-900",
+                "flex-1 truncate text-left text-neutral-900",
                 open && "text-neutral-0",
                 value.length > 0 && "text-neutral-0",
               )}>
@@ -131,7 +131,7 @@ export function FilterItem({
                         opt.disabled && "cursor-not-allowed opacity-50",
                         checked
                           ? "bg-primary-500 text-neutral-0"
-                          : "hover:bg-primary-300 text-neutral-900",
+                          : "hover:bg-primary-100 text-neutral-900",
                       )}>
                       <span>{opt.label}</span>
                       {checked ? <Check className="h-4 w-4" /> : null}
