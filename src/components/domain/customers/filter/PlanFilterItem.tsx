@@ -75,7 +75,7 @@ export function PlanFilterItem({
     <button
       type="button"
       className={cn(
-        "bg-neutral-0 text-md flex h-auto max-w-50 min-w-30 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
+        "bg-neutral-0 text-md flex h-auto w-30 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
         (open || totalSelected > 0) && "border-primary-500 bg-primary-500",
         triggerClassName,
       )}>
