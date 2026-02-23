@@ -6,6 +6,7 @@ import { PLAN_OPTIONS } from "@/constants/customerFilters";
 
 import type { CustomerFilters } from "../filter/FilterBar";
 import { columns, type CustomerRow } from "./columns";
+import { CustomerDetailModal } from "./CustomerDetailModal";
 import { DataTable } from "./DataTable";
 
 // const MOCK_CUSTOMERS: CustomerRow[] = [
@@ -139,6 +140,9 @@ function applyMockFilters(rows: CustomerRow[], keyword: string, filters: Custome
 }
 
 export function CustomersList({ keyword, filters }: { keyword: string; filters: CustomerFilters }) {
+  const [open, setOpen] = React.useState(false);
+  const [selectedCustomer, setSelectedCustomer] = React.useState<CustomerRow | null>(null);
+
   const data = React.useMemo(() => {
     return applyMockFilters(MOCK_CUSTOMERS, keyword, filters);
   }, [keyword, filters]);
@@ -155,7 +159,18 @@ export function CustomersList({ keyword, filters }: { keyword: string; filters: 
         <span className="text-lg font-medium text-neutral-900">전체 {data.length}건</span>
       </div>
 
-      <DataTable key={tableKey} data={data} columns={memoColumns} pageSize={10} />
+      <DataTable
+        key={tableKey}
+        data={data}
+        columns={memoColumns}
+        pageSize={10}
+        onRowClick={(row) => {
+          setSelectedCustomer(row);
+          setOpen(true);
+        }}
+      />
+
+      <CustomerDetailModal open={open} onOpenChange={setOpen} customer={selectedCustomer} />
     </div>
   );
 }
