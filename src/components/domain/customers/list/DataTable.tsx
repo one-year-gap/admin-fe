@@ -12,6 +12,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -29,6 +31,33 @@ type DataTableProps<TData> = {
   /** 서버 페이지네이션으로 확장할 때 바깥으로 뺄 수 있게 열어둠 */
   onRowSelectionChange?: (next: RowSelectionState) => void;
 };
+
+type PageItem = number | "ellipsis";
+
+function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
+  // pageIndex는 0-based, UI는 1-based로 표시
+  if (pageCount <= 1) return [1];
+
+  const current = pageIndex + 1;
+
+  const first = 1;
+  const last = pageCount;
+
+  const start = Math.max(2, current - 2);
+  const end = Math.min(last - 1, current + 2);
+
+  const items: PageItem[] = [first];
+
+  if (start > 2) items.push("ellipsis");
+
+  for (let p = start; p <= end; p++) items.push(p);
+
+  if (end < last - 1) items.push("ellipsis");
+
+  if (last !== first) items.push(last);
+
+  return items;
+}
 
 export function DataTable<TData>({
   data,
@@ -73,7 +102,7 @@ export function DataTable<TData>({
       <Table className="min-w-[880px]">
         <TableHeader>
           {table.getHeaderGroups().map((hg) => (
-            <TableRow key={hg.id} className="border-b border-neutral-300">
+            <TableRow key={hg.id} className="border-b border-neutral-300 hover:bg-transparent">
               {hg.headers.map((header) => (
                 <TableHead key={header.id} className="text-md px-4 py-3 text-neutral-500">
                   {header.isPlaceholder
@@ -98,7 +127,7 @@ export function DataTable<TData>({
             pageRows.map((row) => (
               <TableRow
                 key={row.id}
-                className="cursor-pointer hover:bg-neutral-300"
+                className="cursor-pointer hover:bg-neutral-100"
                 data-state={row.getIsSelected() ? "selected" : undefined}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="text-md px-4 py-3 text-neutral-900">
@@ -113,31 +142,65 @@ export function DataTable<TData>({
 
       {/* 페이지네이션 */}
       <div className="flex items-center justify-between px-5 py-4">
-        <span className="text-md font-medium text-neutral-500">
-          선택 {Object.keys(rowSelection).length}건
-        </span>
+        <div className="flex-1">
+          <span className="text-md font-medium text-neutral-500">
+            선택 {Object.keys(rowSelection).length}건
+          </span>
+        </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-2 items-center justify-center gap-4">
+          {/* 이전 */}
           <button
             type="button"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium disabled:opacity-60"
+            className="enabled:hover:bg-primary-100 rounded-full p-2 enabled:hover:cursor-pointer disabled:opacity-40"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}>
-            이전
+            <ChevronLeft className="h-5 w-5" />
           </button>
 
-          <span className="text-sm font-medium text-neutral-900">
-            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-          </span>
+          {/* 페이지 번호 */}
+          <div className="flex items-center gap-2">
+            {getPageItems(table.getState().pagination.pageIndex, table.getPageCount()).map(
+              (it, idx) => {
+                if (it === "ellipsis") {
+                  return (
+                    <span key={`e-${idx}`} className="px-2 text-neutral-900">
+                      <Ellipsis className="h-4 w-4" />
+                    </span>
+                  );
+                }
 
+                const pageNumber = it;
+                const isActive = pageNumber === table.getState().pagination.pageIndex + 1;
+
+                return (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => table.setPageIndex(pageNumber - 1)}
+                    className={[
+                      "h-9 min-w-9 rounded-md px-2 text-sm font-medium",
+                      isActive
+                        ? "font-semibold text-neutral-900"
+                        : "hover:bg-primary-100 text-neutral-500 hover:cursor-pointer",
+                    ].join(" ")}>
+                    {pageNumber}
+                  </button>
+                );
+              },
+            )}
+          </div>
+
+          {/* 다음 */}
           <button
             type="button"
-            className="rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium disabled:opacity-60"
+            className="enabled:hover:bg-primary-100 rounded-full p-2 enabled:hover:cursor-pointer disabled:opacity-40"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}>
-            다음
+            <ChevronRight className="h-5 w-5" />
           </button>
         </div>
+        <div className="flex-1"></div>
       </div>
     </div>
   );
