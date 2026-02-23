@@ -36,8 +36,9 @@ export default function ArpuBarChart() {
         <BarChart data={data} barGap={8}>
           <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
           <XAxis dataKey="region" />
-          <YAxis yAxisId="left" domain={[0, 60000]} />
-          <YAxis yAxisId="right" orientation="right" domain={[0, 20]} />
+
+          <YAxis yAxisId="left" domain={[0, "dataMax + 5000"]} />
+          <YAxis yAxisId="right" orientation="right" domain={[0, "dataMax + 2"]} />
 
           <Tooltip />
           <Legend verticalAlign="bottom" height={36} />
