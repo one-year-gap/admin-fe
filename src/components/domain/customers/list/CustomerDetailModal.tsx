@@ -2,9 +2,8 @@
 
 import React from "react";
 
+import type { CustomerRow } from "@/components/domain/customers/list/columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
-import type { CustomerRow } from "./columns"; // 실제 경로 맞춰줘
 
 type Props = {
   open: boolean;
@@ -15,8 +14,10 @@ type Props = {
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="grid grid-cols-12 items-center gap-3 py-2">
-      <div className="col-span-4 text-sm text-neutral-500">{label}</div>
-      <div className="col-span-8 text-sm font-medium text-neutral-900">{value ?? "-"}</div>
+      <div className="col-span-4 text-sm font-medium text-neutral-500">{label}</div>
+      <div className="col-span-8 rounded-lg border border-neutral-300 p-2 text-sm font-medium text-neutral-900">
+        {value ?? "-"}
+      </div>
     </div>
   );
 }

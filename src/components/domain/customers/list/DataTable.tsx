@@ -25,7 +25,7 @@ import {
 
 type DataTableProps<TData> = {
   data: TData[];
-  columns: ColumnDef<TData, any>[];
+  columns: ColumnDef<TData, unknown>[];
   pageSize?: number;
   onRowClick?: (row: TData) => void;
 
@@ -99,7 +99,7 @@ export function DataTable<TData>({
   const pageRows = table.getRowModel().rows;
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full">
       <Table className="min-w-[880px]">
         <TableHeader>
           {table.getHeaderGroups().map((hg) => (
