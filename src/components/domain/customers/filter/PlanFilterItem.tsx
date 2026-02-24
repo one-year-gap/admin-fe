@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { ChevronDown, Search, X } from "lucide-react";
 
@@ -41,8 +41,8 @@ export function PlanFilterItem({
   triggerClassName,
   popoverClassName,
 }: PlanFilterItemProps) {
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const s = search.trim().toLowerCase();
   const filterItems = (arr: readonly MultiSelectOption[]) =>
