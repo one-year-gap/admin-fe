@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
 import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
@@ -34,15 +34,15 @@ const INITIAL_FILTERS: CustomerFilters = {
 
 export function CustomersClient() {
   // 입력 중 상태
-  const [keyword, setKeyword] = React.useState("");
-  const [filters, setFilters] = React.useState<CustomerFilters>(INITIAL_FILTERS);
+  const [keyword, setKeyword] = useState("");
+  const [filters, setFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   // 버튼 눌렀을 때 적용되는 상태
-  const [appliedKeyword, setAppliedKeyword] = React.useState("");
-  const [appliedFilters, setAppliedFilters] = React.useState<CustomerFilters>(INITIAL_FILTERS);
+  const [appliedKeyword, setAppliedKeyword] = useState("");
+  const [appliedFilters, setAppliedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   // 분석 데이터(실제론 API에서 받아와야 할 부분)
-  const [analytics, setAnalytics] = React.useState<CustomerAnalytics>(() =>
+  const [analytics, setAnalytics] = useState<CustomerAnalytics>(() =>
     getMockCustomerAnalytics({ keyword: "", filters: INITIAL_FILTERS }),
   );
 
