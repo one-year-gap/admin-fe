@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 
 import {
   type ColumnDef,
@@ -68,10 +68,10 @@ export function DataTable<TData>({
   onRowSelectionChange,
 }: DataTableProps<TData>) {
   // TanStack이 권장하는 선택 상태 구조 (selectedIds 대체)
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   // 클라이언트 페이지네이션 상태
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize,
   });
