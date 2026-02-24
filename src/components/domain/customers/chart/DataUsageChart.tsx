@@ -1,20 +1,4 @@
-// import React from "react";
-
-// import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
-
-// export function DataUsageChart({
-//   keyword,
-//   filters,
-// }: {
-//   keyword: string;
-//   filters: CustomerFilters;
-// }) {
-//   return <div>DataUsageChart</div>;
-// }
-
 "use client";
-
-import React from "react";
 
 import {
   CartesianGrid,
@@ -26,52 +10,50 @@ import {
   YAxis,
 } from "recharts";
 
-import type { CustomerAnalytics } from "@/mocks/customerAnalytics.mock";
+const data = [
+  { date: "2026-02-10", value: 820 },
+  { date: "2026-02-11", value: 790 },
+  { date: "2026-02-12", value: 910 },
+  { date: "2026-02-13", value: 880 },
+  { date: "2026-02-14", value: 940 },
+  { date: "2026-02-15", value: 860 },
+  { date: "2026-02-16", value: 990 },
+  { date: "2026-02-17", value: 930 },
+  { date: "2026-02-18", value: 1010 },
+  { date: "2026-02-19", value: 970 },
+  { date: "2026-02-20", value: 1040 },
+  { date: "2026-02-21", value: 980 },
+  { date: "2026-02-22", value: 1100 },
+  { date: "2026-02-23", value: 1060 },
+];
 
-export function DataUsageChart({ analytics }: { analytics: CustomerAnalytics }) {
-  const series = React.useMemo(
-    () => analytics.dataUsageTimeseries.series,
-    [analytics.dataUsageTimeseries.series],
-  );
-
+export function DataUsageChart() {
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-neutral-900">데이터 사용량</h3>
-        <p className="text-sm text-neutral-500">
-          최근 {series.length}일 · 단위 {analytics.dataUsageTimeseries.unit}
-        </p>
+        <p className="text-sm text-neutral-500">최근 14일 · 단위 GB</p>
       </div>
 
-      <div className="h-70">
+      <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={series} margin={{ top: 10, right: 40, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="date"
-              interval={0}
-              tickFormatter={(v) => String(v).slice(5)}
-              tickMargin={8}
-            />
-            <YAxis tickMargin={8} width={64} tickFormatter={(v) => `${v}`} />
+          <LineChart data={data}>
+            <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
+            <XAxis dataKey="date" tickFormatter={(v) => String(v).slice(5)} />
+            <YAxis domain={[0, "dataMax + 10"]} />
             <Tooltip
-              formatter={(value: string | number | undefined, name?: string) => {
-                const v = Number(value ?? 0);
-                return [`${v.toLocaleString()} GB`, name ?? "사용량"];
-              }}
+              formatter={(value: string | number | undefined, name?: string) => [
+                `${Number(value ?? 0).toLocaleString()} GB`,
+                name ?? "사용량",
+              ]}
               labelFormatter={(label) => `날짜: ${label}`}
             />
             <Line
               type="monotone"
               dataKey="value"
               name="사용량"
-              stroke="var(--color-chart-2)"
+              stroke="var(--color-primary-500)"
               strokeWidth={2}
-              dot={false}
-              isAnimationActive
-              animationBegin={0}
-              animationDuration={900}
-              animationEasing="ease-out"
             />
           </LineChart>
         </ResponsiveContainer>
