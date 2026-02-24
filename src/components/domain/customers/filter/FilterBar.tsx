@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { FilterItem } from "@/components/domain/customers/filter/FilterItem";
 import {
   PlanFilterItem,
