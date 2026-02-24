@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { DataUsageChart } from "@/components/domain/customers/chart/DataUsageChart";
+import { GradeChart } from "@/components/domain/customers/chart/GradeChart";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
 import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
 import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
@@ -28,23 +30,22 @@ const INITIAL_FILTERS: CustomerFilters = {
 };
 
 export default function CustomersPage() {
-  // 입력 중 상태
+  // 검색하기 버튼 누르기 전의 필터링 선택 상태
   const [keyword, setKeyword] = useState("");
   const [filters, setFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
-  // 버튼 눌렀을 때 적용되는 상태
+  // 검색하기 버튼 눌렀을 때 적용되는 상태
   const [appliedKeyword, setAppliedKeyword] = useState("");
   const [appliedFilters, setAppliedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   const applySearch = () => {
-    const k = keyword.trim();
     setAppliedKeyword(keyword.trim());
     setAppliedFilters(filters);
   };
 
-  // const isFiltered =
-  //   appliedKeyword.trim().length > 0 ||
-  //   JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
+  const isFiltered =
+    appliedKeyword.trim().length > 0 ||
+    JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
 
   return (
     <>
@@ -73,9 +74,13 @@ export default function CustomersPage() {
       </section>
 
       {/* 차트 영역 */}
-      <section className="col-span-12 md:col-span-5"></section>
+      <section className="col-span-12 md:col-span-5">
+        <GradeChart isFiltered={isFiltered} />
+      </section>
 
-      <section className="col-span-12 md:col-span-7"></section>
+      <section className="col-span-12 md:col-span-7">
+        <DataUsageChart />
+      </section>
     </>
   );
 }
