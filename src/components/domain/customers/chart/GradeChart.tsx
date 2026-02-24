@@ -46,7 +46,7 @@ export function GradeChart({ isFiltered }: { isFiltered: boolean }) {
 
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-sm text-neutral-500">Total</span>
-            <span className="text-2xl font-bold">{total.toLocaleString()}</span>
+            <span className="text-xl font-bold">{total.toLocaleString()}</span>
           </div>
         </div>
 

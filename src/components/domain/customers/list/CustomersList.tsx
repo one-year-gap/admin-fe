@@ -4,8 +4,9 @@ import { useState } from "react";
 
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
 import { columns, type CustomerRow } from "@/components/domain/customers/list/columns";
-import { CustomerDetailModal } from "@/components/domain/customers/list/CustomerDetailModal";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
+
+import { CustomerModal } from "./CustomerModal";
 
 const MOCK_CUSTOMERS: CustomerRow[] = Array.from({ length: 137 }, (_, i) => {
   const n = i + 1;
@@ -44,7 +45,8 @@ export function CustomersList({ keyword, filters }: { keyword: string; filters: 
         }}
       />
 
-      <CustomerDetailModal open={open} onOpenChange={setOpen} customer={selectedCustomer} />
+      {/* <CustomerDetailModal open={open} onOpenChange={setOpen} customer={selectedCustomer} /> */}
+      <CustomerModal open={open} onOpenChange={setOpen} customer={selectedCustomer} />
     </div>
   );
 }
