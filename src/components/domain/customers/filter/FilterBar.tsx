@@ -60,7 +60,6 @@ export function FilterBar({ value, onChange }: FilterBarProps) {
         value={value.gender}
         onChange={set("gender")}
       />
-      {/* <FilterItem label="현재 요금제" options={PLAN} value={value.plan} onChange={set("plan")} /> */}
       <FilterItem
         label="캐릭터 유형"
         options={CHARACTER_OPTIONS}

@@ -14,6 +14,8 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { CustomerAnalytics } from "@/mocks/customerAnalytics.mock";
 
+const COLORS = ["var(--color-chart-3)", "var(--color-chart-1)", "var(--color-chart-2)"];
+
 function formatCompact(n: number) {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
@@ -29,8 +31,6 @@ export function GradeChart({
 }) {
   const data = React.useMemo(() => analytics.gradeDistribution, [analytics.gradeDistribution]);
   const total = React.useMemo(() => data.reduce((acc, cur) => acc + cur.value, 0), [data]);
-
-  const COLORS = ["var(--color-chart-3)", "var(--color-chart-1)", "var(--color-chart-2)"];
 
   return (
     <div className="bg-neutral-0 h-full rounded-xl border border-neutral-300 p-6">
