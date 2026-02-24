@@ -6,7 +6,7 @@ type Props = {
   checked: boolean;
   indeterminate?: boolean;
   onChange: (checked: boolean) => void;
-  ariaLabel?: string;
+  ariaLabel: string;
   className?: string;
 };
 
