@@ -25,7 +25,15 @@ export function CustomerModal({ open, onOpenChange, customer }: ModalProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onOpenChange(false);
+      }}
+      tabIndex={-1}
+      ref={(el) => el?.focus()}>
       {/* 배경 */}
       <div
         className="absolute inset-0 bg-neutral-900 opacity-50"
@@ -38,7 +46,8 @@ export function CustomerModal({ open, onOpenChange, customer }: ModalProps) {
           <h2 className="text-lg font-semibold">고객 상세 정보</h2>
           <button
             onClick={() => onOpenChange(false)}
-            className="cursor-pointer hover:text-gray-500">
+            className="cursor-pointer hover:text-gray-500"
+            aria-label="모달 닫기">
             <X className="h-6 w-6" />
           </button>
         </header>
