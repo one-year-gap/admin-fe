@@ -225,4 +225,10 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  :focus {
+    @apply outline-none;
+  }
+  :focus-visible {
+    @apply ring-ring/50 ring-2;
+  }
 }
