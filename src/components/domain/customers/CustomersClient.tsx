@@ -85,12 +85,10 @@ export function CustomersClient() {
 
       {/* 차트 영역 */}
       <section className="col-span-12 md:col-span-5">
-        {/* <GradeChart keyword={appliedKeyword} filters={appliedFilters} /> */}
         <GradeChart analytics={analytics} isFiltered={isFiltered} />
       </section>
 
       <section className="col-span-12 md:col-span-7">
-        {/* <DataUsageChart keyword={appliedKeyword} filters={appliedFilters} /> */}
         <DataUsageChart analytics={analytics} />
       </section>
     </>

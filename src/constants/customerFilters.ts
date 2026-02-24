@@ -40,9 +40,9 @@ export const CHARACTER_OPTIONS: MultiSelectOption[] = [
 ];
 
 export const CHURN_RISK_OPTIONS: MultiSelectOption[] = [
-  { label: "low", value: "low" },
-  { label: "middle", value: "middle" },
-  { label: "high", value: "high" },
+  { label: "낮음", value: "low" },
+  { label: "보통", value: "middle" },
+  { label: "높음", value: "high" },
 ];
 
 export const CSAT_OPTIONS: MultiSelectOption[] = [

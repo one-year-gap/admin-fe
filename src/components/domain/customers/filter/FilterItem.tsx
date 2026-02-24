@@ -5,13 +5,8 @@ import React from "react";
 import { Check, ChevronDown, X } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import type { MultiSelectOption } from "@/constants/customerFilters";
 import { cn } from "@/lib/utils";
-
-export type MultiSelectOption = {
-  label: string;
-  value: string;
-  disabled?: boolean;
-};
 
 type FilterItemProps = {
   label: string;

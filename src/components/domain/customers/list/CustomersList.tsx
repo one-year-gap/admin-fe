@@ -2,45 +2,11 @@
 
 import React from "react";
 
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
+import { columns, type CustomerRow } from "@/components/domain/customers/list/columns";
+import { CustomerDetailModal } from "@/components/domain/customers/list/CustomerDetailModal";
+import { DataTable } from "@/components/domain/customers/list/DataTable";
 import { PLAN_OPTIONS } from "@/constants/customerFilters";
-
-import type { CustomerFilters } from "../filter/FilterBar";
-import { columns, type CustomerRow } from "./columns";
-import { CustomerDetailModal } from "./CustomerDetailModal";
-import { DataTable } from "./DataTable";
-
-// const MOCK_CUSTOMERS: CustomerRow[] = [
-//   {
-//     id: "01",
-//     grade: "VIP",
-//     gender: "여",
-//     name: "이*빈",
-//     birth: "2001.01.12",
-//     phone: "010-****-1234",
-//     email: "1234@gmail.com",
-//     planText: "5G 프리미엄",
-//   },
-//   {
-//     id: "02",
-//     grade: "우수",
-//     gender: "남",
-//     name: "박*형",
-//     birth: "1998.02.04",
-//     phone: "010-****-5678",
-//     email: "5678@gmail.com",
-//     planText: "5G 스탠다드",
-//   },
-//   {
-//     id: "03",
-//     grade: "VVIP",
-//     gender: "여",
-//     name: "김*지",
-//     birth: "1995.11.23",
-//     phone: "010-****-9012",
-//     email: "9012@gmail.com",
-//     planText: "LTE 베이직",
-//   },
-// ];
 
 const MOCK_CUSTOMERS: CustomerRow[] = Array.from({ length: 137 }, (_, i) => {
   const n = i + 1;

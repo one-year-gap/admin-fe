@@ -21,7 +21,7 @@ export function PlanColumn({
   items,
   selectedValues,
   onToggle,
-  heightClassName = "min-h-80 max-h-80 overflow-y-auto",
+  heightClassName = "min-h-80 max-h-80",
 }: PlanColumnProps) {
   const selected = React.useMemo(() => new Set(selectedValues), [selectedValues]);
 
