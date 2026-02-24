@@ -53,7 +53,7 @@ export function FilterItem({
         <button
           type="button"
           className={cn(
-            "bg-neutral-0 text-md flex h-auto w-30 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
+            "bg-neutral-0 text-md flex h-auto w-32 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
             open && "bg-primary-500 border-primary-500",
             value.length > 0 && "border-primary-500 bg-primary-500",
             triggerClassName,
