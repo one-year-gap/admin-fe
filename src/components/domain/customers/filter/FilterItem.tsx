@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo, useState } from "react";
 
 import { Check, ChevronDown, X } from "lucide-react";
 
@@ -26,8 +26,8 @@ export function FilterItem({
   triggerClassName,
   listHeightClassName = "max-h-60",
 }: FilterItemProps) {
-  const [open, setOpen] = React.useState(false);
-  const selectedSet = React.useMemo(() => new Set(value), [value]);
+  const [open, setOpen] = useState(false);
+  const selectedSet = useMemo(() => new Set(value), [value]);
 
   const toggle = (v: string) => {
     const next = new Set(selectedSet);
@@ -37,7 +37,7 @@ export function FilterItem({
 
   const clear = () => onChange([]);
 
-  const displayLabel = React.useMemo(() => {
+  const displayLabel = useMemo(() => {
     if (value.length === 0) return label;
 
     const firstSelectedOption = options.find((opt) => opt.value === value[0]);

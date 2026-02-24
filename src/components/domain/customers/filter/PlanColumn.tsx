@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo } from "react";
 
 import { Check } from "lucide-react";
 
@@ -23,7 +23,7 @@ export function PlanColumn({
   onToggle,
   heightClassName = "min-h-80 max-h-80",
 }: PlanColumnProps) {
-  const selected = React.useMemo(() => new Set(selectedValues), [selectedValues]);
+  const selected = useMemo(() => new Set(selectedValues), [selectedValues]);
 
   return (
     <div className="flex flex-col rounded-lg border border-neutral-300 p-2">
