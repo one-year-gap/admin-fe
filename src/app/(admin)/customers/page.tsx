@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 
-import { DataUsageChart } from "@/components/domain/customers/chart/DataUsageChart";
-import { GradeChart } from "@/components/domain/customers/chart/GradeChart";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
 import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
 import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
 import { SearchBar } from "@/components/domain/customers/filter/SearchBar";
 import { CustomersList } from "@/components/domain/customers/list/CustomersList";
-import type { CustomerAnalytics } from "@/mocks/customerAnalytics.mock";
-import { getMockCustomerAnalytics } from "@/mocks/customerAnalytics.mock";
 
 const INITIAL_PLAN: PlanFilterState = {
   mobile5gLte: [],
@@ -40,21 +36,15 @@ export default function CustomersPage() {
   const [appliedKeyword, setAppliedKeyword] = useState("");
   const [appliedFilters, setAppliedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
-  // 분석 데이터(실제론 API에서 받아와야 할 부분)
-  const [analytics, setAnalytics] = useState<CustomerAnalytics>(() =>
-    getMockCustomerAnalytics({ keyword: "", filters: INITIAL_FILTERS }),
-  );
-
   const applySearch = () => {
     const k = keyword.trim();
     setAppliedKeyword(keyword.trim());
     setAppliedFilters(filters);
-    setAnalytics(getMockCustomerAnalytics({ keyword: k, filters }));
   };
 
-  const isFiltered =
-    appliedKeyword.trim().length > 0 ||
-    JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
+  // const isFiltered =
+  //   appliedKeyword.trim().length > 0 ||
+  //   JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
 
   return (
     <>
@@ -83,13 +73,9 @@ export default function CustomersPage() {
       </section>
 
       {/* 차트 영역 */}
-      <section className="col-span-12 md:col-span-5">
-        <GradeChart analytics={analytics} isFiltered={isFiltered} />
-      </section>
+      <section className="col-span-12 md:col-span-5"></section>
 
-      <section className="col-span-12 md:col-span-7">
-        <DataUsageChart analytics={analytics} />
-      </section>
+      <section className="col-span-12 md:col-span-7"></section>
     </>
   );
 }
