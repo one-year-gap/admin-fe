@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useLayoutEffect, useRef } from "react";
 
 type Props = {
   checked: boolean;
@@ -17,11 +17,12 @@ export function IndeterminateCheckbox({
   ariaLabel,
   className,
 }: Props) {
-  const ref = React.useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLInputElement | null>(null);
 
-  React.useEffect(() => {
-    if (!ref.current) return;
-    ref.current.indeterminate = indeterminate && !checked;
+  useLayoutEffect(() => {
+    if (ref.current) {
+      ref.current.indeterminate = indeterminate && !checked;
+    }
   }, [indeterminate, checked]);
 
   return (
