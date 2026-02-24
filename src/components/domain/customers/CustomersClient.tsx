@@ -73,7 +73,7 @@ export function CustomersClient() {
         <button
           type="button"
           onClick={applySearch}
-          className="bg-secondary-500 hover:bg-primary-900 text-neutral-0 text-md border-secondary-500 h-auto shrink-0 rounded-lg border p-3 font-medium">
+          className="bg-secondary-500 hover:bg-secondary-700 text-neutral-0 text-md border-secondary-500 h-auto shrink-0 cursor-pointer rounded-lg border p-3 font-medium">
           선택된 조건 검색하기
         </button>
       </section>
