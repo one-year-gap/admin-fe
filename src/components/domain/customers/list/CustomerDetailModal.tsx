@@ -47,7 +47,7 @@ export function CustomerDetailModal({ open, onOpenChange, customer }: Props) {
 
             {/* 우측 */}
             <div className="col-span-12 md:col-span-6">
-              {/* 지금 mock에 없는 필드는 일단 '-' 처리 */}
+              {/* TODO: API 연동 시 실제 데이터로 교체 필요 (나이, 주소, 가입기간 등) */}
               <InfoRow label="나이" value="-" />
               <InfoRow label="주소" value="-" />
               <InfoRow label="가입기간" value="-" />
