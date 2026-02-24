@@ -103,10 +103,6 @@ export function PlanFilterItem({
     </button>
   );
 
-  React.useEffect(() => {
-    if (!open) setSearch("");
-  }, [open]);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{Trigger}</PopoverTrigger>
@@ -136,7 +132,7 @@ export function PlanFilterItem({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="요금제 검색"
-              className="bg-neutral-0 focus:border-primary-500 h-auto w-full rounded-lg border border-neutral-300 py-1 pr-2 pl-8 text-sm text-neutral-900 transition-colors ease-in-out placeholder:text-sm placeholder:text-neutral-500"
+              className="bg-neutral-0 focus:border-primary-500 h-auto w-full rounded-lg border border-neutral-300 py-1 pr-2 pl-8 text-sm text-neutral-900 transition-colors ease-in-out placeholder:text-sm placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           <div className="flex flex-1 justify-end">
