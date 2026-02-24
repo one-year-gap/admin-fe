@@ -21,7 +21,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="고객명, 연락처로 검색"
-        className="bg-neutral-0 placeholder:text-md focus-visible:border-primary-500 focus:border-primary-500 text-md h-auto w-full truncate rounded-lg border border-neutral-300 py-3 pr-3 pl-12 font-medium shadow-none transition-colors duration-1000 ease-out placeholder:truncate placeholder:font-normal placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="bg-neutral-0 placeholder:text-md focus-visible:border-primary-500 focus:border-primary-500 text-md h-auto w-full truncate rounded-lg border border-neutral-300 py-3 pr-3 pl-12 font-medium shadow-none transition-colors ease-in-out placeholder:truncate placeholder:font-normal placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
       />
     </div>
   );
