@@ -45,6 +45,7 @@ export function ChurnModal({ open, onOpenChange, customer }: ModalProps) {
         <header className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">고객 상세 정보</h2>
           <button
+            type="button"
             onClick={() => onOpenChange(false)}
             className="cursor-pointer hover:text-gray-500"
             aria-label="모달 닫기">
