@@ -62,12 +62,13 @@ export function ChurnModal({ open, onOpenChange, customer }: ModalProps) {
               <InfoRow label="이메일" value={customer.email} />
               <InfoRow label="연락처" value={customer.phone} />
               <InfoRow label="가입 기간" value="3년" />
+              <InfoRow label="약정 기간" value="2025.03.24-2027.03.24" />
             </div>
             <div className="col-span-6">
               <InfoRow label="나이" value="29세" />
-              <InfoRow label="주소" value="서울시 강동구 고덕로 36길" />
-              <InfoRow label="캐릭터 요금제" value="무제한 자유영혼" />
-              <InfoRow label="이탈 위험군" value="낮음" />
+              <InfoRow label="특성 캐릭터" value="무제한 자유영혼" />
+              <InfoRow label="위험도" value={customer.riskLevel} />
+              <InfoRow label="위험사유" value={customer.riskReason} />
               <InfoRow label="상담 횟수" value="3회" />
               <InfoRow label="최근 상담 일자" value="2026.02.25" />
             </div>
