@@ -176,7 +176,8 @@ export function DataTable<TData>({
             type="button"
             className="enabled:hover:bg-primary-100 rounded-full p-2 enabled:hover:cursor-pointer disabled:opacity-40"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
+            disabled={!table.getCanPreviousPage()}
+            aria-label="이전 페이지">
             <ChevronLeft className="h-5 w-5" />
           </button>
 
@@ -218,7 +219,8 @@ export function DataTable<TData>({
             type="button"
             className="enabled:hover:bg-primary-100 rounded-full p-2 enabled:hover:cursor-pointer disabled:opacity-40"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
+            disabled={!table.getCanNextPage()}
+            aria-label="다음 페이지">
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
