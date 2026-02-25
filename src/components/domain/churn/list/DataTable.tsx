@@ -170,7 +170,7 @@ export function DataTable<TData>({
           </span>
         </div>
 
-        <div className="flex flex-[2] items-center justify-center gap-4">
+        <div className="flex flex-2 items-center justify-center gap-4">
           {/* 이전 */}
           <button
             type="button"
