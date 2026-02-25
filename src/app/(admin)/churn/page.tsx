@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import { ChurnChart } from "@/components/domain/churn/ChurnChart";
-import { ChurnFeed } from "@/components/domain/churn/ChurnFeed";
+import { ChurnFeed } from "@/components/domain/churn/feed/ChurnFeed";
 import { CustomersList } from "@/components/domain/churn/list/ChurnList";
 import { SearchBar } from "@/components/domain/churn/SearchBar";
 
