@@ -32,6 +32,7 @@ export function IndeterminateCheckbox({
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
       aria-label={ariaLabel}
+      aria-checked={indeterminate && !checked ? "mixed" : checked}
       className={className ?? "accent-secondary-500 h-4 w-4 cursor-pointer"}
     />
   );

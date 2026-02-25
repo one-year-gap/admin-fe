@@ -18,19 +18,19 @@ import {
 
 type Item = {
   name: string;
-  pv: number;
-  uv: number;
+  riskIncrease: number;
+  riskDecrease: number;
 };
 
 const data: Item[] = [
-  { name: "01/27", pv: 2, uv: 4 },
-  { name: "01/29", pv: 1, uv: -3 },
-  { name: "01/31", pv: -4, uv: -2 },
-  { name: "02/02", pv: 4, uv: 3 },
-  { name: "02/04", pv: 5, uv: -2 },
-  { name: "02/06", pv: -3, uv: 2 },
-  { name: "02/08", pv: 4, uv: 3 },
-  { name: "02/10", pv: -1, uv: -2 },
+  { name: "01/27", riskIncrease: 2, riskDecrease: 4 },
+  { name: "01/29", riskIncrease: 1, riskDecrease: -3 },
+  { name: "01/31", riskIncrease: -4, riskDecrease: -2 },
+  { name: "02/02", riskIncrease: 4, riskDecrease: 3 },
+  { name: "02/04", riskIncrease: 5, riskDecrease: -2 },
+  { name: "02/06", riskIncrease: -3, riskDecrease: 2 },
+  { name: "02/08", riskIncrease: 4, riskDecrease: 3 },
+  { name: "02/10", riskIncrease: -1, riskDecrease: -2 },
 ];
 
 const COLOR_POS = "var(--danger-500)";
@@ -96,20 +96,28 @@ export function ChurnChart() {
             />
             <Legend content={CustomLegend} />
 
-            <Bar dataKey="pv" name="증가(위험상승)" radius={[6, 6, 6, 6]}>
+            <Bar dataKey="riskIncrease" name="증가(위험상승)" radius={[6, 6, 6, 6]}>
               {data.map((d, idx) => (
                 <Cell
-                  key={`pv-${idx}`}
-                  fill={d.pv < 0 ? COLOR_NEG : d.pv > 0 ? COLOR_POS : COLOR_ZERO}
+                  key={`riskIncrease-${idx}`}
+                  fill={
+                    d.riskIncrease < 0 ? COLOR_NEG : d.riskIncrease > 0 ? COLOR_POS : COLOR_ZERO
+                  }
                 />
               ))}
             </Bar>
 
-            <Bar dataKey="uv" name="감소(위험완화)" radius={[6, 6, 6, 6]} fill="var(--chart-2)">
+            <Bar
+              dataKey="riskDecrease"
+              name="감소(위험완화)"
+              radius={[6, 6, 6, 6]}
+              fill="var(--chart-2)">
               {data.map((d, idx) => (
                 <Cell
-                  key={`uv-${idx}`}
-                  fill={d.uv < 0 ? COLOR_NEG : d.uv > 0 ? COLOR_POS : COLOR_ZERO}
+                  key={`riskDecrease-${idx}`}
+                  fill={
+                    d.riskDecrease < 0 ? COLOR_NEG : d.riskDecrease > 0 ? COLOR_POS : COLOR_ZERO
+                  }
                 />
               ))}
             </Bar>
