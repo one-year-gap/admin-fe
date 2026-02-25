@@ -71,18 +71,20 @@ export const columns: ColumnDef<CustomerRow>[] = [
     cell: ({ row }) => {
       const isSelected = row.getIsSelected();
 
-      if (!isSelected) return <span className="text-neutral-500">-</span>;
+      if (!isSelected) return <div className="flex items-center justify-center">-</div>;
 
       return (
-        <button
-          type="button"
-          className="bg-danger-500 text-neutral-0 cursor-pointer rounded-md px-3 py-1 text-sm font-semibold hover:opacity-60"
-          onClick={() => {
-            // TODO: 여기서 "정지 처리" (API 붙일 때)
-            console.log("정지:", row.original.id);
-          }}>
-          정지
-        </button>
+        <div className="flex items-center justify-center">
+          <button
+            type="button"
+            className="bg-danger-500 text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm font-medium hover:opacity-60"
+            onClick={() => {
+              // TODO: 여기서 "정지 처리" (API 붙일 때)
+              console.log("정지:", row.original.id);
+            }}>
+            정지
+          </button>
+        </div>
       );
     },
     enableSorting: false,

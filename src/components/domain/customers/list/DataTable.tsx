@@ -94,6 +94,8 @@ export function DataTable<TData>({
 
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+
+    columnResizeMode: "onChange",
   });
 
   const pageRows = table.getRowModel().rows;
@@ -105,7 +107,14 @@ export function DataTable<TData>({
           {table.getHeaderGroups().map((hg) => (
             <TableRow key={hg.id} className="border-b border-neutral-300 hover:bg-transparent">
               {hg.headers.map((header) => (
-                <TableHead key={header.id} className="text-md px-4 py-3 text-neutral-500">
+                <TableHead
+                  key={header.id}
+                  style={{
+                    width: header.getSize(),
+                    minWidth: header.getSize(),
+                    maxWidth: header.getSize(),
+                  }}
+                  className="text-md px-4 py-3 text-neutral-500">
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
@@ -136,7 +145,14 @@ export function DataTable<TData>({
                 }}
                 data-state={row.getIsSelected() ? "selected" : undefined}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-md px-4 py-3 text-neutral-900">
+                  <TableCell
+                    key={cell.id}
+                    style={{
+                      width: cell.column.getSize(),
+                      minWidth: cell.column.getSize(),
+                      maxWidth: cell.column.getSize(),
+                    }}
+                    className="text-md h-15 px-4 text-neutral-900">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -154,7 +170,7 @@ export function DataTable<TData>({
           </span>
         </div>
 
-        <div className="flex flex-[2] items-center justify-center gap-4">
+        <div className="flex flex-2 items-center justify-center gap-4">
           {/* 이전 */}
           <button
             type="button"
