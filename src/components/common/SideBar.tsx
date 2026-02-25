@@ -20,13 +20,13 @@ export default function SideBar() {
   const router = useRouter();
 
   return (
-    <aside className="bg-primary-900 text-neutral-0 flex h-full w-70 flex-shrink-0 flex-col text-lg">
+    <aside className="bg-primary-900 text-neutral-0 flex h-full w-70 shrink-0 flex-col text-lg">
       <div className="flex flex-col items-center px-12 py-9">
-        <div className="flex items-center gap-[12px]">
+        <div className="flex items-center gap-3">
           <Image alt="logo" src={logo} width={48} height={44} />
           <span className="font-bold">U+NIVERSE</span>
         </div>
-        <div className="bg-neutral-0 mt-9 h-[1px] w-full" />
+        <div className="bg-neutral-0 mt-9 h-px w-full" />
       </div>
       {/* isActive는 현재 페이지인지 확인하는 변수입니다. */}
       <nav className="flex flex-col gap-9 px-12 pt-30">
