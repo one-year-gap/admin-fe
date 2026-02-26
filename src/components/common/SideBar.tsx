@@ -28,11 +28,13 @@ export default function SideBar() {
         </div>
         <div className="bg-neutral-0 mt-9 h-px w-full" />
       </div>
+
       {/* isActive는 현재 페이지인지 확인하는 변수입니다. */}
-      <nav className="flex flex-col gap-9 px-12 pt-30">
+      <nav className="flex flex-1 flex-col justify-center gap-6 px-12">
         {MENU_ITEMS.map((item) => {
           const isActive = pathname.startsWith(item.href);
           const Icon = item.icon;
+
           return (
             <button
               type="button"
