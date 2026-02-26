@@ -9,7 +9,7 @@ const geoUrl =
 
 export default function Map({ selectedRegion, onSelect }: MapProps) {
   return (
-    <div className="relative flex h-full w-1/2 items-center justify-center overflow-hidden">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{

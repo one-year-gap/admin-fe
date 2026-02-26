@@ -1,6 +1,6 @@
 "use client";
 
-import { Cell,Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 interface StatusItem {
   name: string;
