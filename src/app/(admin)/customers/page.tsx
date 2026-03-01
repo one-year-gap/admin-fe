@@ -2,30 +2,27 @@
 
 import { useState } from "react";
 
-import { DataUsageChart } from "@/components/domain/customers/chart/DataUsageChart";
-import { GradeChart } from "@/components/domain/customers/chart/GradeChart";
-import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
-import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
+import { CustomersList } from "@/components/domain/customers/CustomersList";
+import { DataUsageChart } from "@/components/domain/customers/DataUsageChart";
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
-import { SearchBar } from "@/components/domain/customers/filter/SearchBar";
-import { CustomersList } from "@/components/domain/customers/list/CustomersList";
+import { GradeChart } from "@/components/domain/customers/GradeChart";
+import { SearchSection } from "@/components/domain/customers/SearchSection";
 
-const INITIAL_PLAN: PlanFilterState = {
-  mobile5gLte: [],
+export const INITIAL_PLAN: PlanFilterState = {
+  mobile: [],
   tabletWatch: [],
-  addon: [],
   iptv: [],
   internet: [],
+  addon: [],
 };
 
-const INITIAL_FILTERS: CustomerFilters = {
+export const INITIAL_FILTERS: CustomerFilters = {
   age: [],
   grade: [],
   period: [],
   gender: [],
-  character: [],
-  churnRisk: [],
-  csat: [],
+  status: [],
   plan: INITIAL_PLAN,
 };
 
@@ -35,47 +32,49 @@ export default function CustomersPage() {
   const [filters, setFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   // 검색하기 버튼 눌렀을 때 적용되는 상태
-  const [appliedKeyword, setAppliedKeyword] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
+  const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [searchedFilters, setSearchedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   const applySearch = () => {
-    setAppliedKeyword(keyword.trim());
-    setAppliedFilters(filters);
+    setSearchedKeyword(keyword.trim());
+    setSearchedFilters(filters);
   };
 
-  const isFiltered =
-    appliedKeyword.trim().length > 0 ||
-    JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
+  const isFilterSelected =
+    keyword.trim().length > 0 || JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS);
+
+  const isFilteredSearched =
+    searchedKeyword.trim().length > 0 ||
+    JSON.stringify(searchedFilters) !== JSON.stringify(INITIAL_FILTERS);
+
+  const resetFilters = () => {
+    setKeyword("");
+    setFilters(INITIAL_FILTERS);
+  };
 
   return (
     <>
-      {/* 검색바 */}
-      <section className="col-span-12 md:col-span-6 lg:col-span-4">
-        <SearchBar value={keyword} onChange={setKeyword} />
-      </section>
-
-      {/* 필터바 + 검색 버튼 */}
-      <section className="col-span-12 flex items-center justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <FilterBar value={filters} onChange={setFilters} />
-        </div>
-
-        <button
-          type="button"
-          onClick={applySearch}
-          className="bg-secondary-500 hover:bg-secondary-700 text-neutral-0 text-md border-secondary-500 h-auto shrink-0 cursor-pointer rounded-lg border p-3 font-medium">
-          선택된 조건 검색하기
-        </button>
+      {/* 필터링 영역 */}
+      <section className="col-span-12">
+        <SearchSection
+          keyword={keyword}
+          onKeywordChange={setKeyword}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onSearch={applySearch}
+          onResetFilters={resetFilters}
+          isFilterd={isFilterSelected}
+        />
       </section>
 
       {/* 고객목록 영역 */}
       <section className="col-span-12">
-        <CustomersList keyword={appliedKeyword} filters={appliedFilters} />
+        <CustomersList keyword={searchedKeyword} filters={searchedFilters} />
       </section>
 
       {/* 차트 영역 */}
       <section className="col-span-12 md:col-span-5">
-        <GradeChart isFiltered={isFiltered} />
+        <GradeChart isFiltered={isFilteredSearched} />
       </section>
 
       <section className="col-span-12 md:col-span-7">

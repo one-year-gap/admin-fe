@@ -11,27 +11,38 @@ import { cn } from "@/lib/utils";
 import { PlanColumn } from "./PlanColumn";
 
 export type PlanFilterState = {
-  mobile5gLte: string[];
+  mobile: string[];
   tabletWatch: string[];
-  addon: string[];
   iptv: string[];
   internet: string[];
+  addon: string[];
 };
 
 type PlanOptions = {
-  [K in keyof PlanFilterState]: readonly MultiSelectOption[];
+  mobile: {
+    fiveG: readonly MultiSelectOption[];
+    lte: readonly MultiSelectOption[];
+  };
+  tabletWatch: readonly MultiSelectOption[];
+  iptv: readonly MultiSelectOption[];
+  internet: readonly MultiSelectOption[];
+  addon: {
+    digitalContent: readonly MultiSelectOption[];
+    familyCare: readonly MultiSelectOption[];
+    phoneCare: readonly MultiSelectOption[];
+  };
 };
 
 type PlanFilterItemProps = {
   label?: string;
   value: PlanFilterState;
   onChange: (next: PlanFilterState) => void;
-
   options: PlanOptions;
-
   triggerClassName?: string;
   popoverClassName?: string;
 };
+
+type ListKey = keyof PlanFilterState;
 
 export function PlanFilterItem({
   label = "현재 요금제",
@@ -49,100 +60,148 @@ export function PlanFilterItem({
     s.length === 0 ? arr : arr.filter((o) => o.label.toLowerCase().includes(s));
 
   const totalSelected =
-    value.mobile5gLte.length +
+    value.mobile.length +
     value.tabletWatch.length +
-    value.addon.length +
     value.iptv.length +
-    value.internet.length;
+    value.internet.length +
+    value.addon.length;
 
   const clearAll = () => {
     onChange({
-      mobile5gLte: [],
+      mobile: [],
       tabletWatch: [],
-      addon: [],
       iptv: [],
       internet: [],
+      addon: [],
     });
   };
 
-  const toggle = (key: keyof PlanFilterState, v: string) => {
+  const toggleList = (key: ListKey, v: string) => {
     const current = new Set(value[key]);
     current.has(v) ? current.delete(v) : current.add(v);
     onChange({ ...value, [key]: Array.from(current) });
   };
 
-  const Trigger = (
-    <button
-      type="button"
-      className={cn(
-        "bg-neutral-0 text-md flex h-auto w-32 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
-        (open || totalSelected > 0) && "border-primary-500 bg-primary-500",
-        triggerClassName,
-      )}>
-      <div className="flex items-center gap-2 overflow-hidden">
-        <span
-          className={cn(
-            "truncate text-neutral-900",
-            (open || totalSelected > 0) && "text-neutral-0",
-          )}>
-          {label}
-        </span>
+  const clearColumn = (key: keyof PlanFilterState) => {
+    onChange({ ...value, [key]: [] });
+  };
 
-        {totalSelected > 0 ? (
-          <span className="text-neutral-0 shrink-0 text-sm">총 {totalSelected}개</span>
-        ) : null}
-      </div>
+  const mobileSections = (() => {
+    const fiveGSet = new Set(options.mobile.fiveG.map((o) => o.value));
+    const lteSet = new Set(options.mobile.lte.map((o) => o.value));
 
-      <ChevronDown
-        className={cn(
-          "h-4 w-4 text-neutral-900",
-          open && "rotate-180",
-          (open || totalSelected > 0) && "text-neutral-0",
-        )}
-      />
-    </button>
-  );
+    const countBySet = (set: Set<string>, arr: string[]) => arr.filter((v) => set.has(v)).length;
+
+    return [
+      {
+        title: "5G",
+        items: filterItems(options.mobile.fiveG),
+        count: countBySet(fiveGSet, value.mobile),
+      },
+      {
+        title: "LTE",
+        items: filterItems(options.mobile.lte),
+        count: countBySet(lteSet, value.mobile),
+      },
+    ];
+  })();
+
+  const addonSections = (() => {
+    const digitalSet = new Set(options.addon.digitalContent.map((o) => o.value));
+    const familySet = new Set(options.addon.familyCare.map((o) => o.value));
+    const phoneSet = new Set(options.addon.phoneCare.map((o) => o.value));
+
+    const countBySet = (set: Set<string>) => value.addon.filter((v) => set.has(v)).length;
+
+    return [
+      {
+        title: "디지털 콘텐츠",
+        items: filterItems(options.addon.digitalContent),
+        count: countBySet(digitalSet),
+      },
+      {
+        title: "가족케어",
+        items: filterItems(options.addon.familyCare),
+        count: countBySet(familySet),
+      },
+      {
+        title: "휴대폰케어",
+        items: filterItems(options.addon.phoneCare),
+        count: countBySet(phoneSet),
+      },
+    ];
+  })();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{Trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "bg-neutral-0 text-md flex h-auto w-32 items-center justify-between gap-2 rounded-lg border border-neutral-300 p-3",
+            (open || totalSelected > 0) && "border-primary-500 bg-primary-500",
+            triggerClassName,
+          )}>
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span
+              className={cn(
+                "truncate text-neutral-900",
+                (open || totalSelected > 0) && "text-neutral-0",
+              )}>
+              {label}
+            </span>
+            {totalSelected > 0 ? (
+              <span className="text-neutral-0 shrink-0 text-sm">총 {totalSelected}개</span>
+            ) : null}
+          </div>
+
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 text-neutral-900",
+              open && "rotate-180",
+              (open || totalSelected > 0) && "text-neutral-0",
+            )}
+          />
+        </button>
+      </PopoverTrigger>
 
       <PopoverContent
         align="end"
         sideOffset={4}
         className={cn(
           "bg-neutral-0 rounded-lg border border-neutral-300 px-3 py-2 shadow-none",
-          "w-225 max-w-[90vw]",
+          "w-[min(1100px,95vw)]",
           popoverClassName,
         )}>
-        {/* 카테고리 명 */}
-        <div className="mb-1 flex items-center justify-around p-2">
+        {/* 상단 */}
+        <div className="mb-1 flex items-center justify-around py-2 pl-1">
           <div className="flex flex-1 items-center gap-2">
-            <span className="text-sm font-semibold text-neutral-900">{label}</span>
+            <span className="text-md font-semibold text-neutral-900">{label}</span>
             {totalSelected > 0 ? (
               <span className="text-sm text-neutral-500">선택 {totalSelected}개</span>
             ) : null}
           </div>
 
           <div className="relative flex-1">
-            <div className="absolute top-0 bottom-0 left-0 flex items-center pl-2">
+            <div className="absolute top-0 bottom-0 left-0 flex items-center pl-3">
               <Search className="text-primary-500 size-4 cursor-pointer" />
             </div>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="요금제 검색"
-              className="bg-neutral-0 focus:border-primary-500 h-auto w-full rounded-lg border border-neutral-300 py-1 pr-2 pl-8 text-sm text-neutral-900 transition-colors ease-in-out placeholder:text-sm placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="bg-neutral-0 focus:border-primary-500 h-auto w-full rounded-lg border border-neutral-300 py-2 pr-2 pl-9 text-sm text-neutral-900 transition-colors ease-in-out placeholder:text-sm placeholder:text-neutral-500 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
+
           <div className="flex flex-1 justify-end">
             {totalSelected > 0 ? (
               <button
                 type="button"
                 onClick={clearAll}
-                className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm text-neutral-500 hover:font-semibold hover:text-neutral-900">
+                className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-sm text-neutral-500 hover:font-semibold hover:text-neutral-900">
+                <span>초기화</span>
                 <X className="h-4 w-4" />
-                초기화
               </button>
             ) : (
               <span />
@@ -150,37 +209,46 @@ export function PlanFilterItem({
           </div>
         </div>
 
-        {/* 카테고리 항목 - 5줄 */}
+        {/* 하단 - 5열 */}
         <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
           <PlanColumn
-            title="5G/LTE"
-            items={filterItems(options.mobile5gLte)}
-            selectedValues={value.mobile5gLte}
-            onToggle={(v) => toggle("mobile5gLte", v)}
+            title="모바일"
+            sections={mobileSections}
+            selectedValues={value.mobile}
+            onToggle={(v) => toggleList("mobile", v)}
+            onClear={() => clearColumn("mobile")}
           />
+
           <PlanColumn
             title="태블릿/스마트워치"
             items={filterItems(options.tabletWatch)}
             selectedValues={value.tabletWatch}
-            onToggle={(v) => toggle("tabletWatch", v)}
+            onToggle={(v) => toggleList("tabletWatch", v)}
+            onClear={() => clearColumn("tabletWatch")}
           />
-          <PlanColumn
-            title="부가서비스"
-            items={filterItems(options.addon)}
-            selectedValues={value.addon}
-            onToggle={(v) => toggle("addon", v)}
-          />
+
           <PlanColumn
             title="IPTV"
             items={filterItems(options.iptv)}
             selectedValues={value.iptv}
-            onToggle={(v) => toggle("iptv", v)}
+            onToggle={(v) => toggleList("iptv", v)}
+            onClear={() => clearColumn("iptv")}
           />
+
           <PlanColumn
             title="인터넷"
             items={filterItems(options.internet)}
             selectedValues={value.internet}
-            onToggle={(v) => toggle("internet", v)}
+            onToggle={(v) => toggleList("internet", v)}
+            onClear={() => clearColumn("internet")}
+          />
+
+          <PlanColumn
+            title="부가서비스"
+            sections={addonSections}
+            selectedValues={value.addon}
+            onToggle={(v) => toggleList("addon", v)}
+            onClear={() => clearColumn("addon")}
           />
         </div>
       </PopoverContent>
