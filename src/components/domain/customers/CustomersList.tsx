@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { columns, type CustomerRow } from "@/components/domain/customers/list/columns";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
 
-import { CustomerModal } from "./CustomerModal";
+import { CustomerModal } from "./list/CustomerModal";
 
 const MOCK_CUSTOMERS: CustomerRow[] = Array.from({ length: 137 }, (_, i) => {
   const n = i + 1;
