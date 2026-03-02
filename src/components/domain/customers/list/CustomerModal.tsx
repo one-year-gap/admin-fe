@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { X } from "lucide-react";
 
-import type { CustomerRow } from "./columns";
+import type { CustomerRow } from "./getColumns";
 
 type ModalProps = {
   open: boolean;
