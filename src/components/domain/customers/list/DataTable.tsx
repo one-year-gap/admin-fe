@@ -29,8 +29,9 @@ type DataTableProps<TData> = {
   pageSize?: number;
   onRowClick?: (row: TData) => void;
 
-  /** 서버 페이지네이션으로 확장할 때 바깥으로 뺄 수 있게 열어둠 */
-  onRowSelectionChange?: (next: RowSelectionState) => void;
+  /* 서버 페이지네이션으로 확장할 때 바깥으로 뺄 수 있게 열어둠 */
+  rowSelection: RowSelectionState;
+  onRowSelectionChange: (next: RowSelectionState) => void;
 };
 
 type PageItem = number | "ellipsis";
@@ -40,7 +41,6 @@ function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   if (pageCount <= 1) return [1];
 
   const current = pageIndex + 1;
-
   const first = 1;
   const last = pageCount;
 
@@ -50,11 +50,8 @@ function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   const items: PageItem[] = [first];
 
   if (start > 2) items.push("ellipsis");
-
   for (let p = start; p <= end; p++) items.push(p);
-
   if (end < last - 1) items.push("ellipsis");
-
   if (last !== first) items.push(last);
 
   return items;
@@ -65,11 +62,9 @@ export function DataTable<TData>({
   columns,
   pageSize = 10,
   onRowClick,
+  rowSelection,
   onRowSelectionChange,
 }: DataTableProps<TData>) {
-  // TanStack이 권장하는 선택 상태 구조 (selectedIds 대체)
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-
   // 클라이언트 페이지네이션 상태
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -79,12 +74,11 @@ export function DataTable<TData>({
   const table = useReactTable({
     data,
     columns,
-
+    getRowId: (row) => String((row as any).id),
     state: { rowSelection, pagination },
 
     onRowSelectionChange: (updater) => {
       const next = typeof updater === "function" ? updater(rowSelection) : updater;
-      setRowSelection(next);
       onRowSelectionChange?.(next);
     },
 
@@ -114,7 +108,7 @@ export function DataTable<TData>({
                     minWidth: header.getSize(),
                     maxWidth: header.getSize(),
                   }}
-                  className="text-md px-4 py-3 text-neutral-500">
+                  className="text-md h-15 px-4 text-center text-neutral-500">
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
@@ -137,7 +131,7 @@ export function DataTable<TData>({
             pageRows.map((row) => (
               <TableRow
                 key={row.id}
-                className="cursor-pointer hover:bg-neutral-100"
+                className="group cursor-pointer hover:bg-neutral-100"
                 onClick={(e) => {
                   const target = e.target as HTMLElement;
                   if (target.closest('input[type="checkbox"],button,a')) return;
@@ -152,7 +146,7 @@ export function DataTable<TData>({
                       minWidth: cell.column.getSize(),
                       maxWidth: cell.column.getSize(),
                     }}
-                    className="text-md h-15 px-4 text-neutral-900">
+                    className="text-md h-15 px-4 text-center text-neutral-900">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

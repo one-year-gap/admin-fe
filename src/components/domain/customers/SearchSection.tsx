@@ -3,7 +3,6 @@ import React from "react";
 import type { CustomerFilters } from "./filter/FilterList";
 import { FilterList } from "./filter/FilterList";
 import { ResetFilterButton } from "./search/ResetFilterButton";
-import { ResetListButton } from "./search/ResetListButton";
 import { SearchButton } from "./search/SearchButton";
 import { SearchInput } from "./search/SearchInput";
 
@@ -34,7 +33,6 @@ export function SearchSection({
       </div>
       <div className="flex items-center gap-3">
         <ResetFilterButton onClick={onResetFilters} disabled={!isFilterd} />
-        <ResetListButton />
         <SearchButton onClick={onSearch} />
       </div>
     </div>
