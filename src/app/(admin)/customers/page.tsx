@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import type { RowSelectionState } from "@tanstack/react-table";
+
 import { CustomersList } from "@/components/domain/customers/CustomersList";
 import { DataUsageChart } from "@/components/domain/customers/DataUsageChart";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
@@ -35,9 +37,12 @@ export default function CustomersPage() {
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [searchedFilters, setSearchedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
-  const applySearch = () => {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  const onClickSearchButton = () => {
     setSearchedKeyword(keyword.trim());
     setSearchedFilters(filters);
+    setRowSelection({});
   };
 
   const isFilterSelected =
@@ -50,6 +55,8 @@ export default function CustomersPage() {
   const resetFilters = () => {
     setKeyword("");
     setFilters(INITIAL_FILTERS);
+    // 필터 리셋 시 선택도 초기화하고 싶으면 주석 해제
+    // setRowSelection({});
   };
 
   return (
@@ -61,7 +68,7 @@ export default function CustomersPage() {
           onKeywordChange={setKeyword}
           filters={filters}
           onFiltersChange={setFilters}
-          onSearch={applySearch}
+          onSearch={onClickSearchButton}
           onResetFilters={resetFilters}
           isFilterd={isFilterSelected}
         />
@@ -69,7 +76,12 @@ export default function CustomersPage() {
 
       {/* 고객목록 영역 */}
       <section className="col-span-12">
-        <CustomersList keyword={searchedKeyword} filters={searchedFilters} />
+        <CustomersList
+          keyword={searchedKeyword}
+          filters={searchedFilters}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+        />
       </section>
 
       {/* 차트 영역 */}
