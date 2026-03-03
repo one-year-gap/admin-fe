@@ -7,39 +7,76 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
 import { type CustomerRow, getColumns } from "@/components/domain/customers/list/getColumns";
+import { useAdminMembers } from "@/lib/tanstack/query/useAdminMembers";
+import { toAdminMembersParams } from "@/services/customers/toAdminMembersParams";
 
 import { CustomerModal } from "./list/CustomerModal";
 
-const STATUSES = ["정상", "정지", "탈퇴", "가입중"] as const;
+// 백엔드 status -> UI status 매핑
+function toUiStatus(s: string): CustomerRow["status"] {
+  if (s === "ACTIVE") return "정상";
+  if (s === "BANNED") return "정지";
+  if (s === "DELETED") return "탈퇴";
+  return "가입중"; // PROCESSING 등
+}
 
-const MOCK_CUSTOMERS: CustomerRow[] = Array.from({ length: 137 }, (_, i) => {
-  const n = i + 1;
-  return {
-    id: String(n).padStart(4, "0"),
-    grade: n % 3 === 0 ? "VVIP" : n % 3 === 1 ? "VIP" : "우수",
-    gender: n % 2 === 0 ? "남" : "여",
-    name: `고객${n}`,
-    birth: "1999.01.01",
-    phone: "010-****-1234",
-    email: `${n}@gmail.com`,
-    planText: n % 2 === 0 ? "5G 프리미엄" : "LTE 베이직",
-    status: STATUSES[(n - 1) % STATUSES.length],
-  };
-});
+// 백엔드 gender -> UI gender 매핑
+function toUiGender(g: string): CustomerRow["gender"] {
+  return g === "M" ? "남" : "여";
+}
+
+// 백엔드 membership -> UI grade 매핑 (우수=GOLD로 처리)
+function toUiGrade(m: string): CustomerRow["grade"] {
+  if (m === "VIP") return "VIP";
+  if (m === "VVIP") return "VVIP";
+  return "우수"; // GOLD -> 우수
+}
+
+// birthDate "YYYY-MM-DD" -> "YYYY.MM.DD"
+function dotDate(d: string): string {
+  return d.replaceAll("-", ".");
+}
 
 type Props = {
   keyword: string;
   filters: CustomerFilters;
+
+  page: number; // 1-based
+  size: number;
+  onPageChange: (next: number) => void;
+
   rowSelection: RowSelectionState;
   onRowSelectionChange: (next: RowSelectionState) => void;
 };
 
-export function CustomersList({ keyword, filters, rowSelection, onRowSelectionChange }: Props) {
+export function CustomersList({
+  keyword,
+  filters,
+  page,
+  size,
+  onPageChange,
+  rowSelection,
+  onRowSelectionChange,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerRow | null>(null);
 
-  void keyword;
-  void filters;
+  const params = toAdminMembersParams({ page, size, keyword, filters });
+  const { data, isLoading, isError } = useAdminMembers(params, true);
+
+  // API -> UI rows
+  const members = data?.members ?? [];
+  const rows: CustomerRow[] = members.map((m) => ({
+    id: String(m.id),
+    grade: toUiGrade(m.membership),
+    gender: toUiGender(m.gender),
+    name: m.name,
+    birth: dotDate(m.birthDate),
+    phone: m.phone,
+    email: m.email,
+    planText: m.planName,
+    status: toUiStatus(m.status),
+  }));
 
   // 선택된 id 목록
   const selectedIds = Object.keys(rowSelection);
@@ -47,7 +84,7 @@ export function CustomersList({ keyword, filters, rowSelection, onRowSelectionCh
 
   // id -> customer 맵
   const customerById = new Map<string, CustomerRow>();
-  for (const c of MOCK_CUSTOMERS) customerById.set(c.id, c);
+  for (const c of rows) customerById.set(c.id, c);
 
   // 선택된 status 집합
   const selectedStatuses = new Set<CustomerRow["status"]>();
@@ -76,18 +113,34 @@ export function CustomersList({ keyword, filters, rowSelection, onRowSelectionCh
 
   const columns = getColumns({ bulkAction, onBulkAction: handleBulk });
 
+  const totalCount = data?.pagination.totalCount ?? 0;
+  const totalPage = data?.pagination.totalPage ?? 1;
+
+  if (isError) {
+    return (
+      <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6 text-neutral-900">
+        데이터를 불러오지 못했습니다.
+      </div>
+    );
+  }
+
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300">
       <div className="flex items-center justify-between px-5 pt-6 pb-4">
-        <span className="text-lg font-medium text-neutral-900">전체 {MOCK_CUSTOMERS.length}건</span>
+        <span className="text-lg font-medium text-neutral-900">
+          {isLoading ? "불러오는 중..." : `전체 ${totalCount}건`}
+        </span>
 
         <span className="text-md font-medium text-neutral-500">선택 {selectedCount}건</span>
       </div>
 
       <DataTable
-        data={MOCK_CUSTOMERS}
+        data={rows}
         columns={columns}
-        pageSize={10}
+        page={page}
+        size={size}
+        totalPage={data?.pagination.totalPage ?? 1}
+        onPageChange={onPageChange}
         rowSelection={rowSelection}
         onRowSelectionChange={onRowSelectionChange}
         onRowClick={(row) => {
