@@ -37,12 +37,16 @@ export default function CustomersPage() {
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [searchedFilters, setSearchedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
   const onClickSearchButton = () => {
     setSearchedKeyword(keyword.trim());
     setSearchedFilters(filters);
     setRowSelection({});
+    setPage(1);
   };
 
   const isFilterSelected =
@@ -56,7 +60,7 @@ export default function CustomersPage() {
     setKeyword("");
     setFilters(INITIAL_FILTERS);
     // 필터 리셋 시 선택도 초기화하고 싶으면 주석 해제
-    // setRowSelection({});
+    setRowSelection({});
   };
 
   return (
@@ -79,6 +83,12 @@ export default function CustomersPage() {
         <CustomersList
           keyword={searchedKeyword}
           filters={searchedFilters}
+          page={page}
+          size={size}
+          onPageChange={(next) => {
+            setPage(next);
+            setRowSelection({});
+          }}
           rowSelection={rowSelection}
           onRowSelectionChange={setRowSelection}
         />
