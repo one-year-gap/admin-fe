@@ -6,13 +6,24 @@ import type {
   MemberSearchResponseDTO,
 } from "@/models/customers/adminMembers";
 
-export const getAdminMembers = async (
+// export const getAdminMembers = async (
+//   params: MemberSearchRequestDTO,
+// ): Promise<MemberSearchResponseDTO> => {
+//   const response = await api.get("/api/v1/admin/members", {
+//     params,
+//     paramsSerializer: (p) => qs.stringify(p, { arrayFormat: "repeat", skipNulls: true }),
+//   });
+
+//   return response.data.data;
+// };
+
+export async function getAdminMembers(
   params: MemberSearchRequestDTO,
-): Promise<MemberSearchResponseDTO> => {
+): Promise<MemberSearchResponseDTO> {
   const response = await api.get("/api/v1/admin/members", {
     params,
     paramsSerializer: (p) => qs.stringify(p, { arrayFormat: "repeat", skipNulls: true }),
   });
 
   return response.data.data;
-};
+}
