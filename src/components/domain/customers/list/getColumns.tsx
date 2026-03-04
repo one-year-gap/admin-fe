@@ -20,8 +20,10 @@ export type CustomerRow = {
 export function getColumns(opts: {
   bulkAction: "BANNED" | "ACTIVE" | null;
   onBulkAction: (to: "BANNED" | "ACTIVE") => void;
+  onRowAction: (to: "BANNED" | "ACTIVE", id: string) => void;
+  isMutating?: boolean;
 }): ColumnDef<CustomerRow>[] {
-  const { bulkAction, onBulkAction } = opts;
+  const { bulkAction, onBulkAction, onRowAction, isMutating } = opts;
 
   return [
     /* 1번째 컬럼 (체크박스) */
@@ -108,8 +110,10 @@ export function getColumns(opts: {
             <button
               type="button"
               onClick={() => onBulkAction(bulkAction)}
+              disabled={isMutating}
               className={cn(
                 "text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold hover:opacity-60",
+                "disabled:cursor-default disabled:opacity-0",
                 bulkAction === "BANNED" ? "bg-danger-500" : "bg-secondary-500",
               )}>
               {bulkAction === "BANNED" ? "일괄 정지" : "일괄 정지해제"}
@@ -138,11 +142,14 @@ export function getColumns(opts: {
               className={cn(
                 "text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold hover:opacity-60",
                 "opacity-0 group-hover:opacity-100",
+                "disabled:cursor-default disabled:opacity-0",
                 isStopped ? "bg-secondary-500" : "bg-danger-500",
               )}
               onClick={() => {
-                // TODO: 여기서 "정지 처리" (API 붙일 때)
-              }}>
+                const to: "BANNED" | "ACTIVE" = isStopped ? "ACTIVE" : "BANNED";
+                onRowAction(to, row.original.id);
+              }}
+              disabled={isMutating}>
               {label}
             </button>
           </div>
