@@ -8,8 +8,9 @@ import { CustomersList } from "@/components/domain/customers/CustomersList";
 import { DataUsageChart } from "@/components/domain/customers/DataUsageChart";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
-import { GradeChart } from "@/components/domain/customers/GradeChart";
+import { MembershipChart } from "@/components/domain/customers/MembershipChart";
 import { SearchSection } from "@/components/domain/customers/SearchSection";
+import { useMembershipChart } from "@/lib/tanstack/query/useMembershipChart";
 
 export const INITIAL_PLAN: PlanFilterState = {
   mobile: [],
@@ -59,9 +60,21 @@ export default function CustomersPage() {
   const resetFilters = () => {
     setKeyword("");
     setFilters(INITIAL_FILTERS);
-    // 필터 리셋 시 선택도 초기화하고 싶으면 주석 해제
     setRowSelection({});
   };
+
+  const { data: stats, isLoading, isError } = useMembershipChart();
+  console.log("membership stats", stats, { isLoading, isError });
+
+  const gradeChartData = stats
+    ? [
+        { name: "VVIP", value: stats.vvipRate, fill: "var(--color-chart-1)" },
+        { name: "VIP", value: stats.vipRate, fill: "var(--color-chart-2)" },
+        { name: "우수", value: stats.goldRate, fill: "var(--color-chart-3)" },
+      ]
+    : [];
+
+  const totalLabel = stats ? `${stats.totalInK.toLocaleString()}K` : "";
 
   return (
     <>
@@ -96,7 +109,13 @@ export default function CustomersPage() {
 
       {/* 차트 영역 */}
       <section className="col-span-12 md:col-span-5">
-        <GradeChart isFiltered={isFilteredSearched} />
+        <MembershipChart
+          isFiltered={isFilteredSearched}
+          data={gradeChartData}
+          totalLabel={totalLabel}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </section>
 
       <section className="col-span-12 md:col-span-7">
