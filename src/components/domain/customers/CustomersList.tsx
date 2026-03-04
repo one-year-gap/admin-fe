@@ -14,7 +14,7 @@ import { toAdminMembersParams } from "@/services/customers/toAdminMembersParams"
 
 import { CustomerModal } from "./list/CustomerModal";
 
-// 백엔드 status -> UI status 매핑
+// 백엔드 status -> UI 상태 매핑
 function toUiStatus(s: string): CustomerRow["status"] {
   if (s === "ACTIVE") return "정상";
   if (s === "BANNED") return "정지";
@@ -22,12 +22,12 @@ function toUiStatus(s: string): CustomerRow["status"] {
   return "가입중"; // PROCESSING 등
 }
 
-// 백엔드 gender -> UI gender 매핑
+// 백엔드 gender -> UI 성별 매핑
 function toUiGender(g: string): CustomerRow["gender"] {
   return g === "M" ? "남" : "여";
 }
 
-// 백엔드 membership -> UI grade 매핑 (우수=GOLD로 처리)
+// 백엔드 membership -> UI 등급 매핑 (우수=GOLD로 처리)
 function toUiGrade(m: string): CustomerRow["grade"] {
   if (m === "VIP") return "VIP";
   if (m === "VVIP") return "VVIP";
@@ -61,7 +61,7 @@ export function CustomersList({
   onRowSelectionChange,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerRow | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
 
   const params = toAdminMembersParams({ page, size, keyword, filters });
   const { data, isLoading, isError } = useAdminMembers(params, true);
@@ -85,8 +85,7 @@ export function CustomersList({
   const selectedCount = selectedIds.length;
 
   // id -> customer 맵
-  const customerById = new Map<string, CustomerRow>();
-  for (const c of rows) customerById.set(c.id, c);
+  const customerById = new Map(rows.map((c) => [c.id, c]));
 
   // 선택된 status 집합
   const selectedStatuses = new Set<CustomerRow["status"]>();
@@ -172,12 +171,19 @@ export function CustomersList({
         rowSelection={rowSelection}
         onRowSelectionChange={onRowSelectionChange}
         onRowClick={(row) => {
-          setSelectedCustomer(row);
+          setSelectedCustomer(Number(row.id));
           setOpen(true);
         }}
       />
 
-      <CustomerModal open={open} onOpenChange={setOpen} customer={selectedCustomer} />
+      <CustomerModal
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next);
+          if (!next) setSelectedCustomer(null);
+        }}
+        memberId={selectedCustomer}
+      />
     </div>
   );
 }

@@ -33,6 +33,6 @@ export function useAdminMembers(params: MemberSearchRequestDTO, enabled = true) 
     queryKey: ["adminMembers", key],
     queryFn: () => getAdminMembers(params),
     enabled,
-    staleTime: 20_000,
+    staleTime: 1000 * 60,
   });
 }
