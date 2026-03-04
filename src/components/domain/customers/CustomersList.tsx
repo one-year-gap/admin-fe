@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
 import { type CustomerRow, getColumns } from "@/components/domain/customers/list/getColumns";
+import { useAdminMembersStatus } from "@/lib/tanstack/mutation/useAdminMembersStatus";
 import { useAdminMembers } from "@/lib/tanstack/query/useAdminMembers";
 import { toAdminMembersParams } from "@/services/customers/toAdminMembersParams";
 
@@ -106,15 +108,41 @@ export function CustomersList({
     }
   }
 
-  const handleBulk = (to: "BANNED" | "ACTIVE") => {
-    // TODO: 일괄 정지/정지해제 API 연동 필요
-    console.log("[BULK]", { toStatus: to, ids: selectedIds });
+  const queryClient = useQueryClient();
+
+  const statusMutation = useAdminMembersStatus({
+    onSuccess: (res) => {
+      console.log("[STATUS PATCH SUCCESS]", res);
+      onRowSelectionChange({});
+      queryClient.invalidateQueries({ queryKey: ["adminMembers"] }); // <- 너희 키에 맞춰 수정 권장
+    },
+    onError: (err) => {
+      console.log("[STATUS PATCH ERROR]", err);
+    },
+  });
+
+  const handleChangeStatus = (to: "BANNED" | "ACTIVE", ids: string[]) => {
+    const memberIds = ids.map((id) => Number(id)).filter(Number.isFinite);
+    if (memberIds.length === 0) return;
+
+    statusMutation.mutate({
+      memberIds, // number[]
+      status: to, // "BANNED" | "ACTIVE"
+    });
   };
 
-  const columns = getColumns({ bulkAction, onBulkAction: handleBulk });
+  const handleBulk = (to: "BANNED" | "ACTIVE") => {
+    handleChangeStatus(to, selectedIds);
+  };
+
+  const columns = getColumns({
+    bulkAction,
+    onBulkAction: handleBulk,
+    onRowAction: (to, id) => handleChangeStatus(to, [id]),
+    isMutating: statusMutation.isPending,
+  });
 
   const totalCount = data?.pagination.totalCount ?? 0;
-  const totalPage = data?.pagination.totalPage ?? 1;
 
   if (isError) {
     return (
