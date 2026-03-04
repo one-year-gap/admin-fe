@@ -6,6 +6,6 @@ export function useMembershipChart() {
   return useQuery({
     queryKey: ["membershipChart"],
     queryFn: getMembershipChart,
-    staleTime: 60_000,
+    staleTime: 1000 * 60,
   });
 }
