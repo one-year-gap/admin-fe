@@ -1,3 +1,4 @@
+/* 요청 DTO */
 export type MemberSearchRequestDTO = {
   page: number;
   size: number;
@@ -10,6 +11,7 @@ export type MemberSearchRequestDTO = {
   statuses?: string[];
 };
 
+/* 응답 DTO */
 export type MemberSearchDTO = {
   id: number;
   membership: string; // "GOLD" | "VIP" | "VVIP" 로 좁히고 싶으면 유니온으로 바꿔도 됨
