@@ -1,27 +1,14 @@
 "use client";
+import { useMemo } from "react";
+
 import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from "recharts";
+
+import { useRegionArpu } from "@/lib/tanstack/query/region";
+
 interface ChartProps {
   regionName: string | null;
 }
-const data = [
-  { name: "서울특별시", arpu: 42000, dataUsage: 18.5 },
-  { name: "인천광역시", arpu: 35000, dataUsage: 15.2 },
-  { name: "경기도", arpu: 38000, dataUsage: 16.8 },
-  { name: "강원도", arpu: 31000, dataUsage: 12.8 },
-  { name: "충청남도", arpu: 32500, dataUsage: 13.5 },
-  { name: "세종특별자치시", arpu: 35000, dataUsage: 14.9 },
-  { name: "대전광역시", arpu: 34000, dataUsage: 14.5 },
-  { name: "충청북도", arpu: 31500, dataUsage: 13.1 },
-  { name: "경상북도", arpu: 32000, dataUsage: 13.8 },
-  { name: "대구광역시", arpu: 36500, dataUsage: 15.8 },
-  { name: "울산광역시", arpu: 39500, dataUsage: 17.5 },
-  { name: "부산광역시", arpu: 39000, dataUsage: 17.1 },
-  { name: "경상남도", arpu: 33500, dataUsage: 14.2 },
-  { name: "전라북도", arpu: 30500, dataUsage: 12.5 },
-  { name: "광주광역시", arpu: 33000, dataUsage: 14.1 },
-  { name: "전라남도", arpu: 30000, dataUsage: 12.2 },
-  { name: "제주특별자치도", arpu: 32000, dataUsage: 13.2 },
-];
+
 const formatRegionName = (name: string): string => {
   const mapping: { [key: string]: string } = {
     서울특별시: "서울",
@@ -46,10 +33,32 @@ const formatRegionName = (name: string): string => {
 };
 
 export default function Chart({ regionName }: ChartProps) {
+  const { data: regionResponse, isLoading } = useRegionArpu("202602");
+
+  const data = useMemo(() => {
+    if (!regionResponse?.regions) return [];
+    return regionResponse.regions.map((info) => ({
+      name: info.region,
+      arpu: info.averageSales,
+      dataUsage: info.averageDataUsageGb,
+    }));
+  }, [regionResponse]);
+
   const selectedData = data.find((item) => item.name === regionName);
+
+  const axisMax = regionResponse?.axisMax || { salesAxisMax: 60000, dataUsageAxisMaxGb: 20 };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full items-center justify-center text-neutral-500">
+        데이터를 불러오는 중입니다...
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full flex-col gap-10">
-      <div className="bg-neutral-0 mt-6 rounded-lg p-6 shadow-[0_0_10px_0_rgba(0,0,0,0.25)]">
+      <div className="bg-neutral-0 mt-2 rounded-lg p-6 shadow-[0_0_10px_0_rgba(0,0,0,0.25)]">
         <div className="mb-4">
           <h3 className="text-sm text-neutral-900">전국 평균 ARPU 및 데이터 사용량 그래프</h3>
           <p className="text-xs text-neutral-500">National ARPU & Data Usage Comparison</p>
@@ -76,7 +85,7 @@ export default function Chart({ regionName }: ChartProps) {
             stroke="#6d54cf"
             axisLine={false}
             tickLine={false}
-            domain={[0, 60000]}
+            domain={[0, axisMax.salesAxisMax]}
             tick={{ fontSize: 11 }}
           />
           {/* 오른쪽 Y축: 데이터 (GB) */}
@@ -86,7 +95,7 @@ export default function Chart({ regionName }: ChartProps) {
             stroke="#5a88e2"
             axisLine={false}
             tickLine={false}
-            domain={[0, 20]}
+            domain={[0, axisMax.dataUsageAxisMaxGb]}
             tick={{ fontSize: 11 }}
           />
           <Tooltip
@@ -138,7 +147,7 @@ export default function Chart({ regionName }: ChartProps) {
               <div className="h-8 w-full overflow-hidden rounded-lg bg-neutral-200">
                 <div
                   className="bg-chart-2 h-full transition-all duration-1000 ease-out"
-                  style={{ width: `${(selectedData.arpu / 60000) * 100}%` }}
+                  style={{ width: `${(selectedData.arpu / axisMax.salesAxisMax) * 100}%` }}
                 />
               </div>
             </div>
@@ -151,7 +160,9 @@ export default function Chart({ regionName }: ChartProps) {
               <div className="h-8 w-full overflow-hidden rounded-lg bg-neutral-200">
                 <div
                   className="bg-chart-1 h-full transition-all duration-1000 ease-out"
-                  style={{ width: `${(selectedData.dataUsage / 20) * 100}%` }}
+                  style={{
+                    width: `${(selectedData.dataUsage / axisMax.dataUsageAxisMaxGb) * 100}%`,
+                  }}
                 />
               </div>
             </div>
