@@ -20,7 +20,12 @@ const formatRegionName = (name: string): string => {
 };
 
 export default function Chart({ regionName }: ChartProps) {
-  const { data: regionResponse, isLoading } = useRegionArpu("202602");
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const currentPeriod = `${year}${month}`;
+
+  const { data: regionResponse, isLoading } = useRegionArpu(currentPeriod);
 
   const data = useMemo(() => {
     if (!regionResponse?.regions) return [];
