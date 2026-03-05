@@ -82,7 +82,7 @@ export function CustomersList({
   }));
 
   // 선택된 id 목록
-  const selectedIds = Object.keys(rowSelection);
+  const selectedIds = Object.keys(rowSelection).filter((id) => rowSelection[id]);
   const selectedCount = selectedIds.length;
 
   // id -> customer 맵
