@@ -8,28 +8,15 @@ import { useRegionArpu } from "@/lib/tanstack/query/region";
 interface ChartProps {
   regionName: string | null;
 }
+const REGION_SHORT_NAMES: Record<string, string> = {
+  강원특별자치도: "강원",
+  세종특별자치시: "세종",
+  전북특별자치도: "전북",
+  제주특별자치도: "제주",
+};
 
 const formatRegionName = (name: string): string => {
-  const mapping: { [key: string]: string } = {
-    서울특별시: "서울",
-    인천광역시: "인천",
-    경기도: "경기",
-    강원도: "강원",
-    충청남도: "충남",
-    세종특별자치시: "세종",
-    대전광역시: "대전",
-    충청북도: "충북",
-    경상북도: "경북",
-    대구광역시: "대구",
-    울산광역시: "울산",
-    부산광역시: "부산",
-    경상남도: "경남",
-    전라북도: "전북",
-    광주광역시: "광주",
-    전라남도: "전남",
-    제주특별자치도: "제주",
-  };
-  return mapping[name] || name;
+  return REGION_SHORT_NAMES[name] || name;
 };
 
 export default function Chart({ regionName }: ChartProps) {
@@ -50,7 +37,7 @@ export default function Chart({ regionName }: ChartProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center text-neutral-500">
+      <div className="absolute h-full items-center justify-center text-neutral-500">
         데이터를 불러오는 중입니다...
       </div>
     );
