@@ -1,9 +1,14 @@
-export interface CounselTrafficItem {
+export interface CounselTrafficHourlyItem {
   hour: number;
   count: number;
 }
 
-export interface CounselTrafficResponse {
-  items: CounselTrafficItem[];
+export interface CounselTrafficDailyItem {
+  day: number;
+  count: number;
+}
+
+export interface CounselTrafficResponse<T> {
+  items: T[];
   maxCount: number;
 }
