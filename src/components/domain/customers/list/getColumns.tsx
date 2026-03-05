@@ -17,6 +17,13 @@ export type CustomerRow = {
   status: "정상" | "정지" | "가입중" | "탈퇴";
 };
 
+const STATUS_BADGE_STYLES: Record<CustomerRow["status"], string> = {
+  정상: "bg-success-500 text-neutral-0",
+  정지: "bg-danger-500 text-neutral-0",
+  가입중: "bg-warning-500 text-neutral-0",
+  탈퇴: "bg-neutral-500 text-neutral-0",
+} as const;
+
 export function getColumns(opts: {
   bulkAction: "BANNED" | "ACTIVE" | null;
   onBulkAction: (to: "BANNED" | "ACTIVE") => void;
@@ -82,18 +89,11 @@ export function getColumns(opts: {
       cell: ({ getValue }) => {
         const v = getValue<CustomerRow["status"]>();
 
-        const classByStatus: Record<CustomerRow["status"], string> = {
-          정상: "bg-success-500 text-neutral-0",
-          정지: "bg-danger-500 text-neutral-0",
-          가입중: "bg-warning-500 text-neutral-0",
-          탈퇴: "bg-neutral-500 text-neutral-0",
-        };
-
         return (
           <span
             className={cn(
               "inline-flex rounded-full px-3 py-1 text-sm font-semibold",
-              classByStatus[v],
+              STATUS_BADGE_STYLES[v],
             )}>
             {v}
           </span>
