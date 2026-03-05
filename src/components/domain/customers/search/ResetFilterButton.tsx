@@ -15,6 +15,7 @@ export function ResetFilterButton({ onClick, disabled }: Props) {
       type="button"
       onClick={onClick}
       disabled={disabled}
+      aria-label="필터 초기화"
       title="선택한 필터조건을 초기화 합니다."
       className={cn(
         "bg-primary-500 text-neutral-0 text-md border-primary-500 h-auto shrink-0 cursor-pointer rounded-lg border p-3 font-medium",

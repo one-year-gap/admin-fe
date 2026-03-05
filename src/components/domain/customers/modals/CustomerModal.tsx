@@ -33,6 +33,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
   const [pendingMembership, setPendingMembership] = useState<string | null>(null);
 
   const handleClose = () => {
+    setUpdateOpen(false);
     setPendingStatus(null);
     setPendingMembership(null);
     onOpenChange(false);
