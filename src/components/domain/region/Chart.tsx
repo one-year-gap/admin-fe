@@ -20,12 +20,16 @@ const formatRegionName = (name: string): string => {
 };
 
 export default function Chart({ regionName }: ChartProps) {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const currentPeriod = `${year}${month}`;
+  const currentPeriod = useMemo(() => {
+    const now = new Date();
+    now.setMonth(now.getMonth() - 1);
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    return `${year}${month}`;
+  }, []);
 
   const { data: regionResponse, isLoading } = useRegionArpu(currentPeriod);
+  //   const { data: regionResponse, isLoading } = useRegionArpu("202602");
 
   const data = useMemo(() => {
     if (!regionResponse?.regions) return [];
