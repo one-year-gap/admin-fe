@@ -163,11 +163,8 @@ export function CustomersList({
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300">
       <div className="flex items-center justify-between px-5 pt-6 pb-4">
-        <span className="text-lg font-medium text-neutral-900">
-          {isLoading ? "불러오는 중..." : `전체 ${totalCount}건`}
-        </span>
-
-        <span className="text-md font-medium text-neutral-500">선택 {selectedCount}건</span>
+        <span className="text-lg font-medium text-neutral-900">{`전체 ${totalCount}건`}</span>
+        <span className="text-md font-medium text-neutral-500">{`선택 ${selectedCount}건`}</span>
       </div>
 
       <DataTable
