@@ -1,16 +1,3 @@
-// import { useQuery } from "@tanstack/react-query";
-
-// import type { MemberSearchRequestDTO } from "@/models/customers/adminMembers";
-// import { getAdminMembers } from "@/services/customers/getAdminMembers";
-
-// export function useAdminMembers(params: MemberSearchRequestDTO, enabled = true) {
-//   return useQuery({
-//     queryKey: ["adminMembers", params],
-//     queryFn: () => getAdminMembers(params),
-//     enabled,
-//     staleTime: 20_000,
-//   });
-// }
 import { useQuery } from "@tanstack/react-query";
 
 import qs from "qs";

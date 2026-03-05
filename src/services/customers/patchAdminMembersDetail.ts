@@ -5,11 +5,11 @@ export async function patchAdminMembersUpdate(
   memberId: number,
   body: MemberUpdateRequestDTO,
 ): Promise<void> {
-  if (!memberId || Number.isNaN(memberId)) {
+  if (!Number.isInteger(memberId) || memberId <= 0) {
     throw new Error("memberId is required.");
   }
 
-  if (!body.membership && !body.status) {
+  if (!body || (!body.membership && !body.status)) {
     throw new Error("PATCH body must include at least one of membership or status.");
   }
 

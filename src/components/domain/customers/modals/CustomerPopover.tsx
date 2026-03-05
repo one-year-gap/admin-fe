@@ -11,7 +11,6 @@ const STATUS_OPTIONS = [
 ] as const;
 
 const MEMBERSHIP_OPTIONS = [
-  { label: "우수", value: "BASIC" },
   { label: "우수", value: "GOLD" },
   { label: "VIP", value: "VIP" },
   { label: "VVIP", value: "VVIP" },
