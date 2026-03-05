@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 import { useRegionTop } from "@/lib/tanstack/query/region";
+import type { RegionTopInfo } from "@/models/region";
 
 interface MapProps {
   selectedRegion: string | null;
@@ -127,7 +128,7 @@ function TooltipContent({
   x: number;
   y: number;
   regionName: string;
-  topData: any[]; // 타입을 models에서 import한 RegionTopInfo로 지정해도 좋으나 간단히 작성
+  topData: RegionTopInfo[];
 }) {
   const currentRegionData = topData.find((info) => info.region === regionName);
 
