@@ -1,3 +1,11 @@
+/**
+ * GET api/v1/admin/members?keyword=홍길동&page=1&size=20
+ * 고객 리스트 필터링 검색
+ * 이름/전화번호로 검색가능
+ * 연령, 등급, 가입기간, 성별, 상태, 요금제로 검색가능
+ * 페이지 단위로 목록을 조회
+ */
+
 /* 요청 DTO */
 export type MemberSearchRequestDTO = {
   page: number;
