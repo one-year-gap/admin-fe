@@ -8,11 +8,10 @@ import type { RowSelectionState } from "@tanstack/react-table";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
 import { type CustomerRow, getColumns } from "@/components/domain/customers/list/getColumns";
+import { CustomerModal } from "@/components/domain/customers/modals/CustomerModal";
 import { useAdminMembersStatus } from "@/lib/tanstack/mutation/useAdminMembersStatus";
 import { useAdminMembers } from "@/lib/tanstack/query/useAdminMembers";
 import { toAdminMembersParams } from "@/services/customers/toAdminMembersParams";
-
-import { CustomerModal } from "./list/CustomerModal";
 
 // 백엔드 status -> UI 상태 매핑
 function toUiStatus(s: string): CustomerRow["status"] {
@@ -64,10 +63,12 @@ export function CustomersList({
   const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
 
   const params = toAdminMembersParams({ page, size, keyword, filters });
+
   const { data, isLoading, isError } = useAdminMembers(params, true);
 
-  // API -> UI rows
   const members = data?.members ?? [];
+
+  // API -> UI rows
   const rows: CustomerRow[] = members.map((m) => ({
     id: String(m.id),
     grade: toUiGrade(m.membership),
@@ -101,9 +102,9 @@ export function CustomersList({
     if (selectedStatuses.has("가입중") || selectedStatuses.has("탈퇴")) {
       bulkAction = null;
     } else if (selectedStatuses.size === 1 && selectedStatuses.has("정상")) {
-      bulkAction = "BANNED"; // 일괄 정지
+      bulkAction = "BANNED";
     } else if (selectedStatuses.size === 1 && selectedStatuses.has("정지")) {
-      bulkAction = "ACTIVE"; // 일괄 정지 해제
+      bulkAction = "ACTIVE";
     }
   }
 
@@ -113,7 +114,7 @@ export function CustomersList({
     onSuccess: (res) => {
       console.log("[STATUS PATCH SUCCESS]", res);
       onRowSelectionChange({});
-      queryClient.invalidateQueries({ queryKey: ["adminMembers"] }); // <- 너희 키에 맞춰 수정 권장
+      queryClient.invalidateQueries({ queryKey: ["adminMembers"] });
     },
     onError: (err) => {
       console.log("[STATUS PATCH ERROR]", err);
@@ -143,10 +144,18 @@ export function CustomersList({
 
   const totalCount = data?.pagination.totalCount ?? 0;
 
-  if (isError) {
+  if (isLoading) {
     return (
       <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6 text-neutral-900">
-        데이터를 불러오지 못했습니다.
+        데이터를 불러오는 중 입니다...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-neutral-0 text-danger-500 rounded-xl border border-neutral-300 p-6">
+        데이터 조회에 실패했습니다
       </div>
     );
   }

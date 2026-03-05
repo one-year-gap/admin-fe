@@ -1,7 +1,13 @@
-export interface MemberDetailResponseDTO {
+/**
+ * GET /api/v1/admin/members/{memberId}
+ * 고객 상세 정보 조회: 고객의 세부 정보를 조회
+ */
+
+/* 응답 DTO */
+export type MemberDetailResponseDTO = {
   name: string;
   age: number;
-  membership: "GOLD" | "VIP" | "VVIP";
+  membership: "GOLD" | "VIP" | "VVIP" | "BASIC";
   gender: "M" | "F";
 
   fullAddress: string;
@@ -26,4 +32,4 @@ export interface MemberDetailResponseDTO {
 
   totalSupportCount: number;
   lastSupportDate: string | null;
-}
+};

@@ -8,7 +8,7 @@ type Options = Omit<UseQueryOptions<ApiResponse<MemberDetailResponseDTO>>, "quer
 
 export function useAdminMembersDetail(memberId: number, options?: Options) {
   return useQuery({
-    queryKey: ["adminMemberDetail", memberId],
+    queryKey: ["adminMembersDetail", memberId],
     queryFn: () => getAdminMembersDetail(memberId),
     staleTime: 1000 * 60 * 5,
     ...options,

@@ -64,7 +64,6 @@ export default function CustomersPage() {
   };
 
   const { data: stats, isLoading, isError } = useMembershipChart();
-  console.log("membership stats", stats, { isLoading, isError });
 
   const gradeChartData = stats
     ? [

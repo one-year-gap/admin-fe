@@ -1,8 +1,11 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 import { X } from "lucide-react";
 
+import { UpdateModal } from "@/components/domain/customers/modals/UpdateModal";
 import { useAdminMembersDetail } from "@/lib/tanstack/query/useAdminMembersDetail";
+
+import { MembershipPopover, StatusPopover } from "./CustomerPopover";
 
 type ModalProps = {
   open: boolean;
@@ -25,27 +28,25 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
     refetchOnWindowFocus: false,
   });
 
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState<string | null>(null);
+  const [pendingMembership, setPendingMembership] = useState<string | null>(null);
+
+  const handleClose = () => {
+    setPendingStatus(null);
+    setPendingMembership(null);
+    onOpenChange(false);
+  };
+
   if (!open) return null;
 
   const member = data?.data;
 
-  const getStatus = () => {
-    if (member?.status === "DELETED") return { color: "bg-neutral-500", text: "탈퇴" };
+  const effectiveStatus = pendingStatus ?? member?.status ?? "";
+  const effectiveMembership = pendingMembership ?? member?.membership ?? "";
 
-    if (member?.status === "PROCESSING") {
-      return { color: "bg-warning-500", text: "가입중" };
-    }
-
-    if (member?.status === "BANNED") {
-      return { color: "bg-danger-500", text: "정지" };
-    }
-
-    if (member?.status === "ACTIVE") {
-      return { color: "bg-success-500", text: "정상" };
-    }
-    return { color: "bg-neutral-500", text: "-" };
-  };
-  const status = getStatus();
+  const currentStatus = member?.status ?? "";
+  const currentMembership = member?.membership ?? "";
 
   const getContractStatus = () => {
     if (!member || !member.isContracted) return { color: "bg-neutral-500", text: "없음" };
@@ -73,22 +74,19 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
       role="dialog"
       aria-modal="true"
       onKeyDown={(e) => {
-        if (e.key === "Escape") onOpenChange(false);
+        if (e.key === "Escape") handleClose();
       }}
       tabIndex={-1}
       ref={(el) => el?.focus()}>
       {/* 배경 */}
-      <div
-        className="absolute inset-0 bg-neutral-900 opacity-60"
-        onClick={() => onOpenChange(false)}
-      />
+      <div className="absolute inset-0 bg-neutral-900 opacity-60" onClick={handleClose} />
 
       {/* 모달창 */}
       <div className="bg-neutral-0 relative z-10 w-full max-w-[60vw] rounded-lg border border-neutral-300 p-6 text-neutral-900 shadow-xl">
         <header className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">고객 상세 정보</h2>
           <button
-            onClick={() => onOpenChange(false)}
+            onClick={handleClose}
             className="cursor-pointer hover:text-neutral-500"
             aria-label="모달 닫기">
             <X className="h-6 w-6" />
@@ -101,7 +99,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
           <div className="py-10 text-center text-sm text-neutral-500">불러오는 중...</div>
         ) : isError || !member ? (
           <div className="py-10 text-center text-sm text-neutral-500">
-            상세 정보를 불러오지 못했습니다.
+            상세 정보를 불러오지 못했습니다
           </div>
         ) : (
           <div>
@@ -124,16 +122,16 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 <InfoRow label="가입 요금제" value={member.currentMobilePlan} />
                 <InfoRow
                   label="등급"
-                  value={member.membership === "GOLD" ? "우수" : member.membership}
+                  value={
+                    <MembershipPopover
+                      value={effectiveMembership}
+                      onChange={setPendingMembership}
+                    />
+                  }
                 />
                 <InfoRow
                   label="상태"
-                  value={
-                    <div className="flex items-center gap-2">
-                      <span className={`h-3 w-3 rounded-full ${status?.color}`} />
-                      <span>{status?.text}</span>
-                    </div>
-                  }
+                  value={<StatusPopover value={effectiveStatus} onChange={setPendingStatus} />}
                 />
               </div>
             </section>
@@ -199,6 +197,32 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 <InfoRow label="상담 평점" value="5점" />
               </div>
             </section>
+
+            <section className="text-md text-neutral-0 flex items-center justify-end gap-6 font-medium">
+              <button
+                className="bg-secondary-500 cursor-pointer rounded-sm px-4 py-1"
+                onClick={() => {
+                  setUpdateOpen(true);
+                }}>
+                수정
+              </button>
+              <button
+                className="bg-danger-500 cursor-pointer rounded-sm px-4 py-1"
+                onClick={handleClose}>
+                취소
+              </button>
+            </section>
+
+            <UpdateModal
+              open={updateOpen}
+              onOpenChange={setUpdateOpen}
+              memberId={memberId}
+              memberName={member?.name ?? ""}
+              currentStatus={currentStatus}
+              currentMembership={currentMembership}
+              pendingStatus={effectiveStatus}
+              pendingMembership={effectiveMembership}
+            />
           </div>
         )}
       </div>
