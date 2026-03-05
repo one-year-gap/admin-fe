@@ -45,11 +45,7 @@ export default function Chart({ regionName }: ChartProps) {
   const axisMax = regionResponse?.axisMax || { salesAxisMax: 60000, dataUsageAxisMaxGb: 20 };
 
   if (isLoading) {
-    return (
-      <div className="absolute h-full items-center justify-center text-neutral-500">
-        데이터를 불러오는 중입니다...
-      </div>
-    );
+    return <div className="absolute h-full text-neutral-500">데이터를 불러오는 중입니다...</div>;
   }
 
   return (
