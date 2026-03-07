@@ -2,30 +2,30 @@
 
 import { useState } from "react";
 
-import { DataUsageChart } from "@/components/domain/customers/chart/DataUsageChart";
-import { GradeChart } from "@/components/domain/customers/chart/GradeChart";
-import type { CustomerFilters } from "@/components/domain/customers/filter/FilterBar";
-import { FilterBar } from "@/components/domain/customers/filter/FilterBar";
-import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
-import { SearchBar } from "@/components/domain/customers/filter/SearchBar";
-import { CustomersList } from "@/components/domain/customers/list/CustomersList";
+import type { RowSelectionState } from "@tanstack/react-table";
 
-const INITIAL_PLAN: PlanFilterState = {
-  mobile5gLte: [],
+import { CustomersList } from "@/components/domain/customers/CustomersList";
+import { DataUsageChart } from "@/components/domain/customers/DataUsageChart";
+import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
+import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
+import { MembershipChart } from "@/components/domain/customers/MembershipChart";
+import { SearchSection } from "@/components/domain/customers/SearchSection";
+import { useMembershipChart } from "@/lib/tanstack/query/useMembershipChart";
+
+export const INITIAL_PLAN: PlanFilterState = {
+  mobile: [],
   tabletWatch: [],
-  addon: [],
   iptv: [],
   internet: [],
+  addon: [],
 };
 
-const INITIAL_FILTERS: CustomerFilters = {
+export const INITIAL_FILTERS: CustomerFilters = {
   age: [],
   grade: [],
   period: [],
   gender: [],
-  character: [],
-  churnRisk: [],
-  csat: [],
+  status: [],
   plan: INITIAL_PLAN,
 };
 
@@ -35,47 +35,86 @@ export default function CustomersPage() {
   const [filters, setFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
   // 검색하기 버튼 눌렀을 때 적용되는 상태
-  const [appliedKeyword, setAppliedKeyword] = useState("");
-  const [appliedFilters, setAppliedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
+  const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [searchedFilters, setSearchedFilters] = useState<CustomerFilters>(INITIAL_FILTERS);
 
-  const applySearch = () => {
-    setAppliedKeyword(keyword.trim());
-    setAppliedFilters(filters);
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  const onClickSearchButton = () => {
+    setSearchedKeyword(keyword.trim());
+    setSearchedFilters(filters);
+    setRowSelection({});
+    setPage(1);
   };
 
-  const isFiltered =
-    appliedKeyword.trim().length > 0 ||
-    JSON.stringify(appliedFilters) !== JSON.stringify(INITIAL_FILTERS);
+  const isFilterSelected =
+    keyword.trim().length > 0 || JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS);
+
+  const isFilteredSearched =
+    searchedKeyword.trim().length > 0 ||
+    JSON.stringify(searchedFilters) !== JSON.stringify(INITIAL_FILTERS);
+
+  const resetFilters = () => {
+    setKeyword("");
+    setFilters(INITIAL_FILTERS);
+    setRowSelection({});
+  };
+
+  const { data: stats, isLoading, isError } = useMembershipChart();
+
+  const gradeChartData = stats
+    ? [
+        { name: "VVIP", value: stats.vvipRate, fill: "var(--color-chart-1)" },
+        { name: "VIP", value: stats.vipRate, fill: "var(--color-chart-2)" },
+        { name: "우수", value: stats.goldRate, fill: "var(--color-chart-3)" },
+      ]
+    : [];
+
+  const totalLabel = stats ? `${stats.totalInK.toLocaleString()}K` : "";
 
   return (
     <>
-      {/* 검색바 */}
-      <section className="col-span-12 md:col-span-6 lg:col-span-4">
-        <SearchBar value={keyword} onChange={setKeyword} />
-      </section>
-
-      {/* 필터바 + 검색 버튼 */}
-      <section className="col-span-12 flex items-center justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <FilterBar value={filters} onChange={setFilters} />
-        </div>
-
-        <button
-          type="button"
-          onClick={applySearch}
-          className="bg-secondary-500 hover:bg-secondary-700 text-neutral-0 text-md border-secondary-500 h-auto shrink-0 cursor-pointer rounded-lg border p-3 font-medium">
-          선택된 조건 검색하기
-        </button>
+      {/* 필터링 영역 */}
+      <section className="col-span-12">
+        <SearchSection
+          keyword={keyword}
+          onKeywordChange={setKeyword}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onSearch={onClickSearchButton}
+          onResetFilters={resetFilters}
+          isFilterd={isFilterSelected}
+        />
       </section>
 
       {/* 고객목록 영역 */}
       <section className="col-span-12">
-        <CustomersList keyword={appliedKeyword} filters={appliedFilters} />
+        <CustomersList
+          keyword={searchedKeyword}
+          filters={searchedFilters}
+          page={page}
+          size={size}
+          onPageChange={(next) => {
+            setPage(next);
+            setRowSelection({});
+          }}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+        />
       </section>
 
       {/* 차트 영역 */}
       <section className="col-span-12 md:col-span-5">
-        <GradeChart isFiltered={isFiltered} />
+        <MembershipChart
+          isFiltered={isFilteredSearched}
+          data={gradeChartData}
+          totalLabel={totalLabel}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </section>
 
       <section className="col-span-12 md:col-span-7">

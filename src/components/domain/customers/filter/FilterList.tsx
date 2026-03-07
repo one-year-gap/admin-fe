@@ -7,13 +7,11 @@ import {
 } from "@/components/domain/customers/filter/PlanFilterItem";
 import {
   AGE_OPTIONS,
-  CHARACTER_OPTIONS,
-  CHURN_RISK_OPTIONS,
-  CSAT_OPTIONS,
   GENDER_OPTIONS,
   GRADE_OPTIONS,
   PERIOD_OPTIONS,
   PLAN_OPTIONS,
+  STATUS_OPTIONS,
 } from "@/constants/customerFilters";
 
 export type CustomerFilters = {
@@ -21,18 +19,16 @@ export type CustomerFilters = {
   grade: string[];
   period: string[];
   gender: string[];
-  character: string[];
-  churnRisk: string[];
-  csat: string[];
+  status: string[];
   plan: PlanFilterState;
 };
 
-type FilterBarProps = {
+type FilterListProps = {
   value: CustomerFilters;
   onChange: (next: CustomerFilters) => void;
 };
 
-export function FilterBar({ value, onChange }: FilterBarProps) {
+export function FilterList({ value, onChange }: FilterListProps) {
   const set = (key: keyof Omit<CustomerFilters, "plan">) => (next: string[]) => {
     onChange({ ...value, [key]: next });
   };
@@ -58,24 +54,14 @@ export function FilterBar({ value, onChange }: FilterBarProps) {
         value={value.gender}
         onChange={set("gender")}
       />
+
       <FilterItem
-        label="캐릭터 유형"
-        options={CHARACTER_OPTIONS}
-        value={value.character}
-        onChange={set("character")}
+        label="상태"
+        options={STATUS_OPTIONS}
+        value={value.status}
+        onChange={set("status")}
       />
-      <FilterItem
-        label="이탈 위험군"
-        options={CHURN_RISK_OPTIONS}
-        value={value.churnRisk}
-        onChange={set("churnRisk")}
-      />
-      <FilterItem
-        label="상담 이력"
-        options={CSAT_OPTIONS}
-        value={value.csat}
-        onChange={set("csat")}
-      />
+
       <PlanFilterItem
         value={value.plan}
         onChange={(next) => onChange({ ...value, plan: next })}
