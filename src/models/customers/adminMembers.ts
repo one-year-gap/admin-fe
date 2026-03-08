@@ -14,7 +14,7 @@ export type MemberSearchRequestDTO = {
   ages?: string[];
   memberships?: string[];
   durations?: string[];
-  gender?: string;
+  genders?: string[];
   planNames?: string[];
   statuses?: string[];
 };
