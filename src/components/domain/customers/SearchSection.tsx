@@ -28,7 +28,7 @@ export function SearchSection({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <SearchInput value={keyword} onChange={onKeywordChange} />
+        <SearchInput value={keyword} onChange={onKeywordChange} onSearch={onSearch} />
         <FilterList value={filters} onChange={onFiltersChange} />
       </div>
       <div className="flex items-center gap-3">
