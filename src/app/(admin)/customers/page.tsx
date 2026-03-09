@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import { useQueryClient } from "@tanstack/react-query";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { CustomersList } from "@/components/domain/customers/CustomersList";
@@ -44,16 +43,11 @@ export default function CustomersPage() {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  const queryClient = useQueryClient();
-
   const onClickSearchButton = () => {
     setPage(1);
     setSearchedKeyword(keyword.trim());
     setSearchedFilters(filters);
     setRowSelection({});
-    queryClient.invalidateQueries({
-      queryKey: ["adminMembers"],
-    });
   };
 
   const isFilterSelected =
