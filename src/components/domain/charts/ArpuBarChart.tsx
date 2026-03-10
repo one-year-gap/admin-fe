@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  Bar,
-  BarChart,
+  Area,
+  AreaChart,
   CartesianGrid,
   Legend,
   ResponsiveContainer,
@@ -12,53 +12,93 @@ import {
 } from "recharts";
 
 type Row = {
-  region: string;
-  arpu: number;
-  usage: number;
+  month: string;
+  explorer: number;
+  collector: number;
+  dieter: number;
+  master: number;
+  myType: number;
 };
 
 const data: Row[] = [
-  { region: "서울", arpu: 42000, usage: 15 },
-  { region: "경기", arpu: 38000, usage: 14 },
-  { region: "인천", arpu: 36000, usage: 13 },
-  { region: "부산", arpu: 40000, usage: 16 },
-  { region: "대구", arpu: 35000, usage: 12 },
-  { region: "대전", arpu: 33000, usage: 11 },
-  { region: "광주", arpu: 31000, usage: 10 },
-  { region: "세종", arpu: 37000, usage: 14 },
-  { region: "제주", arpu: 34000, usage: 12 },
+  { month: "1월", explorer: 10, collector: 15, dieter: 20, master: 25, myType: 30 },
+  { month: "2월", explorer: 12, collector: 18, dieter: 22, master: 24, myType: 24 },
+  { month: "3월", explorer: 15, collector: 20, dieter: 25, master: 20, myType: 20 },
+  { month: "4월", explorer: 18, collector: 22, dieter: 20, master: 18, myType: 22 },
+  { month: "5월", explorer: 20, collector: 24, dieter: 18, master: 15, myType: 23 },
 ];
 
-export default function ArpuBarChart() {
+export default function CharacterTrendChart() {
   return (
-    <div className="h-72 w-full">
+    <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} barGap={8}>
-          <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-          <XAxis dataKey="region" />
+        <AreaChart data={data} stackOffset="expand">
+          <CartesianGrid strokeDasharray="3 3" />
 
-          <YAxis yAxisId="left" domain={[0, "dataMax + 5000"]} />
-          <YAxis yAxisId="right" orientation="right" domain={[0, "dataMax + 2"]} />
+          <XAxis dataKey="month" />
 
-          <Tooltip />
-          <Legend verticalAlign="bottom" height={36} />
+          <YAxis domain={[0, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
 
-          <Bar
-            yAxisId="left"
-            dataKey="arpu"
-            name="ARPU (원)"
-            fill="var(--color-primary-500)"
-            radius={[6, 6, 0, 0]}
+          <Tooltip formatter={(value) => `${Math.round(Number(value) * 100)}%`} />
+
+          <Legend verticalAlign="bottom" />
+
+          <Area
+            type="monotone"
+            dataKey="explorer"
+            stackId="1"
+            name="우주셜록홈즈"
+            stroke="#4C6EF5"
+            fill="#4C6EF5"
           />
 
-          <Bar
-            yAxisId="right"
-            dataKey="usage"
-            name="데이터 (GB)"
-            fill="var(--color-secondary-300)"
-            radius={[6, 6, 0, 0]}
+          <Area
+            type="monotone"
+            dataKey="collector"
+            stackId="1"
+            name="우주그래비티홈즈"
+            stroke="#51CF66"
+            fill="#51CF66"
           />
-        </BarChart>
+
+          <Area
+            type="monotone"
+            dataKey="dieter"
+            stackId="1"
+            name="우주문어발"
+            stroke="#FCC419"
+            fill="#FCC419"
+          />
+
+          <Area
+            type="monotone"
+            dataKey="master"
+            stackId="1"
+            name="우주트렌드서퍼"
+            stroke="#F76707"
+            fill="#F76707"
+          />
+
+          <Area
+            type="monotone"
+            dataKey="myType"
+            stackId="1"
+            name="우주세이퍼가디언"
+            stroke="#341f65"
+            fill="#341f65"
+            strokeWidth={3}
+          />
+
+          <Area
+            type="monotone"
+            dataKey="myType"
+            stackId="1"
+            name="우주탐험가"
+            stroke="#265e65"
+            fill="#265e65"
+            strokeWidth={3}
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
