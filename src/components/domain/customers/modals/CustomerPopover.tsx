@@ -16,48 +16,6 @@ const MEMBERSHIP_OPTIONS = [
   { label: "VVIP", value: "VVIP" },
 ] as const;
 
-export function StatusPopover({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const current = STATUS_OPTIONS.find((o) => o.value === value);
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button type="button" className="flex items-center gap-2 hover:opacity-70">
-          <span className={cn("h-3 w-3 rounded-full", current?.color ?? "bg-neutral-300")} />
-          <span>{current?.label ?? "-"}</span>
-          <ChevronDown className="h-4 w-4 text-neutral-500" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent align="start" className="w-20 p-2">
-        <ul className="space-y-1">
-          {STATUS_OPTIONS.map((opt) => (
-            <li key={opt.value}>
-              <button
-                type="button"
-                onClick={() => onChange(opt.value)}
-                className={cn(
-                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm",
-                  value === opt.value
-                    ? "bg-primary-500 text-neutral-0"
-                    : "hover:bg-primary-100 text-neutral-900",
-                )}>
-                <div className="flex items-center gap-2">{opt.label}</div>
-                {value === opt.value && <Check className="h-3 w-3" />}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 export function MembershipPopover({
   value,
   onChange,
@@ -70,12 +28,14 @@ export function MembershipPopover({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button type="button" className="flex items-center gap-2 hover:opacity-70">
+        <button
+          type="button"
+          className="flex w-23 items-center justify-around gap-2 rounded-sm border border-neutral-300 px-2 py-1 hover:opacity-70">
           <span>{current?.label ?? "-"}</span>
           <ChevronDown className="h-4 w-4 text-neutral-500" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-20 p-2">
+      <PopoverContent align="start" className="w-23 p-2">
         <ul className="space-y-1">
           {MEMBERSHIP_OPTIONS.map((opt) => (
             <li key={opt.value}>
@@ -89,6 +49,50 @@ export function MembershipPopover({
                     : "hover:bg-primary-100 text-neutral-900",
                 )}>
                 {opt.label}
+                {value === opt.value && <Check className="h-3 w-3" />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+export function StatusPopover({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const current = STATUS_OPTIONS.find((o) => o.value === value);
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="flex w-23 items-center justify-around gap-2 rounded-sm border border-neutral-300 px-2 py-1 hover:opacity-70">
+          <span className={cn("h-3 w-3 rounded-full", current?.color ?? "bg-neutral-300")} />
+          <span>{current?.label ?? "-"}</span>
+          <ChevronDown className="h-4 w-4 text-neutral-500" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-23 p-2">
+        <ul className="space-y-1">
+          {STATUS_OPTIONS.map((opt) => (
+            <li key={opt.value}>
+              <button
+                type="button"
+                onClick={() => onChange(opt.value)}
+                className={cn(
+                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm",
+                  value === opt.value
+                    ? "bg-primary-500 text-neutral-0"
+                    : "hover:bg-primary-100 text-neutral-900",
+                )}>
+                <div className="flex items-center gap-2">{opt.label}</div>
                 {value === opt.value && <Check className="h-3 w-3" />}
               </button>
             </li>
