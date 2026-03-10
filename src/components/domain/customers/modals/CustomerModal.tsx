@@ -184,7 +184,11 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 <InfoRow label="약정 개월 수" value={member.contractMonths} />
                 <InfoRow
                   label="약정 남은 일수"
-                  value={member.remainingDays !== null ? `${member.remainingDays} 일` : "-"}
+                  value={
+                    member.remainingDays !== null && member.remainingDays > 0
+                      ? `${member.remainingDays} 일`
+                      : "-"
+                  }
                 />
               </div>
             </section>
