@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 
 import { UpdateModal } from "@/components/domain/customers/modals/UpdateModal";
 import { useAdminMembersDetail } from "@/lib/tanstack/query/useAdminMembersDetail";
+import { cn } from "@/lib/utils";
 
 import { MembershipPopover, StatusPopover } from "./CustomerPopover";
 
@@ -13,11 +14,21 @@ type ModalProps = {
   memberId: number | null;
 };
 
-function InfoRow({ label, value }: { label: string; value: ReactNode }) {
+function InfoRow({
+  label,
+  value,
+  interactive = false,
+}: {
+  label: string;
+  value: ReactNode;
+  interactive?: boolean;
+}) {
   return (
     <div className="text-md grid grid-cols-12 items-center gap-3 py-2 font-medium">
       <div className="col-span-4 text-neutral-900">{label}</div>
-      <div className="col-span-8 truncate rounded-lg text-neutral-500">{value ?? "-"}</div>
+      <div className={cn("col-span-8 rounded-lg text-neutral-500", !interactive && "truncate")}>
+        {value ?? "-"}
+      </div>
     </div>
   );
 }
@@ -123,6 +134,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 <InfoRow label="가입 요금제" value={member.currentMobilePlan} />
                 <InfoRow
                   label="등급"
+                  interactive={true}
                   value={
                     <MembershipPopover
                       value={effectiveMembership}
@@ -132,6 +144,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 />
                 <InfoRow
                   label="상태"
+                  interactive={true}
                   value={<StatusPopover value={effectiveStatus} onChange={setPendingStatus} />}
                 />
               </div>
