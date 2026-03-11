@@ -14,13 +14,13 @@ export default function KeywordBubbleChart() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  const items: Item[] =
-    data?.map((d) => ({
-      name: d.keywordName,
-      value: d.totalCount,
-    })) ?? [];
+  const items: Item[] = (data ?? []).slice(0, 8).map((d) => ({
+    name: d.keywordName,
+    value: d.totalCount,
+  }));
 
-  const max = Math.max(...items.map((d) => d.value));
+  const max = Math.max(...items.map((d) => d.value), 1);
+
   const minSize = 60;
   const maxSize = 140;
 
