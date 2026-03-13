@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import {
   Area,
   AreaChart,
@@ -11,33 +13,87 @@ import {
   YAxis,
 } from "recharts";
 
-type Row = {
+import { usePersonaMonthlyTrend } from "@/lib/tanstack/query/usePersonaMonthlyTrend";
+import type { PersonaMonthlyTrendItem } from "@/models/personaTrend";
+
+type ChartRow = {
+  key: string;
   month: string;
   explorer: number;
   collector: number;
   dieter: number;
   master: number;
   myType: number;
+  gravity: number;
 };
 
-const data: Row[] = [
-  { month: "1월", explorer: 10, collector: 15, dieter: 20, master: 25, myType: 30 },
-  { month: "2월", explorer: 12, collector: 18, dieter: 22, master: 24, myType: 24 },
-  { month: "3월", explorer: 15, collector: 20, dieter: 25, master: 20, myType: 20 },
-  { month: "4월", explorer: 18, collector: 22, dieter: 20, master: 18, myType: 22 },
-  { month: "5월", explorer: 20, collector: 24, dieter: 18, master: 15, myType: 23 },
-];
+function transformData(data: PersonaMonthlyTrendItem[]): ChartRow[] {
+  const months: Record<string, ChartRow> = {};
+
+  data.forEach((item) => {
+    const key = item.yearMonth;
+    const month = `${item.yearMonth.split("-")[1]}월`;
+
+    if (!months[key]) {
+      months[key] = {
+        key,
+        month,
+        explorer: 0,
+        collector: 0,
+        dieter: 0,
+        master: 0,
+        myType: 0,
+        gravity: 0,
+      };
+    }
+
+    switch (item.personaName) {
+      case "SPACE_EXPLORER":
+        months[key].explorer = item.userCount;
+        break;
+
+      case "SPACE_OCTOPUS":
+        months[key].collector = item.userCount;
+        break;
+
+      case "SPACE_GUARDIAN":
+        months[key].dieter = item.userCount;
+        break;
+
+      case "SPACE_SURFER":
+        months[key].master = item.userCount;
+        break;
+
+      case "SPACE_SHERLOCK":
+        months[key].myType = item.userCount;
+        break;
+
+      case "SPACE_GRAVITY":
+        months[key].gravity = item.userCount;
+        break;
+    }
+  });
+
+  return Object.values(months).sort((a, b) => a.key.localeCompare(b.key));
+}
 
 export default function CharacterTrendChart() {
+  const { data } = usePersonaMonthlyTrend();
+
+  const chartData = useMemo(() => {
+    if (!data) return [];
+    return transformData(data);
+  }, [data]);
+
   return (
     <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} stackOffset="expand">
+        <AreaChart data={chartData} stackOffset="expand">
           <CartesianGrid strokeDasharray="3 3" />
 
           <XAxis dataKey="month" />
 
-          <YAxis domain={[0, 1]} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis domain={[0, 1]} tickFormatter={(value) => `${Math.round(Number(value) * 100)}%`} />
 
           <Tooltip formatter={(value) => `${Math.round(Number(value) * 100)}%`} />
 
@@ -47,27 +103,27 @@ export default function CharacterTrendChart() {
             type="monotone"
             dataKey="explorer"
             stackId="1"
-            name="우주셜록홈즈"
-            stroke="#4C6EF5"
-            fill="#4C6EF5"
+            name="우주탐험가"
+            stroke="#c81f1f"
+            fill="#c81f1f"
           />
 
           <Area
             type="monotone"
             dataKey="collector"
             stackId="1"
-            name="우주그래비티홈즈"
-            stroke="#51CF66"
-            fill="#51CF66"
+            name="우주문어발"
+            stroke="#dcbb13"
+            fill="#dcbb13"
           />
 
           <Area
             type="monotone"
             dataKey="dieter"
             stackId="1"
-            name="우주문어발"
-            stroke="#FCC419"
-            fill="#FCC419"
+            name="우주세이프가디언"
+            stroke="#820da5"
+            fill="#820da5"
           />
 
           <Area
@@ -75,17 +131,27 @@ export default function CharacterTrendChart() {
             dataKey="master"
             stackId="1"
             name="우주트렌드서퍼"
-            stroke="#F76707"
-            fill="#F76707"
+            stroke="#1faf4a"
+            fill="#1faf4a"
           />
 
           <Area
             type="monotone"
             dataKey="myType"
             stackId="1"
-            name="우주탐험가"
-            stroke="#341F65"
-            fill="#341F65"
+            name="우주셜록홈즈"
+            stroke="#6059c4"
+            fill="#6059c4"
+            strokeWidth={3}
+          />
+
+          <Area
+            type="monotone"
+            dataKey="gravity"
+            stackId="1"
+            name="그래비티홈즈"
+            stroke="#dd4fa9"
+            fill="#dd4fa9"
             strokeWidth={3}
           />
         </AreaChart>
