@@ -8,7 +8,7 @@ export default function CustomerStatsPage() {
         <PersonaBarChart />
       </section>
       <section className="rounded-2xl bg-white p-6 shadow-sm">
-        <h2 className="mb-6 text-lg font-semibold">전국 평균 ARPU 비교</h2> <ArpuBarChart />
+        <h2 className="mb-6 text-lg font-semibold">월 별 유형 트렌드 조회</h2> <ArpuBarChart />
       </section>
     </div>
   );
