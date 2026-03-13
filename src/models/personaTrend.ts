@@ -1,6 +1,14 @@
+export type PersonaName =
+  | "SPACE_EXPLORER"
+  | "SPACE_OCTOPUS"
+  | "SPACE_GUARDIAN"
+  | "SPACE_SURFER"
+  | "SPACE_SHERLOCK"
+  | "SPACE_GRAVITY";
+
 export type PersonaMonthlyTrendItem = {
   yearMonth: string;
-  personaName: string;
+  personaName: PersonaName;
   userCount: number;
 };
 
