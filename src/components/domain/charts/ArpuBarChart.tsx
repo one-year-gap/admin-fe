@@ -11,7 +11,9 @@ import {
   YAxis,
 } from "recharts";
 
-type Row = {
+import { usePersonaMonthlyTrend } from "@/lib/tanstack/query/usePersonaMonthlyTrend";
+
+type ChartRow = {
   month: string;
   explorer: number;
   collector: number;
@@ -20,19 +22,58 @@ type Row = {
   myType: number;
 };
 
-const data: Row[] = [
-  { month: "1월", explorer: 10, collector: 15, dieter: 20, master: 25, myType: 30 },
-  { month: "2월", explorer: 12, collector: 18, dieter: 22, master: 24, myType: 24 },
-  { month: "3월", explorer: 15, collector: 20, dieter: 25, master: 20, myType: 20 },
-  { month: "4월", explorer: 18, collector: 22, dieter: 20, master: 18, myType: 22 },
-  { month: "5월", explorer: 20, collector: 24, dieter: 18, master: 15, myType: 23 },
-];
+function transformData(data: any[]): ChartRow[] {
+  const months: Record<string, ChartRow> = {};
+
+  data.forEach((item) => {
+    const month = item.yearMonth.slice(5) + "월";
+
+    if (!months[month]) {
+      months[month] = {
+        month,
+        explorer: 0,
+        collector: 0,
+        dieter: 0,
+        master: 0,
+        myType: 0,
+      };
+    }
+
+    switch (item.personaName) {
+      case "SPACE_EXPLORER":
+        months[month].explorer = item.userCount;
+        break;
+
+      case "SPACE_OCTOPUS":
+        months[month].collector = item.userCount;
+        break;
+
+      case "SPACE_GUARDIAN":
+        months[month].dieter = item.userCount;
+        break;
+
+      case "SPACE_SURFER":
+        months[month].master = item.userCount;
+        break;
+
+      case "SPACE_SHERLOCK":
+        months[month].myType = item.userCount;
+        break;
+    }
+  });
+
+  return Object.values(months);
+}
 
 export default function CharacterTrendChart() {
+  const { data } = usePersonaMonthlyTrend();
+
+  const chartData = data ? transformData(data) : [];
+
   return (
     <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} stackOffset="expand">
+        <AreaChart data={chartData} stackOffset="expand">
           <CartesianGrid strokeDasharray="3 3" />
 
           <XAxis dataKey="month" />
@@ -47,7 +88,7 @@ export default function CharacterTrendChart() {
             type="monotone"
             dataKey="explorer"
             stackId="1"
-            name="우주셜록홈즈"
+            name="우주탐험가"
             stroke="#4C6EF5"
             fill="#4C6EF5"
           />
@@ -56,7 +97,7 @@ export default function CharacterTrendChart() {
             type="monotone"
             dataKey="collector"
             stackId="1"
-            name="우주그래비티홈즈"
+            name="우주문어발"
             stroke="#51CF66"
             fill="#51CF66"
           />
@@ -65,7 +106,7 @@ export default function CharacterTrendChart() {
             type="monotone"
             dataKey="dieter"
             stackId="1"
-            name="우주문어발"
+            name="우주보안관"
             stroke="#FCC419"
             fill="#FCC419"
           />
@@ -83,7 +124,7 @@ export default function CharacterTrendChart() {
             type="monotone"
             dataKey="myType"
             stackId="1"
-            name="우주탐험가"
+            name="우주셜록홈즈"
             stroke="#341F65"
             fill="#341F65"
             strokeWidth={3}
