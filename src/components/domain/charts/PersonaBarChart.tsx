@@ -30,12 +30,12 @@ type CustomTooltipProps = {
 const COLORS = ["#6366F1", "#10B981", "#8B5CF6", "#EC4899", "#F59E0B", "#6B7280"];
 
 const personaLabelMap: Record<string, string> = {
-  SPACE_GUARDIAN: "보안 유저",
-  SPACE_EXPLORER: "탐색 유저",
-  SPACE_SURFER: "데이터 헤비 유저",
-  SPACE_SHERLOCK: "혜택 유저",
-  SPACE_OCTOPUS: "멀티 디바이스 유저",
-  SPACE_GRAVITY: "가족 유저",
+  SPACE_GUARDIAN: "우주 세이프 가디언",
+  SPACE_EXPLORER: "우주 탐험가",
+  SPACE_SURFER: "우주 트렌드 서퍼",
+  SPACE_SHERLOCK: "우주 설록홈즈",
+  SPACE_OCTOPUS: "우주 문어발",
+  SPACE_GRAVITY: "우주 그래비티 홈즈",
 };
 
 function CustomTooltip({ active, payload }: CustomTooltipProps) {
