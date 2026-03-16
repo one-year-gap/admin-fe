@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { DataTable } from "@/components/domain/churn/list/DataTable";
+import { useCoupon } from "@/lib/tanstack/mutation/churn/useCoupon";
 import { useChurnRiskMembers } from "@/lib/tanstack/query/churn/useChurnRiskMembers";
 import { toChurnRiskMembersParams } from "@/services/churn/toChurnRiskMembersParams";
 
@@ -104,8 +105,10 @@ export function ChurnList({
   rowSelection,
   onRowSelectionChange,
 }: Props) {
-  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetIds, setTargetIds] = useState<string[]>([]);
+
+  const couponMutation = useCoupon();
 
   const params = toChurnRiskMembersParams({ page, size, keyword, filters });
 
@@ -134,11 +137,11 @@ export function ChurnList({
     selectedCount: selectedRowIds.length,
     onBulkCoupon: () => {
       setTargetIds(selectedRowIds);
-      setIsCouponModalOpen(true);
+      setIsModalOpen(true);
     },
     onSingleCoupon: (id) => {
       setTargetIds([id]);
-      setIsCouponModalOpen(true);
+      setIsModalOpen(true);
     },
   });
 
@@ -179,12 +182,20 @@ export function ChurnList({
       />
 
       <CouponConfirmModal
-        open={isCouponModalOpen}
+        open={isModalOpen}
         count={targetIds.length}
-        onClose={() => setIsCouponModalOpen(false)}
-        onConfirm={() => {
-          console.log("쿠폰 발급 실행", targetIds);
-          setIsCouponModalOpen(false);
+        coupons={[
+          { id: 1, name: "이탈 방지 쿠폰" },
+          { id: 2, name: "요금제 할인 쿠폰" },
+        ]}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={(couponId) => {
+          couponMutation.mutate({
+            memberIds: targetIds.map(Number),
+            couponId,
+          });
+
+          setIsModalOpen(false);
         }}
       />
     </div>
