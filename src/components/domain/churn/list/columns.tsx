@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import { IndeterminateCheckbox } from "@/components/common/IndeterminateCheckbox";
 
-export type CustomerRow = {
+export type ChurnRiskRow = {
   id: string;
   grade: "우수" | "VIP" | "VVIP";
   name: string;
@@ -30,7 +30,7 @@ function ChurnBar({ value }: { value: number }) {
   );
 }
 
-export const columns: ColumnDef<CustomerRow>[] = [
+export const columns: ColumnDef<ChurnRiskRow>[] = [
   /* 1번째 컬럼 (체크박스) */
   {
     id: "select",
