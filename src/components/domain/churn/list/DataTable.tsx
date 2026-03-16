@@ -68,6 +68,7 @@ export function DataTable<TData>({
   const table = useReactTable({
     data,
     columns,
+    getRowId: (row: any) => row.id,
 
     state: {
       rowSelection,

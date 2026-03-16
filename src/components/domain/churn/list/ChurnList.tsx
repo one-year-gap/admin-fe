@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { DataTable } from "@/components/domain/churn/list/DataTable";
@@ -7,8 +9,8 @@ import { useChurnRiskMembers } from "@/lib/tanstack/query/churn/useChurnRiskMemb
 import { toChurnRiskMembersParams } from "@/services/churn/toChurnRiskMembersParams";
 
 import type { ChurnRiskFilters } from "../search/FilterList";
-import type { ChurnRiskRow } from "./columns";
-import { columns } from "./columns";
+import { CouponConfirmModal } from "./CouponConfirmModal";
+import { type ChurnRiskRow, getColumns } from "./getColumns";
 
 type Props = {
   keyword: string;
@@ -102,6 +104,9 @@ export function ChurnList({
   rowSelection,
   onRowSelectionChange,
 }: Props) {
+  const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
+  const [targetIds, setTargetIds] = useState<string[]>([]);
+
   const params = toChurnRiskMembersParams({ page, size, keyword, filters });
 
   const { data, isLoading, isError } = useChurnRiskMembers(params);
@@ -119,7 +124,23 @@ export function ChurnList({
     email: m.email,
   }));
 
+  const selectedRowIds = rows.filter((row) => rowSelection[row.id]).map((row) => row.id);
+
   const pagination = data?.data.pagination;
+
+  const selectedCount = selectedRowIds.length;
+
+  const columns = getColumns({
+    selectedCount: selectedRowIds.length,
+    onBulkCoupon: () => {
+      setTargetIds(selectedRowIds);
+      setIsCouponModalOpen(true);
+    },
+    onSingleCoupon: (id) => {
+      setTargetIds([id]);
+      setIsCouponModalOpen(true);
+    },
+  });
 
   if (isLoading) {
     return (
@@ -139,10 +160,11 @@ export function ChurnList({
 
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300">
-      <div className="flex items-center justify-start px-5 pt-6 pb-4">
+      <div className="flex items-center justify-between px-5 pt-6 pb-4">
         <span className="text-lg font-medium text-neutral-900">
           전체 {pagination?.totalCount ?? 0}건
         </span>
+        <span className="text-md font-medium text-neutral-500">{`선택 ${selectedCount}건`}</span>
       </div>
 
       <DataTable
@@ -154,6 +176,16 @@ export function ChurnList({
         onPageChange={onPageChange}
         rowSelection={rowSelection}
         onRowSelectionChange={onRowSelectionChange}
+      />
+
+      <CouponConfirmModal
+        open={isCouponModalOpen}
+        count={targetIds.length}
+        onClose={() => setIsCouponModalOpen(false)}
+        onConfirm={() => {
+          console.log("쿠폰 발급 실행", targetIds);
+          setIsCouponModalOpen(false);
+        }}
       />
     </div>
   );
