@@ -3,6 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
 import { IndeterminateCheckbox } from "@/components/common/IndeterminateCheckbox";
+import { cn } from "@/lib/utils";
 
 export type ChurnRiskRow = {
   id: string;
@@ -55,7 +56,7 @@ export const columns: ColumnDef<ChurnRiskRow>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 48,
+    size: 60,
   },
 
   /* 2번째 컬럼 (No.) */
@@ -67,7 +68,7 @@ export const columns: ColumnDef<ChurnRiskRow>[] = [
       return String(pageIndex * pageSize + row.index + 1).padStart(2, "0");
     },
     enableSorting: false,
-    size: 64,
+    size: 80,
   },
 
   /* 3~6번째 컬럼 (사용자 기본 정보) */
@@ -88,7 +89,7 @@ export const columns: ColumnDef<ChurnRiskRow>[] = [
   { accessorKey: "phone", header: "연락처", size: 150 },
   { accessorKey: "email", header: "이메일", size: 180 },
 
-  /* 10번째 컬럼 (쿠폰버튼) */
+  /* 10번째 컬럼 (쿠폰 버튼) */
   {
     id: "action",
     header: "",
@@ -101,7 +102,10 @@ export const columns: ColumnDef<ChurnRiskRow>[] = [
         <div className="flex items-center justify-center">
           <button
             type="button"
-            className="bg-secondary-500 text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm font-medium hover:opacity-60"
+            className={cn(
+              "bg-secondary-500 text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm font-medium",
+              "opacity-0 group-hover:opacity-100 hover:opacity-60",
+            )}
             onClick={() =>
               // TODO: 여기서 "쿠폰 발급 처리" (API 붙일 때)
               console.log("쿠폰 발급:", row.original.id)

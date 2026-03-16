@@ -31,8 +31,8 @@ export function DataUsageChart() {
   return (
     <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-neutral-900">데이터 사용량</h3>
-        <p className="text-sm text-neutral-500">최근 14일 · 단위 GB</p>
+        <h3 className="text-lg font-semibold text-neutral-900">가입/해지 증감 추이</h3>
+        <p className="text-sm text-neutral-500">최근 9개월</p>
       </div>
 
       <div className="h-64 w-full">
