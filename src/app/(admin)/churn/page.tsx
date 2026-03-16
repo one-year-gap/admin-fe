@@ -4,7 +4,8 @@ import React, { useState } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
 
-import { ChurnChart } from "@/components/domain/churn/ChurnChart";
+import { ChurnDelta } from "@/components/domain/churn/ChurnDelta";
+import { ChurnTotal } from "@/components/domain/churn/ChurnTotal";
 import { ChurnFeed } from "@/components/domain/churn/feed/ChurnFeed";
 import { ChurnList } from "@/components/domain/churn/list/ChurnList";
 import type { ChurnRiskFilters } from "@/components/domain/churn/search/FilterList";
@@ -80,9 +81,12 @@ export default function ChurnPage() {
         />
       </section>
 
-      {/* 차트 */}
+      {/* 차트 및 피드 */}
       <section className="col-span-12 md:col-span-6">
-        <ChurnChart />
+        <div className="flex flex-col gap-6">
+          <ChurnDelta />
+          <ChurnTotal />
+        </div>
       </section>
       <section className="col-span-12 md:col-span-6">
         <ChurnFeed />
