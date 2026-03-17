@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { DataTable } from "@/components/domain/churn/list/DataTable";
+import { CHURN_COUPONS } from "@/constants/coupons";
 import { useCoupon } from "@/lib/tanstack/mutation/churn/useCoupon";
 import { useChurnRiskMembers } from "@/lib/tanstack/query/churn/useChurnRiskMembers";
 import { toChurnRiskMembersParams } from "@/services/churn/toChurnRiskMembersParams";
@@ -124,12 +125,11 @@ export function ChurnList({
       <CouponConfirmModal
         open={isModalOpen}
         count={targetIds.length}
-        coupons={[
-          { id: 1, name: "이탈 방지 쿠폰" },
-          { id: 2, name: "요금제 할인 쿠폰" },
-        ]}
+        coupons={CHURN_COUPONS}
         onClose={() => setIsModalOpen(false)}
+        isLoading={couponMutation.isPending}
         onConfirm={(couponId) => {
+          if (couponMutation.isPending) return;
           couponMutation.mutate({
             memberIds: targetIds.map(Number),
             couponId,

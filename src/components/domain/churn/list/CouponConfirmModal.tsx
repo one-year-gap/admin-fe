@@ -13,9 +13,10 @@ type Props = {
   coupons: Coupon[];
   onClose: () => void;
   onConfirm: (couponId: number) => void;
+  isLoading: boolean;
 };
 
-export function CouponConfirmModal({ open, count, coupons, onClose, onConfirm }: Props) {
+export function CouponConfirmModal({ open, count, coupons, onClose, onConfirm, isLoading }: Props) {
   const [selectedCouponId, setSelectedCouponId] = useState<number | null>(null);
 
   if (!open) return null;
@@ -31,7 +32,12 @@ export function CouponConfirmModal({ open, count, coupons, onClose, onConfirm }:
       tabIndex={-1}
       ref={(el) => el?.focus()}>
       {/* 배경 */}
-      <div className="absolute inset-0 bg-neutral-900 opacity-50" onClick={() => onClose()} />
+      <div
+        className="absolute inset-0 bg-neutral-900 opacity-50"
+        onClick={() => {
+          if (!isLoading) onClose();
+        }}
+      />
 
       <div className="bg-neutral-0 relative z-10 flex w-90 flex-col items-center gap-4 rounded-lg p-6 shadow-xl">
         <div className="bg-secondary-100 border-secondary-500 rounded-full border-2 p-4">
@@ -50,19 +56,20 @@ export function CouponConfirmModal({ open, count, coupons, onClose, onConfirm }:
         <div className="flex justify-center gap-6">
           <button
             onClick={onClose}
+            disabled={isLoading}
             className="cursor-pointer rounded-md border px-4 py-2 text-sm hover:opacity-60">
             취소
           </button>
 
           <button
             type="button"
-            disabled={selectedCouponId === null}
+            disabled={selectedCouponId === null || isLoading}
             onClick={() => {
               if (selectedCouponId === null) return;
               onConfirm(selectedCouponId);
             }}
             className="bg-secondary-500 text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm hover:opacity-60">
-            확인
+            {isLoading ? "발급 중..." : "확인"}
           </button>
         </div>
       </div>
