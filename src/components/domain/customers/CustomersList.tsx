@@ -13,6 +13,8 @@ import { useAdminMembersStatus } from "@/lib/tanstack/mutation/useAdminMembersSt
 import { useAdminMembers } from "@/lib/tanstack/query/useAdminMembers";
 import { toAdminMembersParams } from "@/services/customers/toAdminMembersParams";
 
+import { ConfirmModal } from "./modals/ConfirmModal";
+
 // 백엔드 status -> UI 상태 매핑
 function toUiStatus(s: string): CustomerRow["status"] {
   if (s === "ACTIVE") return "정상";
@@ -35,7 +37,7 @@ function toUiGrade(m: string): CustomerRow["grade"] {
 
 // birthDate "YYYY-MM-DD" -> "YYYY.MM.DD"
 function dotDate(d: string): string {
-  return d.replaceAll("-", ".");
+  return d?.replaceAll("-", ".") ?? "";
 }
 
 type Props = {
@@ -61,6 +63,11 @@ export function CustomersList({
 }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<number | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<{
+    to: "BANNED" | "ACTIVE";
+    ids: string[];
+  } | null>(null);
 
   const params = toAdminMembersParams({ page, size, keyword, filters });
 
@@ -121,24 +128,21 @@ export function CustomersList({
     },
   });
 
-  const handleChangeStatus = (to: "BANNED" | "ACTIVE", ids: string[]) => {
-    const memberIds = ids.map((id) => Number(id)).filter(Number.isFinite);
-    if (memberIds.length === 0) return;
+  const openConfirm = (to: "BANNED" | "ACTIVE", ids: string[]) => {
+    if (ids.length === 0) return;
 
-    statusMutation.mutate({
-      memberIds, // number[]
-      status: to, // "BANNED" | "ACTIVE"
-    });
+    setPendingAction({ to, ids });
+    setConfirmOpen(true);
   };
 
   const handleBulk = (to: "BANNED" | "ACTIVE") => {
-    handleChangeStatus(to, selectedIds);
+    openConfirm(to, selectedIds);
   };
 
   const columns = getColumns({
     bulkAction,
     onBulkAction: handleBulk,
-    onRowAction: (to, id) => handleChangeStatus(to, [id]),
+    onRowAction: (to, id) => openConfirm(to, [id]),
     isMutating: statusMutation.isPending,
   });
 
@@ -190,6 +194,26 @@ export function CustomersList({
         }}
         memberId={selectedCustomer}
       />
+
+      {confirmOpen && pendingAction && (
+        <ConfirmModal
+          open={confirmOpen}
+          onOpenChange={setConfirmOpen}
+          action={pendingAction.to}
+          count={pendingAction.ids.length}
+          onConfirm={() => {
+            const memberIds = pendingAction.ids.map((id) => Number(id)).filter(Number.isFinite);
+
+            statusMutation.mutate({
+              memberIds,
+              status: pendingAction.to,
+            });
+
+            setConfirmOpen(false);
+            setPendingAction(null);
+          }}
+        />
+      )}
     </div>
   );
 }
