@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type DataTableProps<TData> = {
+type DataTableProps<TData extends { id: string | number }> = {
   data: TData[];
   columns: ColumnDef<TData, unknown>[];
 
@@ -51,7 +51,7 @@ function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   return items;
 }
 
-export function DataTable<TData>({
+export function DataTable<TData extends { id: string | number }>({
   data,
   columns,
   page,
@@ -68,7 +68,7 @@ export function DataTable<TData>({
   const table = useReactTable({
     data,
     columns,
-    getRowId: (row: any) => row.id,
+    getRowId: (row) => String(row.id),
 
     state: {
       rowSelection,
