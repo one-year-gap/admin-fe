@@ -12,7 +12,6 @@ const MENU_ITEMS = [
   { id: "특성 통계", label: "특성 통계", icon: Contact2, href: "/customerStatus" },
   { id: "상담 이력", label: "상담 이력", icon: Headset, href: "/consultHistory" },
   { id: "이탈 감지", label: "이탈 감지", icon: AlertCircle, href: "/churn" },
-  // { id: "제안서 작성", label: "제안서 작성", icon: FileSignature, href: "/proposal" },
 ];
 
 export default function SideBar() {
