@@ -55,8 +55,12 @@ export function CouponConfirmModal({ open, count, coupons, onClose, onConfirm }:
           </button>
 
           <button
-            disabled={!selectedCouponId}
-            onClick={() => onConfirm(selectedCouponId!)}
+            type="button"
+            disabled={selectedCouponId === null}
+            onClick={() => {
+              if (selectedCouponId === null) return;
+              onConfirm(selectedCouponId);
+            }}
             className="bg-secondary-500 text-neutral-0 cursor-pointer rounded-md px-4 py-2 text-sm hover:opacity-60">
             확인
           </button>
