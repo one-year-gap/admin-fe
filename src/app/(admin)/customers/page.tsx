@@ -5,9 +5,9 @@ import { useState } from "react";
 import type { RowSelectionState } from "@tanstack/react-table";
 
 import { CustomersList } from "@/components/domain/customers/CustomersList";
-import { DataUsageChart } from "@/components/domain/customers/DataUsageChart";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { MembershipChart } from "@/components/domain/customers/MembershipChart";
+import { MonthlyMembersChart } from "@/components/domain/customers/MonthlyMembersChart";
 import { SearchSection } from "@/components/domain/customers/SearchSection";
 import { INITIAL_FILTERS } from "@/constants/initialFilters";
 import { useMembershipChart } from "@/lib/tanstack/query/useMembershipChart";
@@ -101,7 +101,7 @@ export default function CustomersPage() {
       </section>
 
       <section className="col-span-12 md:col-span-7">
-        <DataUsageChart />
+        <MonthlyMembersChart />
       </section>
     </>
   );
