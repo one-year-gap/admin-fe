@@ -21,7 +21,7 @@ const COLOR_NEG = "var(--chart-2)";
 const COLOR_ZERO = "var(--neutral-400)";
 
 export function ChurnDelta() {
-  const { data, isLoading } = useChurnTrend();
+  const { data, isLoading, isError } = useChurnTrend();
 
   const [range, setRange] = useState<9 | 31>(9);
 
@@ -36,6 +36,14 @@ export function ChurnDelta() {
     return (
       <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
         <div className="text-neutral-500">차트 로딩중...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
+        <div className="text-danger-500">데이터를 불러오는데 실패하였습니다.</div>
       </div>
     );
   }
@@ -79,7 +87,7 @@ export function ChurnDelta() {
           <BarChart data={chartData}>
             <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
 
-            <XAxis dataKey="date" tickFormatter={(v) => v.slice(5).replace("-", "/")} />
+            <XAxis dataKey="date" tickFormatter={(v) => String(v).slice(5).replace("-", "/")} />
 
             <YAxis domain={["dataMin - 1", "dataMax + 1"]} />
 

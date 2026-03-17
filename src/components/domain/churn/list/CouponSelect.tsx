@@ -3,7 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-type Coupon = {
+export type Coupon = {
   id: number;
   name: string;
 };

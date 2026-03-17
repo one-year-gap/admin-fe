@@ -1,8 +1,8 @@
 "use client";
 
-import { FilterItem } from "@/components/domain/customers/filter/FilterItem";
-import { RISK_OPTIONS } from "@/constants/churnRiskFilters";
-import { GRADE_OPTIONS } from "@/constants/customerFilters";
+import { GRADE_OPTIONS, RISK_OPTIONS } from "@/constants/churnRiskFilters";
+
+import { FilterItem } from "./FilterItem";
 
 export type ChurnRiskFilters = {
   grade: string[];
@@ -15,7 +15,7 @@ type FilterListProps = {
 };
 
 export function FilterList({ value, onChange }: FilterListProps) {
-  const set = (key: keyof Omit<ChurnRiskFilters, "plan">) => (next: string[]) => {
+  const set = (key: keyof ChurnRiskFilters) => (next: string[]) => {
     onChange({ ...value, [key]: next });
   };
 

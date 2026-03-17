@@ -10,20 +10,16 @@ import { ChurnFeed } from "@/components/domain/churn/feed/ChurnFeed";
 import { ChurnList } from "@/components/domain/churn/list/ChurnList";
 import type { ChurnRiskFilters } from "@/components/domain/churn/search/FilterList";
 import { SearchSection } from "@/components/domain/churn/SearchSection";
-
-export const INITIAL_FILTERS: ChurnRiskFilters = {
-  grade: [],
-  risk: [],
-};
+import { INITIAL_FILTERS_CHURN } from "@/constants/initialFilters";
 
 export default function ChurnPage() {
   // 검색하기 버튼 누르기 전의 필터링 선택 상태
   const [keyword, setKeyword] = useState("");
-  const [filters, setFilters] = useState<ChurnRiskFilters>(INITIAL_FILTERS);
+  const [filters, setFilters] = useState<ChurnRiskFilters>(INITIAL_FILTERS_CHURN);
 
   // 검색하기 버튼 눌렀을 때 적용되는 상태
   const [searchedKeyword, setSearchedKeyword] = useState("");
-  const [searchedFilters, setSearchedFilters] = useState<ChurnRiskFilters>(INITIAL_FILTERS);
+  const [searchedFilters, setSearchedFilters] = useState<ChurnRiskFilters>(INITIAL_FILTERS_CHURN);
 
   const [page, setPage] = useState(1);
   const [size] = useState(10);
@@ -38,15 +34,11 @@ export default function ChurnPage() {
   };
 
   const isFilterSelected =
-    keyword.trim().length > 0 || JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS);
-
-  const isFilteredSearched =
-    searchedKeyword.trim().length > 0 ||
-    JSON.stringify(searchedFilters) !== JSON.stringify(INITIAL_FILTERS);
+    keyword.trim().length > 0 || JSON.stringify(filters) !== JSON.stringify(INITIAL_FILTERS_CHURN);
 
   const resetFilters = () => {
     setKeyword("");
-    setFilters(INITIAL_FILTERS);
+    setFilters(INITIAL_FILTERS_CHURN);
     setRowSelection({});
   };
 
@@ -61,7 +53,7 @@ export default function ChurnPage() {
           onFiltersChange={setFilters}
           onSearch={onClickSearchButton}
           onResetFilters={resetFilters}
-          isFilterd={isFilterSelected}
+          isFiltered={isFilterSelected}
         />
       </section>
 

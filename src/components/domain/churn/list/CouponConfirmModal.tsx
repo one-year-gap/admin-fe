@@ -4,12 +4,8 @@ import { useState } from "react";
 
 import { TicketCheck } from "lucide-react";
 
+import type { Coupon } from "./CouponSelect";
 import { CouponSelect } from "./CouponSelect";
-
-type Coupon = {
-  id: number;
-  name: string;
-};
 
 type Props = {
   open: boolean;

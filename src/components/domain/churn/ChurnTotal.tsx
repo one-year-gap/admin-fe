@@ -15,7 +15,7 @@ import {
 import { useChurnTrend } from "@/lib/tanstack/query/churn/useChurnTrend";
 
 export function ChurnTotal() {
-  const { data, isLoading } = useChurnTrend();
+  const { data, isLoading, isError } = useChurnTrend();
 
   const [range, setRange] = useState<9 | 31>(9);
 
@@ -30,6 +30,14 @@ export function ChurnTotal() {
     return (
       <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
         <div className="text-neutral-500">차트 로딩중...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
+        <div className="text-danger-500">데이터를 불러오는데 실패하였습니다.</div>
       </div>
     );
   }

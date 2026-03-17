@@ -13,7 +13,7 @@ type Props = {
   onFiltersChange: (v: ChurnRiskFilters) => void;
   onSearch: () => void;
   onResetFilters: () => void;
-  isFilterd: boolean;
+  isFiltered: boolean;
 };
 
 export function SearchSection({
@@ -23,7 +23,7 @@ export function SearchSection({
   onFiltersChange,
   onSearch,
   onResetFilters,
-  isFilterd,
+  isFiltered,
 }: Props) {
   return (
     <div className="flex items-center justify-between">
@@ -32,7 +32,7 @@ export function SearchSection({
         <FilterList value={filters} onChange={onFiltersChange} />
       </div>
       <div className="flex items-center gap-3">
-        <ResetFilterButton onClick={onResetFilters} disabled={!isFilterd} />
+        <ResetFilterButton onClick={onResetFilters} disabled={!isFiltered} />
         <SearchButton onClick={onSearch} />
       </div>
     </div>

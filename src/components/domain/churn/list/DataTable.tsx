@@ -159,7 +159,7 @@ export function DataTable<TData>({
       <div className="flex items-center justify-between px-5 py-4">
         <div className="flex-1">
           <span className="text-md font-medium text-neutral-500">
-            선택 {Object.keys(rowSelection).length}건
+            선택 {table.getFilteredSelectedRowModel().rows.length}건
           </span>
         </div>
 
