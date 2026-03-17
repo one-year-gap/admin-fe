@@ -6,28 +6,11 @@ import type { RowSelectionState } from "@tanstack/react-table";
 
 import { CustomersList } from "@/components/domain/customers/CustomersList";
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
-import type { PlanFilterState } from "@/components/domain/customers/filter/PlanFilterItem";
 import { MembershipChart } from "@/components/domain/customers/MembershipChart";
 import { MonthlyMembersChart } from "@/components/domain/customers/MonthlyMembersChart";
 import { SearchSection } from "@/components/domain/customers/SearchSection";
+import { INITIAL_FILTERS } from "@/constants/initialFilters";
 import { useMembershipChart } from "@/lib/tanstack/query/useMembershipChart";
-
-export const INITIAL_PLAN: PlanFilterState = {
-  mobile: [],
-  tabletWatch: [],
-  iptv: [],
-  internet: [],
-  addon: [],
-};
-
-export const INITIAL_FILTERS: CustomerFilters = {
-  age: [],
-  grade: [],
-  period: [],
-  gender: [],
-  status: [],
-  plan: INITIAL_PLAN,
-};
 
 export default function CustomersPage() {
   // 검색하기 버튼 누르기 전의 필터링 선택 상태
@@ -86,7 +69,7 @@ export default function CustomersPage() {
           onFiltersChange={setFilters}
           onSearch={onClickSearchButton}
           onResetFilters={resetFilters}
-          isFilterd={isFilterSelected}
+          isFiltered={isFilterSelected}
         />
       </section>
 
