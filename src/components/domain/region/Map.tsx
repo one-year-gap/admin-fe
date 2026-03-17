@@ -132,13 +132,30 @@ function TooltipContent({
 }) {
   const currentRegionData = topData.find((info) => info.region === regionName);
 
+  const TOOLTIP_WIDTH = 220;
+  const TOOLTIP_HEIGHT = 120;
+  const OFFSET = 15;
+
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  let left = x + OFFSET;
+  let top = y + OFFSET;
+
+  // 👉 오른쪽 넘칠 때 → 왼쪽으로
+  if (x + TOOLTIP_WIDTH + OFFSET > viewportWidth) {
+    left = x - TOOLTIP_WIDTH - OFFSET;
+  }
+
+  // 👉 아래 넘칠 때 → 위로
+  if (y + TOOLTIP_HEIGHT + OFFSET > viewportHeight) {
+    top = y - TOOLTIP_HEIGHT - OFFSET;
+  }
+
   return (
     <div
       className="bg-primary-500/90 text-neutral-0 pointer-events-none fixed z-50 rounded-lg p-4"
-      style={{
-        top: y + 15,
-        left: x + 15,
-      }}>
+      style={{ top, left }}>
       <div className="text-md mb-2 font-semibold">{regionName}</div>
 
       {currentRegionData ? (
