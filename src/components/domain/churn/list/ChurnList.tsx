@@ -36,66 +36,6 @@ function toUiRisk(m: string): ChurnRiskRow["riskLevel"] {
   return "중위험군";
 }
 
-// 목데이터 시작
-// const MOCK_ROWS: ChurnRiskRow[] = [
-//   {
-//     id: "1001",
-//     grade: "VVIP",
-//     name: "김민준",
-//     riskLevel: "고위험군",
-//     riskReason: "최근 3개월 방문 없음",
-//     churnPercent: 92,
-//     phone: "010-1234-5678",
-//     email: "minjun.kim@example.com",
-//   },
-//   {
-//     id: "1002",
-//     grade: "VIP",
-//     name: "이서연",
-//     riskLevel: "고위험군",
-//     riskReason: "구매 빈도 급감",
-//     churnPercent: 85,
-//     phone: "010-2345-6789",
-//     email: "seoyeon.lee@example.com",
-//   },
-//   {
-//     id: "1003",
-//     grade: "우수",
-//     name: "박도윤",
-//     riskLevel: "중위험군",
-//     riskReason: "앱 로그인 감소",
-//     churnPercent: 61,
-//     phone: "010-3456-7890",
-//     email: "doyun.park@example.com",
-//   },
-//   {
-//     id: "1004",
-//     grade: "VIP",
-//     name: "최지아",
-//     riskLevel: "중위험군",
-//     riskReason: "포인트 미사용",
-//     churnPercent: 54,
-//     phone: "010-4567-8901",
-//     email: "jia.choi@example.com",
-//   },
-//   {
-//     id: "1005",
-//     grade: "VVIP",
-//     name: "정하은",
-//     riskLevel: "고위험군",
-//     riskReason: "쿠폰 미사용 누적",
-//     churnPercent: 78,
-//     phone: "010-5678-9012",
-//     email: "haeun.jung@example.com",
-//   },
-// ];
-
-// const rows = MOCK_ROWS;
-// const isLoading = false;
-// const isError = false;
-// const pagination = { totalCount: MOCK_ROWS.length, totalPage: 1 };
-// 목데이터 끝
-
 export function ChurnList({
   keyword,
   filters,
