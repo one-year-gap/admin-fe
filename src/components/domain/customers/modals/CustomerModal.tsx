@@ -124,7 +124,10 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
               <div className="col-span-5">
                 <InfoRow label="이름" value={member.name} />
                 <InfoRow label="성별" value={member.gender === "M" ? "남" : "여"} />
-                <InfoRow label="생년월일" value={member.birthDate.replaceAll("-", ".")} />
+                <InfoRow
+                  label="생년월일"
+                  value={member.birthDate ? member.birthDate.replaceAll("-", ".") : "-"}
+                />
                 <InfoRow label="나이" value={`만 ${member.age}세`} />
                 <InfoRow label="주소" value={member.fullAddress} />
               </div>

@@ -73,7 +73,7 @@ export function StatusPopover({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex w-23 items-center justify-around gap-2 rounded-sm border border-neutral-300 px-2 py-1 hover:opacity-70">
+          className="flex w-auto min-w-23 items-center justify-around gap-2 rounded-sm border border-neutral-300 px-2 py-1 hover:opacity-70">
           <span className={cn("h-3 w-3 rounded-full", current?.color ?? "bg-neutral-300")} />
           <span>{current?.label ?? "-"}</span>
           <ChevronDown className="h-4 w-4 text-neutral-500" />
