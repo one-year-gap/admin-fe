@@ -7,7 +7,7 @@ export function ChurnFeed() {
     <div className="bg-neutral-0 flex flex-col gap-4 rounded-xl border border-neutral-300 p-6">
       <h3 className="text-lg font-semibold text-neutral-900">실시간 이탈 고객 피드</h3>
 
-      <div className="flex h-74 px-6">
+      <div className="flex h-[669px] px-6">
         <div className="h-full w-px bg-neutral-300"></div>
 
         <div className="w-full overflow-auto py-6">

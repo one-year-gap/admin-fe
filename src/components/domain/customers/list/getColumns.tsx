@@ -79,7 +79,20 @@ export function getColumns(opts: {
     { accessorKey: "birth", header: "생년월일", size: 120 },
     { accessorKey: "phone", header: "연락처", size: 150 },
     { accessorKey: "email", header: "이메일", size: 180 },
-    { accessorKey: "planText", header: "이용 요금제", size: 150 },
+    {
+      accessorKey: "planText",
+      header: "이용 요금제",
+      size: 150,
+      cell: ({ getValue }) => {
+        const value = getValue<string>();
+
+        return (
+          <div className="max-w-full truncate" title={value}>
+            {value}
+          </div>
+        );
+      },
+    },
 
     /* 10번째 컬럼 (사용자 상태) */
     {
