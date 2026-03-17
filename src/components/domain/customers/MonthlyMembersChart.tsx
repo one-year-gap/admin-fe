@@ -54,7 +54,10 @@ export function MonthlyMembersChart() {
             {/* X축: 월 */}
             <XAxis
               dataKey="month"
-              tickFormatter={(v) => v.slice(5)} // MM만 표시
+              tickFormatter={(v) => {
+                const value = typeof v === "string" ? v : String(v ?? "");
+                return value.length >= 7 ? value.slice(5, 7) : value;
+              }}
             />
 
             <YAxis />

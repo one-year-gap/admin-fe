@@ -37,7 +37,7 @@ function toUiGrade(m: string): CustomerRow["grade"] {
 
 // birthDate "YYYY-MM-DD" -> "YYYY.MM.DD"
 function dotDate(d: string): string {
-  return d?.replaceAll("-", ".");
+  return d?.replaceAll("-", ".") ?? "";
 }
 
 type Props = {
