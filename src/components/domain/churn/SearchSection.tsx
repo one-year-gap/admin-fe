@@ -1,16 +1,16 @@
 import React from "react";
 
-import type { CustomerFilters } from "./filter/FilterList";
-import { FilterList } from "./filter/FilterList";
-import { ResetFilterButton } from "./search/ResetFilterButton";
-import { SearchButton } from "./search/SearchButton";
-import { SearchInput } from "./search/SearchInput";
+import type { ChurnRiskFilters } from "@/components/domain/churn/search/FilterList";
+import { FilterList } from "@/components/domain/churn/search/FilterList";
+import { ResetFilterButton } from "@/components/domain/churn/search/ResetFilterButton";
+import { SearchButton } from "@/components/domain/churn/search/SearchButton";
+import { SearchInput } from "@/components/domain/churn/search/SearchInput";
 
 type Props = {
   keyword: string;
   onKeywordChange: (v: string) => void;
-  filters: CustomerFilters;
-  onFiltersChange: (v: CustomerFilters) => void;
+  filters: ChurnRiskFilters;
+  onFiltersChange: (v: ChurnRiskFilters) => void;
   onSearch: () => void;
   onResetFilters: () => void;
   isFiltered: boolean;

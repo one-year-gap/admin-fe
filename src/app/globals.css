@@ -36,6 +36,7 @@
   /* Semantic states */
   --color-success-500: var(--success-500);
   --color-warning-500: var(--warning-500);
+  --color-danger-100: var(--danger-100);
   --color-danger-500: var(--danger-500);
 
   /* Chart */
@@ -116,6 +117,7 @@
   /* Semantic - states */
   --success-500: #28a656;
   --warning-500: #eed63c;
+  --danger-100: #f5e6e8;
   --danger-500: #d13030;
 
   /* Chart */
