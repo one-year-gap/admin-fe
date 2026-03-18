@@ -139,18 +139,16 @@ function TooltipContent({
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
-  let left = x + OFFSET;
-  let top = y + OFFSET;
+  const preferredLeft = x + OFFSET;
+  const preferredTop = y + OFFSET;
+  const flippedLeft = x - TOOLTIP_WIDTH - OFFSET;
+  const flippedTop = y - TOOLTIP_HEIGHT - OFFSET;
 
-  // 👉 오른쪽 넘칠 때 → 왼쪽으로
-  if (x + TOOLTIP_WIDTH + OFFSET > viewportWidth) {
-    left = x - TOOLTIP_WIDTH - OFFSET;
-  }
+  const rawLeft = x + TOOLTIP_WIDTH + OFFSET > viewportWidth ? flippedLeft : preferredLeft;
+  const rawTop = y + TOOLTIP_HEIGHT + OFFSET > viewportHeight ? flippedTop : preferredTop;
 
-  // 👉 아래 넘칠 때 → 위로
-  if (y + TOOLTIP_HEIGHT + OFFSET > viewportHeight) {
-    top = y - TOOLTIP_HEIGHT - OFFSET;
-  }
+  const left = Math.min(Math.max(rawLeft, OFFSET), viewportWidth - TOOLTIP_WIDTH - OFFSET);
+  const top = Math.min(Math.max(rawTop, OFFSET), viewportHeight - TOOLTIP_HEIGHT - OFFSET);
 
   return (
     <div
