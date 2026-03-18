@@ -30,7 +30,7 @@ export default function SideBar() {
 
       <nav className="flex flex-1 flex-col justify-center gap-6 px-12">
         {MENU_ITEMS.map((item) => {
-          const isActive = pathname.startsWith(item.href);
+          const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
           const Icon = item.icon;
 
           return (
