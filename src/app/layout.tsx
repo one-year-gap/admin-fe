@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${pretendard.variable}`}>
         <TanstackProvider>
           {children}
-          <Toaster position="top-center" richColors />
+          <Toaster position="bottom-center" richColors />
         </TanstackProvider>
       </body>
     </html>
