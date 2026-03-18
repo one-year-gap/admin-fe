@@ -136,8 +136,8 @@ function TooltipContent({
   const TOOLTIP_HEIGHT = 120;
   const OFFSET = 15;
 
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
+  const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 1080;
 
   const preferredLeft = x + OFFSET;
   const preferredTop = y + OFFSET;
