@@ -88,7 +88,7 @@ export function FilterItem({
         sideOffset={4}
         className={cn(
           "bg-neutral-0 rounded-lg border border-neutral-300 p-2 shadow-none",
-          "w-[--radix-popover-trigger-width]",
+          "w-(--radix-popover-trigger-width)",
         )}>
         {/* 카테고리 명 */}
         <div className="mb-1 flex items-center justify-between p-2">

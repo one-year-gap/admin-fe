@@ -132,13 +132,28 @@ function TooltipContent({
 }) {
   const currentRegionData = topData.find((info) => info.region === regionName);
 
+  const TOOLTIP_WIDTH = 220;
+  const TOOLTIP_HEIGHT = 120;
+  const OFFSET = 15;
+
+  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
+  const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 1080;
+
+  const preferredLeft = x + OFFSET;
+  const preferredTop = y + OFFSET;
+  const flippedLeft = x - TOOLTIP_WIDTH - OFFSET;
+  const flippedTop = y - TOOLTIP_HEIGHT - OFFSET;
+
+  const rawLeft = x + TOOLTIP_WIDTH + OFFSET > viewportWidth ? flippedLeft : preferredLeft;
+  const rawTop = y + TOOLTIP_HEIGHT + OFFSET > viewportHeight ? flippedTop : preferredTop;
+
+  const left = Math.min(Math.max(rawLeft, OFFSET), viewportWidth - TOOLTIP_WIDTH - OFFSET);
+  const top = Math.min(Math.max(rawTop, OFFSET), viewportHeight - TOOLTIP_HEIGHT - OFFSET);
+
   return (
     <div
       className="bg-primary-500/90 text-neutral-0 pointer-events-none fixed z-50 rounded-lg p-4"
-      style={{
-        top: y + 15,
-        left: x + 15,
-      }}>
+      style={{ top, left }}>
       <div className="text-md mb-2 font-semibold">{regionName}</div>
 
       {currentRegionData ? (

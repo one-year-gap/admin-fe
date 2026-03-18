@@ -2,6 +2,8 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 
+import { Toaster } from "sonner";
+
 import { TanstackProvider } from "@/lib/tanstack/provider";
 
 const pretendard = localFont({
@@ -15,7 +17,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body className={`${pretendard.variable}`}>
-        <TanstackProvider>{children}</TanstackProvider>
+        <TanstackProvider>
+          {children}
+          <Toaster position="top-center" richColors />
+        </TanstackProvider>
       </body>
     </html>
   );

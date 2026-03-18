@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import type { RowSelectionState } from "@tanstack/react-table";
 
+import { toast } from "sonner";
+
 import { DataTable } from "@/components/domain/churn/list/DataTable";
 import { CHURN_COUPONS } from "@/constants/coupons";
 import { useCoupon } from "@/lib/tanstack/mutation/churn/useCoupon";
@@ -130,12 +132,22 @@ export function ChurnList({
         isLoading={couponMutation.isPending}
         onConfirm={(couponId) => {
           if (couponMutation.isPending) return;
-          couponMutation.mutate({
-            memberIds: targetIds.map(Number),
-            couponId,
-          });
 
-          setIsModalOpen(false);
+          couponMutation.mutate(
+            {
+              memberIds: targetIds.map(Number),
+              couponId,
+            },
+            {
+              onSuccess: () => {
+                toast.success("쿠폰이 발급되었습니다.");
+                setIsModalOpen(false);
+              },
+              onError: () => {
+                toast.error("쿠폰 발급에 실패했습니다");
+              },
+            },
+          );
         }}
       />
     </div>

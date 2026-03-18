@@ -28,7 +28,6 @@ export default function SideBar() {
         <div className="bg-neutral-0 mt-9 h-px w-full" />
       </div>
 
-      {/* isActive는 현재 페이지인지 확인하는 변수입니다. */}
       <nav className="flex flex-1 flex-col justify-center gap-6 px-12">
         {MENU_ITEMS.map((item) => {
           const isActive = pathname.startsWith(item.href);
@@ -39,7 +38,7 @@ export default function SideBar() {
               type="button"
               key={item.id}
               onClick={() => router.push(item.href)}
-              className="w-full">
+              className="w-full cursor-pointer">
               <div
                 className={`flex items-center gap-9 rounded-lg p-4 transition-all ${
                   isActive ? "bg-secondary-500" : "hover:bg-secondary-700"
