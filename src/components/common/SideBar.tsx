@@ -7,7 +7,7 @@ import { AlertCircle, Contact2, Headset, Map, Users } from "lucide-react";
 import logo from "@/assets/logo.svg";
 
 const MENU_ITEMS = [
-  { id: "고객 관리", label: "고객 관리", icon: Users, href: "/customers" },
+  { id: "고객 관리", label: "고객 관리", icon: Users, href: "/" },
   { id: "지역별 통계", label: "지역별 통계", icon: Map, href: "/region" },
   { id: "특성 통계", label: "특성 통계", icon: Contact2, href: "/customerStatus" },
   { id: "상담 이력", label: "상담 이력", icon: Headset, href: "/consultHistory" },
