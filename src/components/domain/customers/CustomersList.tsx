@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import type { RowSelectionState } from "@tanstack/react-table";
 
+import { toast } from "sonner";
+
 import type { CustomerFilters } from "@/components/domain/customers/filter/FilterList";
 import { DataTable } from "@/components/domain/customers/list/DataTable";
 import { type CustomerRow, getColumns } from "@/components/domain/customers/list/getColumns";
@@ -120,11 +122,13 @@ export function CustomersList({
   const statusMutation = useAdminMembersStatus({
     onSuccess: (res) => {
       console.log("[STATUS PATCH SUCCESS]", res);
+      toast.success("상태를 변경하였습니다.");
       onRowSelectionChange({});
       queryClient.invalidateQueries({ queryKey: ["adminMembers"] });
     },
     onError: (err) => {
       console.log("[STATUS PATCH ERROR]", err);
+      toast.error("상태 변경에 실패했습니다.");
     },
   });
 
