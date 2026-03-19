@@ -87,7 +87,9 @@ export default function ConsultationLineChart() {
           <button
             onClick={() => setMode("hour")}
             className={`rounded px-3 py-1 ${
-              mode === "hour" ? "bg-primary text-white" : "bg-neutral-100"
+              mode === "hour"
+                ? "bg-primary-500 text-white"
+                : "bg-neutral-0 text-neutral-700 hover:bg-neutral-200"
             }`}>
             시간대별
           </button>
@@ -95,7 +97,9 @@ export default function ConsultationLineChart() {
           <button
             onClick={() => setMode("day")}
             className={`rounded px-3 py-1 ${
-              mode === "day" ? "bg-primary text-white" : "bg-neutral-100"
+              mode === "day"
+                ? "bg-primary-500 text-white"
+                : "bg-neutral-0 text-neutral-700 hover:bg-neutral-200"
             }`}>
             일자별
           </button>
