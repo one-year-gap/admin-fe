@@ -14,11 +14,11 @@ export type MemberDetailResponseDTO = {
   email: string;
   phone: string;
 
-  birthDate: string;
+  birthDate: string | null;
 
   currentMobilePlan: string;
 
-  joinDate: string;
+  joinDate: string | null;
   joinDurationText: string;
 
   status: "ACTIVE" | "BANNED" | "DELETED" | "PROCESSING";
@@ -32,4 +32,8 @@ export type MemberDetailResponseDTO = {
 
   totalSupportCount: number;
   lastSupportDate: string | null;
+  recentSupportStatus: string | null;
+  recentSatisfactionScore: number | null;
+  averageSatisfactionScore: number | null;
+  top3Keywords: string[];
 };
