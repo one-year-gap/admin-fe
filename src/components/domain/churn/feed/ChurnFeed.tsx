@@ -1,12 +1,24 @@
 "use client";
 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { useChurnLatest } from "@/lib/tanstack/query/churn/useChurnLatest";
-import type { ChurnLatestItem } from "@/models/churn/churnLatest";
+import type {
+  ChurnLatestItem,
+  ChurnLatestLevel,
+  ChurnLatestResponse,
+} from "@/models/churn/churnLatest";
+import { getChurnChanges } from "@/services/churn/getChurnChanges";
 
 import { ChurnRow } from "./ChurnRow";
 
+const FEED_LEVELS: ChurnLatestLevel[] = ["HIGH", "MEDIUM"];
+const INITIAL_LIMIT = 50;
+const POLLING_LIMIT = 100;
+const MAX_ITEMS = 100;
+
 function toRowLevel(level: ChurnLatestItem["churnLevel"]) {
-  return level === "HIGH" ? "위험" : "경고";
+  return level === "HIGH" ? "고위험" : "경고";
 }
 
 function formatTime(value: string) {
@@ -23,13 +35,68 @@ function formatTime(value: string) {
   }).format(date);
 }
 
-export function ChurnFeed() {
-  const { data, isLoading, isError } = useChurnLatest({
-    limit: 50,
-    level: ["HIGH", "MEDIUM"],
-  });
+function getItemKey(item: ChurnLatestItem) {
+  return `${item.churnId}-${item.memberId}-${item.timeStamp}`;
+}
 
+function mergeChurnItems(nextItems: ChurnLatestItem[], currentItems: ChurnLatestItem[]) {
+  const deduped = new Map<string, ChurnLatestItem>();
+
+  for (const item of [...nextItems, ...currentItems]) {
+    deduped.set(getItemKey(item), item);
+  }
+
+  return Array.from(deduped.values()).slice(0, MAX_ITEMS);
+}
+
+export function ChurnFeed() {
+  const queryClient = useQueryClient();
+  const latestParams = {
+    limit: INITIAL_LIMIT,
+    level: FEED_LEVELS,
+  };
+
+  const { data, isLoading, isError } = useChurnLatest(latestParams);
   const items = data?.data.items ?? [];
+  const afterId = items.length === 0 ? 0 : (data?.data.afterId ?? 0);
+
+  useQuery({
+    queryKey: ["churnChangesPolling", { ...latestParams, afterId, limit: POLLING_LIMIT }],
+    enabled: !!data,
+    retry: 0,
+    refetchInterval: 3000,
+    refetchIntervalInBackground: true,
+    queryFn: async () => {
+      const response = await getChurnChanges({
+        afterId,
+        limit: POLLING_LIMIT,
+        level: FEED_LEVELS,
+      });
+
+      queryClient.setQueryData<ChurnLatestResponse>(["churnLatest", latestParams], (current) => {
+        if (!current) {
+          return current;
+        }
+
+        const nextItems = response.data.items;
+
+        return {
+          ...current,
+          data: {
+            ...current.data,
+            items:
+              nextItems.length === 0
+                ? current.data.items
+                : mergeChurnItems(nextItems, current.data.items),
+            afterId: nextItems.length === 0 ? current.data.afterId : response.data.afterId,
+            hasMore: response.data.hasMore,
+          },
+        };
+      });
+
+      return response;
+    },
+  });
 
   return (
     <div className="bg-neutral-0 flex flex-col gap-4 rounded-xl border border-neutral-300 p-6">
@@ -50,7 +117,7 @@ export function ChurnFeed() {
           ) : (
             items.map((item) => (
               <ChurnRow
-                key={`${item.churnId}-${item.memberId}-${item.timeStamp}`}
+                key={getItemKey(item)}
                 level={toRowLevel(item.churnLevel)}
                 time={formatTime(item.timeStamp)}
                 name={item.memberName}
