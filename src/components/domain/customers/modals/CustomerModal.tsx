@@ -227,7 +227,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
               <div className="col-span-5">
                 <InfoRow label="주요 상담 키워드" value={top3KeywordsText} />
                 <InfoRow label="최근 상담 점수" value={recentSatisfactionScoreText} />
-                <InfoRow label="평균 평점 점수" value={averageSatisfactionScoreText} />
+                <InfoRow label="평균 상담 점수" value={averageSatisfactionScoreText} />
               </div>
             </section>
 
