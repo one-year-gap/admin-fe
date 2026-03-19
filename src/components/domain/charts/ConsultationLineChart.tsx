@@ -83,11 +83,13 @@ export default function ConsultationLineChart() {
       <div className="mb-3 flex justify-between">
         <div className="text-sm text-neutral-500">기준일: {mode === "hour" ? date : month}</div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-1 rounded-lg p-1">
           <button
             onClick={() => setMode("hour")}
             className={`rounded px-3 py-1 ${
-              mode === "hour" ? "bg-primary text-white" : "bg-neutral-100"
+              mode === "hour"
+                ? "bg-primary-500 text-white"
+                : "bg-neutral-0 text-neutral-700 hover:bg-neutral-200"
             }`}>
             시간대별
           </button>
@@ -95,7 +97,9 @@ export default function ConsultationLineChart() {
           <button
             onClick={() => setMode("day")}
             className={`rounded px-3 py-1 ${
-              mode === "day" ? "bg-primary text-white" : "bg-neutral-100"
+              mode === "day"
+                ? "bg-primary-500 text-white"
+                : "bg-neutral-0 text-neutral-700 hover:bg-neutral-200"
             }`}>
             일자별
           </button>
