@@ -94,9 +94,11 @@ export default function CharacterTrendChart() {
             }}
           />
           <Legend verticalAlign="bottom" />
+
           <Area
             type="monotone"
             dataKey="explorer"
+            stackId="1"
             name="우주탐험가"
             stroke="#c81f1f"
             fill="#c81f1f"
@@ -104,6 +106,7 @@ export default function CharacterTrendChart() {
           <Area
             type="monotone"
             dataKey="collector"
+            stackId="1"
             name="우주문어발"
             stroke="#dcbb13"
             fill="#dcbb13"
@@ -111,6 +114,7 @@ export default function CharacterTrendChart() {
           <Area
             type="monotone"
             dataKey="dieter"
+            stackId="1"
             name="우주세이프가디언"
             stroke="#820da5"
             fill="#820da5"
@@ -118,6 +122,7 @@ export default function CharacterTrendChart() {
           <Area
             type="monotone"
             dataKey="master"
+            stackId="1"
             name="우주트렌드서퍼"
             stroke="#1faf4a"
             fill="#1faf4a"
@@ -125,6 +130,7 @@ export default function CharacterTrendChart() {
           <Area
             type="monotone"
             dataKey="myType"
+            stackId="1"
             name="우주셜록홈즈"
             stroke="#6059c4"
             fill="#6059c4"
@@ -133,6 +139,7 @@ export default function CharacterTrendChart() {
           <Area
             type="monotone"
             dataKey="gravity"
+            stackId="1"
             name="그래비티홈즈"
             stroke="#dd4fa9"
             fill="#dd4fa9"
