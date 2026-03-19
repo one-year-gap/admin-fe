@@ -23,7 +23,7 @@ function buildUpstreamUrl(path: string[], search: string) {
   const normalizedBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
   const upstreamPath = path.map(encodeURIComponent).join("/");
 
-  return `${normalizedBaseUrl}/${upstreamPath}${search}`;
+  return `${normalizedBaseUrl}/api/v1/admin/${upstreamPath}${search}`;
 }
 
 function copyHeaders(headers: Headers) {
