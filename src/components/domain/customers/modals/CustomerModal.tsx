@@ -14,6 +14,10 @@ type ModalProps = {
   memberId: number | null;
 };
 
+function formatDate(value: string | null | undefined) {
+  return value?.split("T")[0]?.replaceAll("-", ".") ?? "-";
+}
+
 function InfoRow({
   label,
   value,
@@ -75,10 +79,21 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
   };
   const contractStatus = getContractStatus();
 
-  const dotContractStartDate = member?.contractStartDate?.split("T")[0]?.replace(/-/g, ".");
-  const dotContractEndDate = member?.contractEndDate?.split("T")[0]?.replace(/-/g, ".");
-
-  const dotLastSupportDate = member?.lastSupportDate?.split("T")[0]?.replace(/-/g, ".");
+  const formattedBirthDate = formatDate(member?.birthDate);
+  const formattedJoinDate = formatDate(member?.joinDate);
+  const dotContractStartDate = formatDate(member?.contractStartDate);
+  const dotContractEndDate = formatDate(member?.contractEndDate);
+  const dotLastSupportDate = formatDate(member?.lastSupportDate);
+  const top3KeywordsText = member?.top3Keywords?.length ? member.top3Keywords.join(", ") : "-";
+  const recentSupportStatusText = member?.recentSupportStatus ?? "-";
+  const recentSatisfactionScoreText =
+    member?.recentSatisfactionScore !== null && member?.recentSatisfactionScore !== undefined
+      ? `${member.recentSatisfactionScore}점`
+      : "-";
+  const averageSatisfactionScoreText =
+    member?.averageSatisfactionScore !== null && member?.averageSatisfactionScore !== undefined
+      ? `${member.averageSatisfactionScore}점`
+      : "-";
 
   return (
     <div
@@ -124,10 +139,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
               <div className="col-span-5">
                 <InfoRow label="이름" value={member.name} />
                 <InfoRow label="성별" value={member.gender === "M" ? "남" : "여"} />
-                <InfoRow
-                  label="생년월일"
-                  value={member.birthDate ? member.birthDate.replaceAll("-", ".") : "-"}
-                />
+                <InfoRow label="생년월일" value={formattedBirthDate} />
                 <InfoRow label="나이" value={`만 ${member.age}세`} />
                 <InfoRow label="주소" value={member.fullAddress} />
               </div>
@@ -165,7 +177,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 </div>
               </div>
               <div className="col-span-5">
-                <InfoRow label="가입 일자" value={member.joinDate} />
+                <InfoRow label="가입 일자" value={formattedJoinDate} />
                 <InfoRow label="가입 기간" value={member.joinDurationText} />
                 <InfoRow
                   label="약정 상태"
@@ -210,12 +222,12 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
               <div className="col-span-5">
                 <InfoRow label="상담 총 횟수" value={`${member.totalSupportCount} 회`} />
                 <InfoRow label="최근 상담 일자" value={dotLastSupportDate} />
+                <InfoRow label="최근 상담 결과" value={recentSupportStatusText} />
               </div>
               <div className="col-span-5">
-                {/* TODO: 추후 수정 예정 */}
-                <InfoRow label="주요 상담 키워드" value="요금제, 불만, 해지" />
-                <InfoRow label="최근 상담 결과" value="미해결" />
-                <InfoRow label="상담 평점" value="5점" />
+                <InfoRow label="주요 상담 키워드" value={top3KeywordsText} />
+                <InfoRow label="최근 상담 점수" value={recentSatisfactionScoreText} />
+                <InfoRow label="평균 평점 점수" value={averageSatisfactionScoreText} />
               </div>
             </section>
 

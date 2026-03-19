@@ -8,6 +8,8 @@ export async function getAdminMembersDetail(
   if (!Number.isInteger(memberId) || memberId <= 0) {
     throw new Error("memberId must be a positive integer.");
   }
-  const { data } = await api.get(`/api/v1/admin/members/${memberId}`);
+  const { data } = await api.get<ApiResponse<MemberDetailResponseDTO>>(
+    `/api/v1/admin/members/${memberId}`,
+  );
   return data;
 }
