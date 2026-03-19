@@ -1,14 +1,14 @@
 import { Clock } from "lucide-react";
 
 type ChurnRowProps = {
-  level: "위험" | "경고";
+  level: "고위험" | "경고";
   time: string;
   name: string;
   reason: string;
 };
 
 const LEVEL_STYLE = {
-  위험: "bg-danger-500",
+  고위험: "bg-danger-500",
   경고: "bg-warning-500",
 } as const;
 
