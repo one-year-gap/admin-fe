@@ -35,6 +35,7 @@ function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   if (pageCount <= 1) return [1];
 
   const current = pageIndex + 1;
+
   const first = 1;
   const last = pageCount;
 
@@ -46,6 +47,7 @@ function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   if (start > 2) items.push("ellipsis");
   for (let p = start; p <= end; p++) items.push(p);
   if (end < last - 1) items.push("ellipsis");
+
   if (last !== first) items.push(last);
 
   return items;

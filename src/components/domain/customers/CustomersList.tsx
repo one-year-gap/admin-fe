@@ -147,6 +147,7 @@ export function CustomersList({
     bulkAction,
     onBulkAction: handleBulk,
     onRowAction: (to, id) => openConfirm(to, [id]),
+
     isMutating: statusMutation.isPending,
   });
 
