@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { ChartCardSkeleton } from "@/components/common/skeletons/ChartCardSkeleton";
 import { useMonthlyMembersChart } from "@/lib/tanstack/query/useMonthlyMembersChart";
 import type { MonthlyMembers } from "@/models/customers/monthlyMembersChart";
 
@@ -17,18 +18,14 @@ export function MonthlyMembersChart() {
   const { data, isLoading, isError } = useMonthlyMembersChart();
 
   const chartData =
-    data?.data.map((d: MonthlyMembers) => ({
-      month: d.month,
-      joined: d.joinedCount,
-      left: d.leftCount,
+    data?.data.map((item: MonthlyMembers) => ({
+      month: item.month,
+      joined: item.joinedCount,
+      left: item.leftCount,
     })) ?? [];
 
   if (isLoading) {
-    return (
-      <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
-        <div className="text-neutral-500">차트 로딩중...</div>
-      </div>
-    );
+    return <ChartCardSkeleton variant="line" titleWidth="w-40" subtitleWidth="w-24" />;
   }
 
   if (isError) {
@@ -50,24 +47,18 @@ export function MonthlyMembersChart() {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-
-            {/* X축: 월 */}
             <XAxis
               dataKey="month"
-              tickFormatter={(v) => {
-                const value = typeof v === "string" ? v : String(v ?? "");
-                return value.length >= 7 ? value.slice(5, 7) : value;
+              tickFormatter={(value) => {
+                const text = typeof value === "string" ? value : String(value ?? "");
+                return text.length >= 7 ? text.slice(5, 7) : text;
               }}
             />
-
             <YAxis />
-
             <Tooltip
               formatter={(value, name) => [`${Number(value ?? 0).toLocaleString()}명`, name]}
               labelFormatter={(label) => `월: ${label}`}
             />
-
-            {/* 가입자 라인 */}
             <Line
               type="monotone"
               dataKey="joined"
@@ -75,8 +66,6 @@ export function MonthlyMembersChart() {
               stroke="var(--secondary-500)"
               strokeWidth={2}
             />
-
-            {/* 탈퇴자 라인 */}
             <Line
               type="monotone"
               dataKey="left"
