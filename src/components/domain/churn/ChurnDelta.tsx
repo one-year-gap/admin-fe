@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { ChartCardSkeleton } from "@/components/common/skeletons/ChartCardSkeleton";
 import { useChurnTrend } from "@/lib/tanstack/query/churn/useChurnTrend";
 
 const COLOR_POS = "var(--danger-500)";
@@ -22,22 +23,16 @@ const COLOR_ZERO = "var(--neutral-400)";
 
 export function ChurnDelta() {
   const { data, isLoading, isError } = useChurnTrend();
-
   const [range, setRange] = useState<9 | 31>(9);
 
   const rawData = data?.data.data ?? [];
-
-  const chartData = rawData.slice(-range).map((d) => ({
-    date: d.date,
-    delta: d.delta,
+  const chartData = rawData.slice(-range).map((item) => ({
+    date: item.date,
+    delta: item.delta,
   }));
 
   if (isLoading) {
-    return (
-      <div className="bg-neutral-0 rounded-xl border border-neutral-300 p-6">
-        <div className="text-neutral-500">차트 로딩중...</div>
-      </div>
-    );
+    return <ChartCardSkeleton variant="bars" controls titleWidth="w-40" subtitleWidth="w-56" />;
   }
 
   if (isError) {
@@ -58,7 +53,6 @@ export function ChurnDelta() {
           </p>
         </div>
 
-        {/* 기간 선택 */}
         <div className="flex gap-2">
           <button
             onClick={() => setRange(9)}
@@ -86,27 +80,24 @@ export function ChurnDelta() {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid stroke="#eee" strokeDasharray="3 3" />
-
-            <XAxis dataKey="date" tickFormatter={(v) => String(v).slice(5).replace("-", "/")} />
-
+            <XAxis
+              dataKey="date"
+              tickFormatter={(value) => String(value).slice(5).replace("-", "/")}
+            />
             <YAxis domain={["dataMin - 1", "dataMax + 1"]} />
-
-            {/* 기준선 */}
             <ReferenceLine y={0} stroke="#9ca3af" />
-
             <Tooltip
               formatter={(value) => {
-                const v = Number(value ?? 0);
-                return [`${v > 0 ? "+" : ""}${v}명`, "증감"];
+                const parsed = Number(value ?? 0);
+                return [`${parsed > 0 ? "+" : ""}${parsed}명`, "증감"];
               }}
               labelFormatter={(label) => `날짜: ${label}`}
             />
-
             <Bar dataKey="delta">
-              {chartData.map((d, idx) => (
+              {chartData.map((item, index) => (
                 <Cell
-                  key={idx}
-                  fill={d.delta > 0 ? COLOR_POS : d.delta < 0 ? COLOR_NEG : COLOR_ZERO}
+                  key={index}
+                  fill={item.delta > 0 ? COLOR_POS : item.delta < 0 ? COLOR_NEG : COLOR_ZERO}
                 />
               ))}
             </Bar>
