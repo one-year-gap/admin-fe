@@ -2,6 +2,7 @@ import { type ReactNode, useState } from "react";
 
 import { X } from "lucide-react";
 
+import { CustomerModalSkeleton } from "@/components/domain/customers/modals/CustomerModalSkeleton";
 import { UpdateModal } from "@/components/domain/customers/modals/UpdateModal";
 import { useAdminMembersDetail } from "@/lib/tanstack/query/useAdminMembersDetail";
 import { cn } from "@/lib/utils";
@@ -56,16 +57,20 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
 
   if (!open) return null;
 
-  const member = data?.data;
+  if (isLoading) {
+    return <CustomerModalSkeleton />;
+  }
 
+  const member = data?.data;
   const effectiveStatus = pendingStatus ?? member?.status ?? "";
   const effectiveMembership = pendingMembership ?? member?.membership ?? "";
-
   const currentStatus = member?.status ?? "";
   const currentMembership = member?.membership ?? "";
 
   const getContractStatus = () => {
-    if (!member || !member.isContracted) return { color: "bg-neutral-500", text: "없음" };
+    if (!member || !member.isContracted) {
+      return { color: "bg-neutral-500", text: "없음" };
+    }
 
     if (member.isExpired || (member.remainingDays ?? 0) <= 0) {
       return { color: "bg-danger-500", text: "만료" };
@@ -75,10 +80,10 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
       return { color: "bg-warning-500", text: "임박" };
     }
 
-    return { color: "bg-success-500", text: "가입" };
+    return { color: "bg-success-500", text: "유지" };
   };
-  const contractStatus = getContractStatus();
 
+  const contractStatus = getContractStatus();
   const formattedBirthDate = formatDate(member?.birthDate);
   const formattedJoinDate = formatDate(member?.joinDate);
   const dotContractStartDate = formatDate(member?.contractStartDate);
@@ -105,28 +110,25 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
       }}
       tabIndex={-1}
       ref={(el) => el?.focus()}>
-      {/* 배경 */}
       <div className="absolute inset-0 bg-neutral-900 opacity-60" onClick={handleClose} />
 
-      {/* 모달창 */}
       <div className="bg-neutral-0 relative z-10 w-full max-w-[60vw] rounded-lg border border-neutral-300 p-6 text-neutral-900 shadow-xl">
         <header className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">고객 상세 정보</h2>
           <button
             onClick={handleClose}
             className="cursor-pointer hover:text-neutral-500"
-            aria-label="모달 닫기">
+            aria-label="모달 닫기"
+            type="button">
             <X className="h-6 w-6" />
           </button>
         </header>
 
         {!memberId ? (
           <div className="py-10 text-center text-sm text-neutral-500">고객을 선택해주세요</div>
-        ) : isLoading ? (
-          <div className="py-10 text-center text-sm text-neutral-500">불러오는 중...</div>
         ) : isError || !member ? (
           <div className="py-10 text-center text-sm text-neutral-500">
-            상세 정보를 불러오지 못했습니다
+            상세 정보를 불러오지 못했습니다.
           </div>
         ) : (
           <div>
@@ -177,7 +179,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 </div>
               </div>
               <div className="col-span-5">
-                <InfoRow label="가입 일자" value={formattedJoinDate} />
+                <InfoRow label="가입일자" value={formattedJoinDate} />
                 <InfoRow label="가입 기간" value={member.joinDurationText} />
                 <InfoRow
                   label="약정 상태"
@@ -201,7 +203,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                   label="약정 남은 일수"
                   value={
                     member.remainingDays !== null && member.remainingDays > 0
-                      ? `${member.remainingDays} 일`
+                      ? `${member.remainingDays}일`
                       : "-"
                   }
                 />
@@ -220,7 +222,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 </div>
               </div>
               <div className="col-span-5">
-                <InfoRow label="상담 총 횟수" value={`${member.totalSupportCount} 회`} />
+                <InfoRow label="상담 총 횟수" value={`${member.totalSupportCount}회`} />
                 <InfoRow label="최근 상담 일자" value={dotLastSupportDate} />
                 <InfoRow label="최근 상담 결과" value={recentSupportStatusText} />
               </div>
@@ -236,12 +238,14 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
                 className="bg-secondary-500 cursor-pointer rounded-sm px-4 py-1"
                 onClick={() => {
                   setUpdateOpen(true);
-                }}>
+                }}
+                type="button">
                 수정
               </button>
               <button
                 className="bg-danger-500 cursor-pointer rounded-sm px-4 py-1"
-                onClick={handleClose}>
+                onClick={handleClose}
+                type="button">
                 취소
               </button>
             </section>
@@ -250,7 +254,7 @@ export function CustomerModal({ open, onOpenChange, memberId }: ModalProps) {
               open={updateOpen}
               onOpenChange={setUpdateOpen}
               memberId={memberId}
-              memberName={member?.name ?? ""}
+              memberName={member.name}
               currentStatus={currentStatus}
               currentMembership={currentMembership}
               pendingStatus={effectiveStatus}
