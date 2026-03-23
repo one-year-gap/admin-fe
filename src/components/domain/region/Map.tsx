@@ -57,7 +57,7 @@ export default function Map({ selectedRegion, onSelect }: MapProps) {
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
-          scale: 7000, // 지도 크기
+          scale: 7500, // 지도 크기
           center: [127.5, 36],
         }}
         className="h-full w-full">

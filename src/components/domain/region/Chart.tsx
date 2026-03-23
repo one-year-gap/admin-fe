@@ -44,10 +44,6 @@ export default function Chart({ regionName }: ChartProps) {
 
   const axisMax = regionResponse?.axisMax || { salesAxisMax: 60000, dataUsageAxisMaxGb: 20 };
 
-  if (isLoading) {
-    return <div className="absolute h-full text-neutral-500">데이터를 불러오는 중입니다...</div>;
-  }
-
   return (
     <div className="flex h-full flex-col gap-10">
       <div className="bg-neutral-0 mt-2 rounded-lg p-6 shadow-[0_0_10px_0_rgba(0,0,0,0.25)]">

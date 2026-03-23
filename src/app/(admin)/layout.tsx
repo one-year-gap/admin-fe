@@ -5,7 +5,7 @@ import SideBar from "@/components/common/SideBar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="flex h-screen w-full min-w-[1200px] overflow-x-auto overflow-y-hidden">
       <SideBar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header />
