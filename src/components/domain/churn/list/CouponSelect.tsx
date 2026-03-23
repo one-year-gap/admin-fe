@@ -24,13 +24,13 @@ export function CouponSelect({
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="flex w-50 items-center justify-between rounded-md border border-neutral-300 px-3 py-2 text-sm hover:opacity-70">
+          className="flex w-52 items-center justify-between rounded-md border border-neutral-300 px-3 py-2 text-sm hover:opacity-70">
           <span>{current?.name ?? "쿠폰 선택"}</span>
           <ChevronDown className="h-4 w-4 text-neutral-500" />
         </button>
       </PopoverTrigger>
 
-      <PopoverContent align="start" className="w-50 p-2">
+      <PopoverContent align="start" className="w-52 p-2">
         <ul className="space-y-1">
           {coupons.map((coupon) => (
             <li key={coupon.id}>
@@ -38,7 +38,7 @@ export function CouponSelect({
                 type="button"
                 onClick={() => onChange(coupon.id)}
                 className={cn(
-                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm",
+                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-start text-sm",
                   value === coupon.id
                     ? "bg-primary-500 text-neutral-0"
                     : "hover:bg-primary-100 text-neutral-900",
