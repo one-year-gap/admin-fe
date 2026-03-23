@@ -132,7 +132,7 @@ export function CustomersList({
   const totalCount = data?.pagination.totalCount ?? 0;
 
   if (isLoading) {
-    return <TableCardSkeleton />;
+    return <TableCardSkeleton columnCount={11} rowCount={size} />;
   }
 
   if (isError) {
