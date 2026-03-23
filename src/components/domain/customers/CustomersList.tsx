@@ -106,14 +106,12 @@ export function CustomersList({
 
   const queryClient = useQueryClient();
   const statusMutation = useAdminMembersStatus({
-    onSuccess: (response) => {
-      console.log("[STATUS PATCH SUCCESS]", response);
+    onSuccess: () => {
       toast.success("상태를 변경하였습니다.");
       onRowSelectionChange({});
       queryClient.invalidateQueries({ queryKey: ["adminMembers"] });
     },
-    onError: (error) => {
-      console.log("[STATUS PATCH ERROR]", error);
+    onError: () => {
       toast.error("상태 변경에 실패했습니다.");
     },
   });
