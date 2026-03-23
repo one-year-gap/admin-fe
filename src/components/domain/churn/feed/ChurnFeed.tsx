@@ -2,6 +2,7 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { FeedCardSkeleton } from "@/components/common/skeletons/FeedCardSkeleton";
 import { useChurnLatest } from "@/lib/tanstack/query/churn/useChurnLatest";
 import type {
   ChurnLatestItem,
@@ -98,6 +99,10 @@ export function ChurnFeed() {
     },
   });
 
+  if (isLoading) {
+    return <FeedCardSkeleton />;
+  }
+
   return (
     <div className="bg-neutral-0 flex flex-col gap-4 rounded-xl border border-neutral-300 p-6">
       <h3 className="text-lg font-semibold text-neutral-900">실시간 이탈 고객 피드</h3>
@@ -106,9 +111,7 @@ export function ChurnFeed() {
         <div className="h-full w-px bg-neutral-300"></div>
 
         <div className="w-full overflow-auto py-6">
-          {isLoading ? (
-            <div className="px-4 text-sm text-neutral-500">불러오는 중...</div>
-          ) : isError ? (
+          {isError ? (
             <div className="px-4 text-sm text-neutral-500">
               이탈 고객 피드를 불러오지 못했습니다.
             </div>

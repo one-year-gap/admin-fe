@@ -2,25 +2,23 @@
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
+import { ChartCardSkeleton } from "@/components/common/skeletons/ChartCardSkeleton";
+
 interface StatusItem {
   name: string;
   value: number;
   fill: string;
 }
 
-export function MembershipChart({
-  isFiltered,
-  data,
-  totalLabel,
-  isLoading,
-  isError,
-}: {
+type Props = {
   isFiltered: boolean;
   data: StatusItem[];
   totalLabel: string;
   isLoading?: boolean;
   isError?: boolean;
-}) {
+};
+
+export function MembershipChart({ isFiltered, data, totalLabel, isLoading, isError }: Props) {
   const total = data.reduce((acc, cur) => acc + cur.value, 0);
 
   return (
@@ -33,7 +31,7 @@ export function MembershipChart({
       </div>
 
       {isLoading ? (
-        <div className="py-10 text-sm text-neutral-500">불러오는 중...</div>
+        <ChartCardSkeleton variant="donut" titleWidth="w-36" subtitleWidth="w-28" />
       ) : isError ? (
         <div className="text-danger-500 py-10 text-sm">통계 조회에 실패했습니다</div>
       ) : (
